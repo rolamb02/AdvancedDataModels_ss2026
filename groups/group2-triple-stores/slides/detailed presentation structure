@@ -1,0 +1,185 @@
+# Semantic Triple Stores / RDF + SPARQL – Zusammengeführte Gliederung
+
+## 1. Motivation (ca. 10 Minuten)
+
+### Pflichtinhalte
+- **Problemstellung**
+  - Klassische relationale Datenbanken sind für stark vernetzte, semantische Daten ungeeignet
+  - Starre Schemata vs. flexible Wissensrepräsentation
+  - Komplexe Beziehungen sind nur über viele Joins abbildbar und schwer wartbar
+- **Grundidee von RDF**
+  - Daten als **Subjekt–Prädikat–Objekt (Triple)** statt Tabellen
+  - Fokus auf **Bedeutung (Semantik)** statt nur Struktur
+- **Vorteile von Triple Stores**
+  - Natürliches Modell für vernetzte Daten
+  - Geeignet für Wissensrepräsentation, semantische Suche und Integration verteilter Datenquellen
+- **Relevanz für moderne Systeme**
+  - Wissensgraphen für Explainability
+  - Nutzung in RAG-Pipelines und semantischer Suche
+  - Unterstützung inferenzfähiger Anwendungen
+- **Typische Anwendungsfälle**
+  - Knowledge Graphs (z. B. DBpedia)
+  - Linked Data / Web of Data
+  - Integration heterogener Datenquellen über URIs
+
+### Nice-to-have
+- Reales Beispiel (z. B. Google Knowledge Graph)
+- Beispiel einer komplexen Anfrage (SQL vs. SPARQL)
+- Motivation durch offene SPARQL-Endpunkte
+- Kurze Abgrenzung zu Property Graphs (nur anteasern)
+
+---
+
+## 2. Conceptual Model (ca. 15 Minuten)
+
+### Pflichtinhalte
+- **RDF-Grundstruktur**
+  - Triple: Subjekt – Prädikat – Objekt
+  - Darstellung als gerichteter Graph
+  - Subgraphen als Denkmodell statt Tabellen
+- **RDF-Komponenten**
+  - URIs/IRIs zur eindeutigen Identifikation
+  - Literale (Strings, Zahlen, datatypes)
+  - Blank Nodes
+- **RDF Graph vs. RDF Dataset**
+  - Default Graph
+  - Benannte Graphen (Named Graphs)
+- **Ontologien und Vokabulare**
+  - RDF Schema (RDFS): Klassen, Properties, Domain, Range
+  - OWL für erweiterte semantische Modellierung
+  - Bedeutung kontrollierter Vokabulare für Konsistenz
+- **Semantik & Bedeutung**
+  - Maschinenlesbare Bedeutung durch standardisierte Prädikate
+  - Grundlage für Inferenz (Ableitung neuer Aussagen)
+- **Unterschied zu Property Graphs**
+  - RDF: standardisiert, interoperabel, formal
+  - Property Graph: flexibler, aber weniger standardisiert
+
+### Nice-to-have
+- Turtle-Syntax Beispiel
+- Visualisierung eines kleinen RDF-Graphs (3–5 Tripel)
+- Intuitive Erklärung von Inferenz
+
+---
+
+## 3. Data Structure (ca. 15 Minuten)
+
+### Pflichtinhalte
+- **Speicherung von RDF-Daten**
+  - Triple-basierte Speicherung (Triple Table)
+  - RDF als Triple-Set oder RDF Dataset
+- **Physische Organisation**
+  - Indizes (SPO, POS, etc.) zur Performanzoptimierung
+- **Rolle von URIs**
+  - Eindeutige Referenzierung über Datenquellen hinweg
+  - Grundlage für Linked Data
+- **Schema-Flexibilität**
+  - Kein fixes Schema notwendig
+  - Erweiterbarkeit durch Hinzufügen neuer Tripel
+- **Datenintegration**
+  - Zusammenführung heterogener Datenquellen über URIs
+  - Beispiel: Wissensbasen wie DBpedia
+- **Semantische Struktur**
+  - Beziehungen werden explizit als Kanten modelliert
+
+### Nice-to-have
+- Named Graphs für Kontext/Quellen
+- Beispiel: Eine Ressource mit Eigenschaften aus mehreren Quellen
+- Kurze Erwähnung konkreter Stores (z. B. TDB)
+
+---
+
+## 4. Query Model (ca. 15 Minuten)
+
+### Pflichtinhalte
+- **Einführung in SPARQL**
+  - W3C-Standard für RDF-Abfragen und -Manipulation
+  - Grundprinzip: **Subgraph / Pattern Matching**
+- **Grundstruktur von Queries**
+  - SELECT, WHERE
+  - Triple Patterns mit Variablen (?x, ?y)
+- **Query-Typen**
+  - SELECT (tabellarische Ergebnisse)
+  - CONSTRUCT (RDF-Graph als Ergebnis)
+  - ASK (Ja/Nein)
+  - DESCRIBE (ressourcenbasierte Beschreibung)
+- **Wichtige Features**
+  - FILTER
+  - OPTIONAL
+  - UNION
+  - Aggregationen (COUNT etc.)
+  - Subqueries
+  - Property Paths
+- **Erweiterte Konzepte**
+  - Federated Queries (über mehrere Endpunkte)
+  - Entailment-Regimes (RDFS, OWL)
+- **Unterschied zu SQL**
+  - Graph Pattern Matching vs. Join-basierte Tabellenabfragen
+  - Ergebnisse: Graph oder Tabelle möglich
+
+### Nice-to-have
+- Live-Beispiel (z. B. Universitäten in Deutschland)
+- Ausgabeformate (JSON, CSV, TSV)
+
+---
+
+## 5. Architecture Overview (ca. 15 Minuten)
+
+### Pflichtinhalte
+- **Aufbau eines Triple Stores**
+  - RDF-Datenhaltung
+  - Indexierung
+  - SPARQL Query Engine
+  - Optional: Reasoner/Inferenzschicht
+- **SPARQL Endpoints**
+  - Zugriff über standardisierte Query-Schnittstelle
+  - Ermöglichen verteilte Datenabfragen
+- **Deployment-Modelle**
+  - Single Node vs. verteilte Systeme
+- **Reasoning / Inferenz**
+  - Ableitung neuer Fakten aus bestehenden Tripeln
+  - Nutzung von RDFS/OWL
+- **Skalierung & Performance**
+  - Indexbasierte Optimierung
+  - Herausforderungen bei großen Knowledge Graphs
+- **Tools / Systeme**
+  - Apache Jena (TDB) + Fuseki
+  - Alternativen (z. B. GraphDB, Oxigraph)
+
+### Nice-to-have
+- Architekturdiagramm
+- Cloud Triple Stores
+- Query-Optimierung, Caching
+
+---
+
+## 6. Comparison to Relational Databases (ca. 10 Minuten)
+
+### Pflichtinhalte
+- **Datenmodell**
+  - Relational: Tabellen
+  - RDF: Graph / Triples
+- **Schema**
+  - Relational: fest definiert
+  - RDF: flexibel / schema-light
+- **Abfragen**
+  - SQL: Joins
+  - SPARQL: Graph Pattern Matching
+- **Flexibilität**
+  - RDF besser für heterogene, sich entwickelnde Daten
+- **Skalierung & Performance**
+  - Relational: stark bei strukturierten, transaktionalen Daten
+  - RDF: stark bei komplexen Beziehungen
+- **Use Cases**
+  - RDF: Knowledge Graphs, semantische Integration
+  - Relational: klassische Geschäftsanwendungen
+- **Ergebnisse**
+  - SQL: tabellarisch
+  - SPARQL: tabellarisch oder Graph
+
+### Nice-to-have
+- Vergleichstabelle für Folien
+- Beispiel einer netzwerkartigen Domäne
+- Trade-off:
+  - Mehr Flexibilität vs. höherer Modellierungsaufwand
+- Kombination beider Ansätze in modernen Architekturen
