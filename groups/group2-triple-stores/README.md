@@ -2,7 +2,7 @@
 
 ## Group Members
 
-- Vincent Lahm
+- Vinzent Lahm
 - Roman Lahm
 
 ## Overview
