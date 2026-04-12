@@ -1,0 +1,308 @@
+
+# Semantic Triple Stores / RDF + SPARQL – Inhaltliche Grundlage
+
+Roter Faden: **"Wissen vernetzen — von isolierten Fakten zur globalen Wissensstruktur"**
+
+---
+
+## 1. Motivation (10 min)
+
+### Pflichtinhalte
+- **Problemstellung**
+  - Relationale DBs können Bedeutung nicht modellieren — starres Schema, semantisch blind
+  - Komplexe Beziehungen nur über viele Joins abbildbar
+  - Gleiche Entität, verschiedene Namen → kein eindeutiger Bezeichner
+- **Grundidee RDF als Lösung**
+  - Daten als Triple (S–P–O) statt Tabellen
+  - Fokus auf Bedeutung (Semantik) statt nur Struktur
+- **AI-Relevanz**
+  - Knowledge Graphs für Explainability
+  - Nutzung in RAG-Pipelines und semantischer Suche
+  - Inferenzfähige Anwendungen
+
+### Einstiegsfrage ans Publikum
+> "Wie würdet ihr in SQL speichern, dass Stuttgart in Baden-Württemberg liegt,
+> BW in Deutschland liegt, und Stuttgart damit automatisch in Deutschland liegt?"
+→ Führt direkt zur Motivation für Triplestores.
+
+### Nice-to-have
+- Reales Beispiel: Google Knowledge Graph, DBpedia
+- Kurze Abgrenzung zu Property Graphs (nur anteasern, kommt in Slot 6)
+
+### Entschieden
+- URI-Zugänglichkeit als Thema kommt in Slot 2, nicht hier
+
+---
+
+## 2. Conceptual Model (15 min)
+
+### Pflichtinhalte
+- **RDF-Grundstruktur**
+  - Triple: Subjekt – Prädikat – Objekt
+  - Darstellung als gerichteter Graph
+- **RDF-Komponenten**
+  - URIs/IRIs: globale, eindeutige Namen für Konzepte
+  - Literale: konkrete Werte (Strings, Zahlen)
+  - Blank Nodes (kurz erwähnen)
+- **Warum URIs statt Text?**
+  - "Stuttgart" als String ist mehrdeutig (Stadt, Nachname, String im Dokument)
+  - `http://dbpedia.org/resource/Stuttgart` = weltweit eindeutig, null Ambiguität
+  - Analogie: Unterschied zwischen "ruf Müller an" vs. "+49 711 123456"
+
+### Durchgehendes Beispiel etablieren (zieht sich durch alle Slots)
+```
+dbr:Stuttgart    dbo:locatedIn      dbr:Baden-Württemberg .
+dbr:BW           dbo:locatedIn      dbr:Germany .
+dbr:UniStuttgart rdf:type           dbo:University .
+dbr:UniStuttgart dbo:location       dbr:Stuttgart .
+```
+
+### Nice-to-have
+- Turtle-Syntax Snippet zeigen
+- Visualisierung kleiner RDF-Graph (3–5 Triples als Diagramm)
+
+### Entschieden
+- RDF Schema / OWL / Ontologien kommen NICHT hier — Slot 3
+- Slot 2 bleibt rein strukturell
+
+---
+
+## 3. Data Structure (15 min)
+
+### Pflichtinhalte
+- **RDFS: Klassen und Eigenschaften**
+  - `rdfs:Class`, `rdfs:subClassOf`, `rdfs:domain`, `rdfs:range`
+  - Beispiel: `Professor rdfs:subClassOf Person`
+- **Inferencing: der Kern-Unterschied zu Graph DBs**
+  - Explizit gespeichertes Wissen vs. implizit abgeleitetes Wissen
+  - Beispiel: Steht drin → `Stuttgart locatedIn BW` und `BW locatedIn Germany`
+    Ontologie-Regel → "locatedIn ist transitiv"
+    Ergebnis automatisch → `Stuttgart locatedIn Germany` (ohne expliziten Eintrag)
+- **Schema-Flexibilität**
+  - Kein fixes Schema nötig
+  - Neue Triples einfach hinzufügen, nichts bricht
+  - Kontrast zu SQL: ALTER TABLE vs. einfach neues Triple einhängen
+
+### Aha-Moment hier
+> Ohne Inferencing: Frage "Alle Personen in Deutschland" → findet keine Professoren
+> Mit Inferencing (Professor ⊆ Person): → Professoren tauchen automatisch auf
+→ Das ist der zentrale Unterschied zu SQL und Graph DB
+
+### Nice-to-have
+- Named Graphs: 1 Slide optional — Kontext/Quelle für Teilmengen von Triples
+- OWL nur erwähnen: mächtigere Regeln als RDFS, aber deutlich komplexer
+
+### Entschieden
+- Physische Struktur (SPO-Indizes) kommt in Slot 5, nicht hier — hier nur logisch
+- Named Graphs: rein, aber als optionaler Bonus-Slide je nach Zeit
+
+---
+
+## 4. Query Model (15 min)
+
+### Pflichtinhalte
+- **SPARQL-Paradigma: Pattern Matching**
+  - Kein Tabellen-Join — du beschreibst ein Triple-Muster mit Lücken
+  - Die Lücken sind Variablen (`?x`, `?baum`, egal wie sie heißen)
+- **Grundaufbau**
+  - `PREFIX`, `SELECT`, `WHERE { Triple-Muster }`
+  - Variable-Name hat null Bedeutung für den Store — nur Platzhalter
+- **Stufenweise Komplexität**
+
+  Stufe 1 — 1 Variable:
+  ```sparql
+  SELECT ?population
+  WHERE {
+    dbr:Stuttgart  dbo:populationTotal  ?population .
+  }
+  ```
+
+  Stufe 2 — 2 Bedingungen (beide müssen erfüllt sein):
+  ```sparql
+  SELECT (COUNT(?student) AS ?anzahl)
+  WHERE {
+    ?student  dbo:university  dbr:University_of_Stuttgart .
+    ?student  rdf:type        dbo:Student .
+  }
+  ```
+  → Ohne `rdf:type dbo:Student` würden auch Professoren gezählt — Variable-Name reicht nicht!
+
+  Stufe 3 — Aggregation + Filter:
+  ```sparql
+  SELECT ?city (COUNT(?uni) AS ?anzahl)
+  WHERE {
+    ?uni  rdf:type     dbo:University .
+    ?uni  dbo:location ?city .
+  }
+  GROUP BY ?city
+  ORDER BY DESC(?anzahl)
+  ```
+
+- **Weitere Features** (kurz vorstellen)
+  - `FILTER`: Bedingungen auf Werte
+  - `OPTIONAL`: optionale Triples (wie LEFT JOIN)
+  - `UNION`: Alternative Muster
+  - Federated Queries: gleichzeitig mehrere SPARQL-Endpunkte abfragen
+
+- **Vergleich zu SQL**
+
+  | | SQL | SPARQL |
+  |---|---|---|
+  | Denkmodell | Tabellen joinen | Muster in Graph matchen |
+  | Schema | fest vorgegeben | flexibel |
+  | Joins | explizite JOIN-Klauseln | mehrere Triple-Patterns |
+  | Aggregation | GROUP BY, COUNT | identisch |
+
+### Nice-to-have
+- CONSTRUCT / ASK / DESCRIBE kurz erwähnen (andere Query-Typen)
+- Ausgabeformate: JSON, CSV, TSV
+
+### Entschieden
+- Dieser Slot ist durch Session gut durchdrungen — Uni-Stuttgart-Beispiel direkt nutzen
+
+---
+
+## 5. Architecture Overview (15 min)
+
+### Pflichtinhalte
+- **3 Speicherarchitekturen**
+  - In-Memory: Triples im RAM — schnell, nicht persistent
+  - Native Store: persistente Speicherung als Triplestore (z. B. Jena TDB)
+  - Non-Native Store: persistente Speicherung über ein klassisches RDBMS
+- **Physische Organisation: SPO-Indizes**
+  - Triple Table mit 6 Indizes: SPO, SOP, PSO, POS, OSP, OPS
+  - Je nach Query-Muster wird der passende Index gewählt → Performance
+- **Reasoning-Architektur**
+  - Materialization (Forward Chaining): Regeln beim Laden anwenden, abgeleitete Triples speichern → schnelle Queries, viel Speicher
+  - Query-Time (Backward Chaining): Regeln erst bei Abfrage anwenden → weniger Speicher, langsamere Queries
+- **Tools**
+  - Apache Jena Fuseki: Java, weit verbreitet, gute SPARQL-UI
+  - Oxigraph: Rust-basiert, kein JVM, leichtgewichtig → für Demo empfohlen
+  - GraphDB: Feature-reich, gute Visualisierung
+
+### Nice-to-have
+- Architekturdiagramm: Client → SPARQL Endpoint → Query Engine → Reasoner → Triple Store
+- Cloud Triple Stores kurz erwähnen
+
+### Entschieden
+- Deployment: kurz rein. Single-Node für Demo, verteilte Systeme nur 1 Satz
+- SPO-Indizes hier, nicht in Slot 3
+
+---
+
+## 6. Comparison to Relational & Graph DB (10 min)
+
+### Pflichtinhalte
+- **Vergleichstabelle**
+
+  | Feature | RDF Triplestore | Graph DB (Property Graph) | Relational |
+  |---|---|---|---|
+  | Datenmodell | Triples (S–P–O) | Nodes + Edges + Properties | Tabellen |
+  | Schema | flexibel | flexibel | starr |
+  | Abfragesprache | SPARQL (W3C-Standard) | Cypher (proprietär) | SQL |
+  | Semantik / Inferenz | stark (RDFS, OWL) | kaum | keine |
+  | Standardisierung | hoch (W3C) | mittel | hoch |
+  | Traversal-Performance | mittel | stark | schwach |
+  | Globale Verlinkung | ja (URIs) | nein | nein |
+
+- **Wann Triplestore, wann nicht**
+  - ✓ Richtig für: Knowledge Graphs, Linked Data, heterogene Quellen, Inferencing nötig
+  - ✗ Falsch für: High-performance Traversal (→ Neo4j), transaktionale Geschäftsdaten (→ SQL)
+
+### Klärung offene Frage
+> Property Graph = Graph DB? → Ja.
+> "Property Graph" ist der Fachbegriff für das Modell, das Neo4j verwendet.
+> RDF und Property Graph sind beide Graphen, aber fundamental verschieden:
+> RDF = standardisiert, global, inferenzfähig / Property Graph = flexibel, schnell, proprietär
+
+---
+
+## 7. Practical Demo (30 min)
+
+### Setup
+- Tool: Oxigraph (empfohlen, kein JVM, 1 Binary)
+  ```bash
+  docker run -p 7878:7878 oxigraph/oxigraph
+  ```
+- Alternativ: Apache Jena Fuseki per Docker
+
+### Dataset: Mini-Ontologie Universitäten (Turtle-Format)
+```turtle
+@prefix dbr: <http://dbpedia.org/resource/> .
+@prefix dbo: <http://dbpedia.org/ontology/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# Klassen-Hierarchie (Ontologie)
+dbo:Professor  rdfs:subClassOf  dbo:Person .
+dbo:Student    rdfs:subClassOf  dbo:Person .
+
+# Daten
+dbr:UniStuttgart   rdf:type          dbo:University .
+dbr:UniStuttgart   dbo:location      dbr:Stuttgart .
+dbr:UniStuttgart   dbo:country       dbr:Germany .
+
+dbr:Alice          rdf:type          dbo:Professor .
+dbr:Alice          dbo:university    dbr:UniStuttgart .
+
+dbr:Bob            rdf:type          dbo:Student .
+dbr:Bob            dbo:university    dbr:UniStuttgart .
+```
+
+### Demo-Ablauf
+1. Daten laden
+2. Einfache Query: Wer ist an der Uni Stuttgart?
+3. Komplexe Query: Alle Personen in Deutschland
+4. Reasoning einschalten → Professor und Student tauchen als Person auf
+5. Federated Query optional: live gegen DBpedia SPARQL-Endpoint
+
+---
+
+## 8. Interactive Activity (20 min)
+
+### Live Query Challenge — 3 Stufen
+
+**Stufe 1** (einfach — 1 Variable):
+> "Finde alle Universitäten in Deutschland"
+
+**Stufe 2** (mittel — 2 Bedingungen):
+> "Finde alle Studenten an der Uni Stuttgart"
+→ Falle: ohne `rdf:type dbo:Student` kommen auch Professoren rein
+
+**Stufe 3** (Aha-Moment — mit vs. ohne Inferencing):
+> "Finde alle Personen an der Uni Stuttgart"
+- Ohne Reasoning: nur explizit als `dbo:Person` eingetragene → leer
+- Mit Reasoning (Professor ⊆ Person, Student ⊆ Person): → Alice und Bob
+
+### Bonusaufgabe (wer fertig ist)
+> Stelle dem Store eine eigene Frage — schreib das Triple-Muster selbst.
+
+---
+
+## 9. Discussion (10 min)
+
+### Leitfragen
+- Wann ist RDF Overkill? (Antwort: immer wenn kein Inferencing und keine Verlinkung nötig)
+- RDF vs. Vector DB für RAG — was würdet ihr wählen?
+- Warum ist die Industrie-Adoption außerhalb des Semantic Web gering?
+- Brücke zur nächsten Gruppe: Was macht Vector DB anders/besser für Ähnlichkeitssuche?
+
+---
+
+## Offene Fragen (geklärt)
+
+| Frage | Entscheidung |
+|---|---|
+| Property Graph = Graph DB? | Ja — Fachbegriff für Neo4j-Modell. In Slot 6 explizit klären. |
+| RDF Schema / OWL wo? | Slot 3. Nicht Slot 2. OWL nur erwähnen. |
+| Named Graphs rein? | Ja, 1 optionaler Slide in Slot 3. |
+| Reasoning wann einführen? | Konzept in Slot 3, technische Tiefe in Slot 5. |
+| Physische vs. semantische Struktur? | Semantisch Slot 3, SPO-Indizes Slot 5. |
+| Deployment ausführlich? | Nein — Single-Node für Demo, verteilte Systeme 1 Satz. |
+
+## Noch offen / nächste Schritte
+
+- [ ] Demo-Setup lokal testen (Oxigraph oder Jena Fuseki)
+- [ ] Turtle-Dataset finalisieren und Queries durchspielen
+- [ ] Inferencing live testen: Reasoning an/aus, Unterschied dokumentieren
+- [ ] Slides erstellen auf Basis dieser Grundlage
+- [ ] Interaktive Aufgaben mit Musterlösungen ausarbeiten
