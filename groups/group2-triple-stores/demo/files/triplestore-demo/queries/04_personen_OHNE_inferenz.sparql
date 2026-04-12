@@ -1,0 +1,19 @@
+# QUERY 4 – Alle Personen ... OHNE Inferencing
+#
+# Erwartet: Alice, Bob, Carla, David, Prof. Müller, Prof. Schneider, Prof. Weber
+# Tatsächlich: 0 Ergebnisse!
+#
+# Warum? Niemand im Datensatz ist explizit als uni:Person eingetragen.
+# Alice ist uni:Student, Bob ist uni:Student, Prof. Müller ist uni:Professor.
+# Der Triplestore findet keine direkten rdf:type uni:Person Triples.
+#
+# → Das ist der Moment, der Inferencing motiviert.
+
+PREFIX uni:  <http://example.org/uni/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?person ?name
+WHERE {
+    ?person a        uni:Person .
+    ?person rdfs:label ?name .
+}

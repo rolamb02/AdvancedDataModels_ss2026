@@ -1,0 +1,12 @@
+services:
+  oxigraph:
+    image: oxigraph/oxigraph:latest
+    container_name: triplestore-demo
+    ports:
+      - "7878:7878"
+    command: serve --location /data --bind 0.0.0.0:7878
+    volumes:
+      - oxigraph_data:/data
+
+volumes:
+  oxigraph_data:

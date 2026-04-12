@@ -1,0 +1,164 @@
+# =============================================================
+# DEMO-DATENSATZ: Deutsche Universitäten
+# Triplestore-Vorlesung – Gruppe 2 (RDF + SPARQL)
+#
+# Struktur:
+#   - Ontologie: Klassen-Hierarchie (Person → AcademicPerson → Professor/Student)
+#   - Instanzen: 4 Städte, 4 Universitäten, 3 Professoren, 4 Studenten
+#
+# Dieses File zeigt den Kern-Unterschied zu SQL:
+#   kein festes Schema – einfach Triples hinzufügen
+# =============================================================
+
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix uni:  <http://example.org/uni/> .
+
+# =============================================================
+# ONTOLOGIE – Klassen-Hierarchie
+# Das ist der Teil, der Inferencing ermöglicht.
+# Jeder Professor ist automatisch auch eine AcademicPerson und eine Person.
+# =============================================================
+
+uni:Person
+    a rdfs:Class ;
+    rdfs:label "Person"@de .
+
+uni:AcademicPerson
+    rdfs:subClassOf uni:Person ;
+    rdfs:label "Akademische Person"@de .
+
+uni:Professor
+    rdfs:subClassOf uni:AcademicPerson ;
+    rdfs:label "Professor"@de .
+
+uni:Student
+    rdfs:subClassOf uni:AcademicPerson ;
+    rdfs:label "Student"@de .
+
+uni:University
+    a rdfs:Class ;
+    rdfs:label "Universität"@de .
+
+uni:City
+    a rdfs:Class ;
+    rdfs:label "Stadt"@de .
+
+# =============================================================
+# STÄDTE
+# =============================================================
+
+uni:Stuttgart
+    a uni:City ;
+    rdfs:label "Stuttgart"@de ;
+    uni:bundesland "Baden-Württemberg" ;
+    uni:einwohner 635911 .
+
+uni:Karlsruhe
+    a uni:City ;
+    rdfs:label "Karlsruhe"@de ;
+    uni:bundesland "Baden-Württemberg" ;
+    uni:einwohner 308436 .
+
+uni:Muenchen
+    a uni:City ;
+    rdfs:label "München"@de ;
+    uni:bundesland "Bayern" ;
+    uni:einwohner 1484226 .
+
+uni:Berlin
+    a uni:City ;
+    rdfs:label "Berlin"@de ;
+    uni:bundesland "Berlin" ;
+    uni:einwohner 3645000 .
+
+# =============================================================
+# UNIVERSITÄTEN
+# =============================================================
+
+uni:UniStuttgart
+    a uni:University ;
+    rdfs:label "Universität Stuttgart"@de ;
+    uni:location uni:Stuttgart ;
+    uni:gruendungsjahr 1829 ;
+    uni:studentenanzahl 26000 .
+
+uni:KIT
+    a uni:University ;
+    rdfs:label "Karlsruher Institut für Technologie"@de ;
+    uni:location uni:Karlsruhe ;
+    uni:gruendungsjahr 1825 ;
+    uni:studentenanzahl 24000 .
+
+uni:TUMuenchen
+    a uni:University ;
+    rdfs:label "Technische Universität München"@de ;
+    uni:location uni:Muenchen ;
+    uni:gruendungsjahr 1868 ;
+    uni:studentenanzahl 50000 .
+
+uni:FUBerlin
+    a uni:University ;
+    rdfs:label "Freie Universität Berlin"@de ;
+    uni:location uni:Berlin ;
+    uni:gruendungsjahr 1948 ;
+    uni:studentenanzahl 35000 .
+
+# =============================================================
+# PROFESSOREN
+# Expliziter Typ: uni:Professor
+# NICHT explizit als uni:Person eingetragen → das ist der Witz!
+# =============================================================
+
+uni:ProfMueller
+    a uni:Professor ;
+    rdfs:label "Prof. Dr. Müller"@de ;
+    uni:worksAt uni:UniStuttgart ;
+    uni:fachgebiet "Informatik" .
+
+uni:ProfSchneider
+    a uni:Professor ;
+    rdfs:label "Prof. Dr. Schneider"@de ;
+    uni:worksAt uni:KIT ;
+    uni:fachgebiet "Maschinenbau" .
+
+uni:ProfWeber
+    a uni:Professor ;
+    rdfs:label "Prof. Dr. Weber"@de ;
+    uni:worksAt uni:TUMuenchen ;
+    uni:fachgebiet "Mathematik" .
+
+# =============================================================
+# STUDENTEN
+# Expliziter Typ: uni:Student
+# Ebenfalls NICHT als uni:Person eingetragen.
+# =============================================================
+
+uni:AliceSchmidt
+    a uni:Student ;
+    rdfs:label "Alice Schmidt"@de ;
+    uni:studiesAt uni:UniStuttgart ;
+    uni:studienfach "Informatik" ;
+    uni:semester 5 .
+
+uni:BobFischer
+    a uni:Student ;
+    rdfs:label "Bob Fischer"@de ;
+    uni:studiesAt uni:UniStuttgart ;
+    uni:studienfach "Elektrotechnik" ;
+    uni:semester 3 .
+
+uni:CarlaHoffmann
+    a uni:Student ;
+    rdfs:label "Carla Hoffmann"@de ;
+    uni:studiesAt uni:KIT ;
+    uni:studienfach "Maschinenbau" ;
+    uni:semester 7 .
+
+uni:DavidKoch
+    a uni:Student ;
+    rdfs:label "David Koch"@de ;
+    uni:studiesAt uni:TUMuenchen ;
+    uni:studienfach "Physik" ;
+    uni:semester 2 .

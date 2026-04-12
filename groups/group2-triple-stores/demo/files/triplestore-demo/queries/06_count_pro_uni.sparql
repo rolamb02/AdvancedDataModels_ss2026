@@ -1,0 +1,16 @@
+# QUERY 6 – Wie viele Personen pro Universität?
+# Zeigt: COUNT + GROUP BY (identisch zu SQL)
+# Nutzt Inferencing aus Query 5 weiter – ohne rdfs:subClassOf* wären es 0
+
+PREFIX uni:  <http://example.org/uni/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?uniname (COUNT(?person) AS ?personenanzahl)
+WHERE {
+    ?person a        ?typ .
+    ?typ    rdfs:subClassOf* uni:Person .
+    ?person (uni:studiesAt | uni:worksAt) ?u .
+    ?u      rdfs:label ?uniname .
+}
+GROUP BY ?uniname
+ORDER BY DESC(?personenanzahl)
