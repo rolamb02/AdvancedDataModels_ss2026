@@ -1,0 +1,33 @@
+## Motivation
+
+**Prio 1:**
+- Schwachstellen relationaler Datenbanken:
+  - Starre Schemata
+  - Keine Semantik
+  - Komplexe Beziehungen nur über viele Joins, schwer wartbar
+- Grundidee von RDF und warum es überlegen ist
+- Relevanz für AI Use Cases:
+  - Nutzung in RAG-Pipelines
+  - Semantische Suche
+
+
+
+
+-------------------------------------------------------------
+**Prio 2:**
+- Vorteile von Triple Stores:
+  - Natürliches Modell für vernetzte Daten
+  - Wissensrepräsentation und Integration verteilter Datenquellen
+- Wissensgraphen für Explainability
+- Unterstützung inferenzfähiger Anwendungen
+- Typische Anwendungsfälle:
+  - Knowledge Graphs
+  - Linked Data / Web of Data
+  - Integration heterogener Datenquellen über URIs
+
+**Prio 3:**
+- Reales Beispiel (z. B. Google Knowledge Graph)
+- Beispiel einer komplexen Anfrage (SQL vs. SPARQL)
+- Motivation durch offene SPARQL-Endpunkte
+- Kurze Abgrenzung zu Property Graphs (nur anteasern)
+
