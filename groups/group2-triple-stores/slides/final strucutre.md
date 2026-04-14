@@ -96,6 +96,27 @@ dbr:UniStuttgart dbo:location       dbr:Stuttgart .
 - Physische Struktur (SPO-Indizes) kommt in Slot 5, nicht hier — hier nur logisch
 - Named Graphs: rein, aber als optionaler Bonus-Slide je nach Zeit
 
+**Prio 1:**
+- Triple-basierte Speicherung
+- Schema-Flexibilität
+- Datenintegration über URIs
+
+**Prio 2:**
+- Speicherung als Triple Table / RDF Dataset
+- Rolle von URIs:
+  - Eindeutige Referenzierung
+  - Linked Data
+- Erweiterbarkeit durch neue Tripel
+- Zusammenführung heterogener Datenquellen
+- Semantische Struktur:
+  - Beziehungen als Kanten
+
+**Prio 3:**
+- Named Graphs für Kontext/Quellen
+- Beispiel: Eine Ressource mit Eigenschaften aus mehreren Quellen
+- Kurze Erwähnung konkreter Stores (z. B. TDB)
+
+
 ---
 
 ## 4. Query Model (15 min)
