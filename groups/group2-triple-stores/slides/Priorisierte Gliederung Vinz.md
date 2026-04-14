@@ -71,8 +71,6 @@
 
 **Prio 1:**
 - Triple-basierte Speicherung
-- Physische Organisation:
-  - Indizes (SPO, POS, …)
 - Schema-Flexibilität
 - Datenintegration über URIs
 
@@ -129,7 +127,7 @@
 **Prio 1:**
 - Aufbau eines Triple Stores:
   - RDF-Datenhaltung
-  - Indexierung
+- Indexierung = Physische Organisation:  Indizes (SPO, POS, …)?  
 - SPARQL-Endpunkte
 - Deployment:
   - Single vs. verteilte Systeme
