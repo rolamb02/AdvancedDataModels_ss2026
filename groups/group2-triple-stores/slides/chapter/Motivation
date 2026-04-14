@@ -1,0 +1,230 @@
+## Motivation
+
+**Prio 1:**
+- Schwachstellen relationaler Datenbanken:
+  - Starre Schemata
+  - Keine Semantik
+  - Komplexe Beziehungen nur über viele Joins, schwer wartbar
+- Grundidee von RDF und warum es überlegen ist
+- Relevanz für AI Use Cases:
+  - Nutzung in RAG-Pipelines
+  - Semantische Suche
+
+
+
+
+-------------------------------------------------------------
+**Prio 2:**
+- Vorteile von Triple Stores:
+  - Natürliches Modell für vernetzte Daten
+  - Wissensrepräsentation und Integration verteilter Datenquellen
+- Wissensgraphen für Explainability
+- Unterstützung inferenzfähiger Anwendungen
+- Typische Anwendungsfälle:
+  - Knowledge Graphs
+  - Linked Data / Web of Data
+  - Integration heterogener Datenquellen über URIs
+
+**Prio 3:**
+- Reales Beispiel (z. B. Google Knowledge Graph)
+- Beispiel einer komplexen Anfrage (SQL vs. SPARQL)
+- Motivation durch offene SPARQL-Endpunkte
+- Kurze Abgrenzung zu Property Graphs (nur anteasern)
+
+
+# Prio 1 Erklärung: 
+# Motivation – Semantic Triple Stores / RDF
+
+## Schwachstellen relationaler Datenbanken
+
+- **Starre Schemata**
+  - Tabellen haben eine feste Struktur (Schema), die im Voraus definiert werden muss  
+  - Änderungen (z. B. neues Attribut wie „Wohnort“) erfordern Schema-Anpassungen  
+  - Beispiel:
+    ```sql
+    Students(id, name, university)
+    ```
+    → Erweiterung:
+    ```sql
+    ALTER TABLE Students ADD COLUMN city;
+    ```
+    → führt zu vielen NULL-Werten:
+    | name  | university | city       |
+    |-------|------------|------------|
+    | Alice | KIT        | Karlsruhe  |
+    | Bob   | TUM        | NULL       |
+  - Probleme:
+    - unflexibel bei sich ändernden Daten
+    - hoher Wartungsaufwand
+    - ineffizient bei heterogenen Daten
+  - RDF:
+    ```
+    Alice —studiesAt→ KIT
+    Alice —livesIn→ Karlsruhe
+    Bob —studiesAt→ TUM
+    ```
+    → keine Schemaänderung nötig, nur neue Triples
+
+---
+
+- **Keine Semantik**
+  - SQL speichert Daten strukturiert, aber ohne Bedeutung  
+  - Beispiel:
+    ```sql
+    Employees(name, company)
+    ```
+    | name  | company |
+    |-------|---------|
+    | Alice | SAP     |
+  - Die Datenbank weiß nicht:
+    - dass Alice eine Person ist
+    - dass SAP eine Firma ist
+    - dass „company“ eine Beziehung beschreibt
+  - RDF:
+    ```
+    Alice rdf:type Person
+    SAP rdf:type Company
+    Alice worksAt SAP
+    ```
+  - Unterschied:
+    - SQL: Bedeutung liegt im Kopf des Entwicklers
+    - RDF: Bedeutung ist explizit im Datenmodell
+
+---
+
+- **Komplexe Beziehungen nur über viele Joins, schwer wartbar**
+  - Relationale Modellierung verteilt Beziehungen auf mehrere Tabellen:
+    - Person
+    - Job
+    - Company
+    - Location
+  - Query:
+    ```sql
+    SELECT p.name, c.name, l.city
+    FROM Person p
+    JOIN Job j ON p.id = j.person_id
+    JOIN Company c ON j.company_id = c.id
+    JOIN Location l ON c.location_id = l.id
+    WHERE p.name = 'Alice';
+    ```
+  - Probleme:
+    - viele JOINs nötig
+    - komplexe Queries
+    - schwer verständlich und wartbar
+    - ineffizient bei großen Daten
+  - RDF:
+    ```
+    Alice —worksAt→ SAP
+    SAP —locatedIn→ Walldorf
+    ```
+    SPARQL:
+    ```
+    ?person worksAt ?company .
+    ?company locatedIn ?city .
+    ```
+    → direkte Navigation im Graph
+
+---
+
+## Grundidee von RDF und warum es überlegen ist
+
+- Daten werden als Triples (Subject–Predicate–Object) gespeichert  
+- bilden einen gerichteten Graphen  
+
+### Vorteile:
+
+- **Flexibilität**
+  - kein festes Schema
+  - neue Informationen → neue Triples
+
+- **Beziehungen sind zentral**
+  - direkt als Kanten modelliert
+  - keine JOINs notwendig
+
+- **Semantik**
+  - durch Ontologien (Klassen, Regeln)
+  - Daten bekommen Bedeutung
+
+- **Globale Identität (URIs)**
+  - eindeutige Identifikation von Entitäten
+  - einfache Integration mehrerer Datenquellen
+
+---
+
+### Kerndifferenz SQL vs RDF
+
+> SQL speichert Daten – RDF modelliert Wissen.
+
+- SQL:
+  - Struktur + Daten
+  - keine inhärente Bedeutung
+
+- RDF:
+  - Struktur + Bedeutung + Beziehungen
+  - Grundlage für Reasoning und semantische Verarbeitung
+
+---
+
+## Relevanz für AI Use Cases
+
+- **Nutzung in RAG-Pipelines**
+  - Problem bei LLMs:
+    - Halluzinationen
+    - kein strukturiertes Wissen
+  - Lösung:
+    - Kombination mit Knowledge Graph (z. B. RDF)
+  - Beispiel:
+    ```
+    Alice —worksAt→ SAP
+    SAP —locatedIn→ Germany
+    ```
+  - Anfrage:
+    > „Wo arbeitet Alice?“
+  - Ablauf:
+    - SPARQL Query → strukturiertes Ergebnis
+    - Ergebnis → LLM
+  - Vorteile:
+    - präzise Antworten
+    - weniger Halluzinationen
+    - strukturierte Wissensbasis
+
+---
+
+- **Semantische Suche**
+  - Klassische Suche:
+    - Keyword-basiert
+  - Semantische Suche:
+    - versteht Bedeutung und Beziehungen
+  - Beispiel:
+    > „Professoren in Karlsruhe“
+  - RDF + Ontology:
+    - Professor ⊆ Person
+    - Karlsruhe = City
+  - Vorteil:
+    - Kontext wird verstanden
+    - bessere, genauere Ergebnisse
+
+---
+
+### Einsatzgebiete
+- Suchmaschinen (Knowledge Graphs)
+- Unternehmenssuche
+- Medizin / Bioinformatik
+- Empfehlungssysteme
+
+---
+
+## Zusammenfassung
+
+- Relationale Datenbanken:
+  - starre Struktur
+  - keine Semantik
+  - komplexe Beziehungen
+
+- RDF:
+  - flexibel
+  - semantisch
+  - graphbasiert
+
+→ ideal für Knowledge Graphs und moderne AI-Anwendungen
+
