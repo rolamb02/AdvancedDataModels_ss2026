@@ -1,0 +1,17 @@
+# QUERY 2 – Unis in Baden-Württemberg
+# Zeigt: mehrere Triple-Muster kombinieren (wie JOIN in SQL, aber ohne JOIN-Keyword)
+# ?u muss BEIDE Bedingungen gleichzeitig erfüllen
+
+PREFIX uni:  <http://example.org/uni/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?uniname ?stadtname
+WHERE {
+    ?u  a            uni:University .
+    ?u  rdfs:label   ?uniname .
+    ?u  uni:location ?stadt .
+    ?stadt rdfs:label    ?stadtname .
+    # Unicode escape keeps the query robust in Windows shells and editors
+    ?stadt uni:bundesland "Baden-W\u00FCrttemberg" .
+}
+ORDER BY ?uniname

@@ -1,0 +1,17 @@
+# QUERY 3 – Studenten an der Uni Stuttgart
+# Zeigt: Kombination aus Typ-Bedingung + konkreter URI als Filter
+# Wichtige Falle: ?s a uni:Student – ohne das würden auch Professoren erscheinen!
+# (Variablenname ?student hätte denselben Effekt NICHT – der Name ist nur für uns)
+
+PREFIX uni:  <http://example.org/uni/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?name ?fach ?semester
+WHERE {
+    ?s a             uni:Student .
+    ?s rdfs:label    ?name .
+    ?s uni:studiesAt uni:UniStuttgart .
+    ?s uni:studienfach ?fach .
+    ?s uni:semester  ?semester .
+}
+ORDER BY ?semester

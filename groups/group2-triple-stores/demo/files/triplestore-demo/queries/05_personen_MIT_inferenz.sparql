@@ -1,0 +1,27 @@
+# QUERY 5 – Alle Personen ... MIT Inferencing
+#
+# Lösung: SPARQL Property Path mit rdfs:subClassOf*
+# Das * bedeutet "null oder mehr Schritte entlang rdfs:subClassOf"
+#
+# Was passiert intern:
+#   uni:Student    rdfs:subClassOf uni:AcademicPerson
+#   uni:AcademicPerson rdfs:subClassOf uni:Person
+#   Also: uni:Student rdfs:subClassOf* uni:Person → TRUE (2 Schritte)
+#
+#   uni:Professor  rdfs:subClassOf uni:AcademicPerson
+#   uni:AcademicPerson rdfs:subClassOf uni:Person
+#   Also: uni:Professor rdfs:subClassOf* uni:Person → TRUE (2 Schritte)
+#
+# Ergebnis: Alle 7 Personen tauchen auf – ohne dass wir sie explizit
+# als uni:Person eingetragen haben!
+
+PREFIX uni:  <http://example.org/uni/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?person ?name ?typ
+WHERE {
+    ?person a        ?typ .
+    ?typ    rdfs:subClassOf* uni:Person .
+    ?person rdfs:label ?name .
+}
+ORDER BY ?typ ?name
