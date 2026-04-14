@@ -73,6 +73,7 @@
 - Triple-basierte Speicherung
 - Schema-Flexibilität
 - Datenintegration über URIs
+- Physische Organisation:  Indizes (SPO, POS, …)
 
 **Prio 2:**
 - Speicherung als Triple Table / RDF Dataset
