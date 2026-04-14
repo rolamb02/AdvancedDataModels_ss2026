@@ -153,6 +153,9 @@ HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
 # Treat all 2xx responses as success (e.g., 200 OK, 201 Created, 204 No Content)
 if [[ "$HTTP_CODE" =~ ^2[0-9][0-9]$ ]]; then
     echo -e "  ${GREEN}✓ Daten erfolgreich geladen (HTTP $HTTP_CODE)${NC}"
+    echo -e "  ${YELLOW}→ Endpoint: $ENDPOINT${NC}"
+    echo -e "  ${YELLOW}→ Daten: $DATA_DIR/universitaeten.ttl${NC}"
+    echo -e "  response: $HTTP_CODE${NC}"
 else
     echo -e "  ${RED}✗ Fehler beim Laden (HTTP $HTTP_CODE)${NC}"
     exit 1
