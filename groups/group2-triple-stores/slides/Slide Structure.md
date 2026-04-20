@@ -1,6 +1,8 @@
 
 # Sektion 3: Data Structure – Das Fundament der Vernetzung
 
+> Quellen- und Claim-Mapping fuer diese Sektion: [data-structure-quellen.md](data-structure-quellen.md)
+
 ## Folie 1: Triple-basierte Speicherung – Weg von der Tabelle
 **Kernbotschaft:** Triple-Stores speichern Fakten atomar und vermeiden das "NULL-Problem" relationaler Datenbanken.
 
@@ -33,11 +35,45 @@
 
 ---
 
+## Folie 3: Physische Speicherung I – Triple Table und Dictionary-Encoding
+**Kernbotschaft:** Triple Stores speichern intern nicht lange Strings, sondern kompakte IDs. Das reduziert Speicherbedarf und beschleunigt Vergleiche.
 
+*   **Triple Table auf Speicher-Ebene:**
+    *   Logisch sehen wir `Subjekt – Prädikat – Objekt`.
+    *   Physisch liegen meist 3 numerische IDs pro Triple vor (statt langer URI-Strings).
+*   **Dictionary-Encoding (ID-Mapping):**
+    *   Separate Struktur mappt `ID -> URI/Literal`.
+    *   Beispiel: `101 -> dbr:Stuttgart`, `502 -> dbo:location`.
+    *   Physisches Triple: `(601, 502, 101)` statt `dbr:Uni_Stuttgart dbo:location dbr:Stuttgart`.
+*   **Warum das relevant ist:**
+    *   Schnelle Vergleiche auf Integer-Ebene statt teurer String-Vergleiche.
+    *   Wiederholte URIs/Literale werden nur einmal im Dictionary gehalten.
+*   **Trade-off:**
+    *   Zusätzliche Dictionary-Verwaltung.
+    *   Dafür deutlich bessere Query-Performance bei großen Wissensgraphen.
 
 ---
 
-## Folie 3: Datenintegration über URIs – Die globale Identität
+## Folie 4: Physische Speicherung II – Index-Permutationen fuer SPARQL
+**Kernbotschaft:** Ein Triple Store braucht mehrere Index-Reihenfolgen (z. B. SPO, POS, OSP), damit unterschiedliche SPARQL-Muster ohne Full Scan laufen.
+
+*   **Index-Idee:**
+    *   Typische Permutationen: `SPO`, `SOP`, `PSO`, `POS`, `OSP`, `OPS`.
+    *   Jede Permutation beschleunigt ein anderes Muster von "bekannt" vs. "variable".
+*   **Konkrete Query-Muster (Universitaetsbeispiel):**
+    *   `dbr:Uni_Stuttgart ?p ?o` -> Start ueber bekanntes Subjekt (`SPO`/`SOP`).
+    *   `?s dbo:location dbr:Stuttgart` -> bekanntes Prädikat + Objekt (`POS` oder `OPS`).
+    *   `?s ?p dbr:Stuttgart` -> bekanntes Objekt (`OSP`/`OPS`).
+*   **Warum mehrere Indizes noetig sind:**
+    *   Ohne passende Reihenfolge muesste der Store viele Triples sequentiell pruefen.
+    *   Mit passendem Index sinkt die Suchflaeche drastisch.
+*   **Trade-off Speicher vs. Geschwindigkeit:**
+    *   Mehr Indexstrukturen bedeuten mehr Speicherverbrauch.
+    *   Dafuer stabile Antwortzeiten bei unterschiedlichen Anfrageformen.
+
+---
+
+## Folie 5: Datenintegration über URIs – Die globale Identität
 **Kernbotschaft:** URIs machen Ressourcen weltweit eindeutig und ermöglichen die nahtlose Datenintegration.
 
 *   **Vermeidung von Ambiguität:**
@@ -53,9 +89,13 @@
     *   DBpedia-Daten: `http://dbpedia.org/resource/Stuttgart` -> `Einwohner` -> `600.000`.
     *   **Ergebnis:** Automatische Verschmelzung beider Quellen über die identische URI.
 
+*   **Optional (Prio 3): Named Graphs fuer Kontext/Quellen**
+    *   Zusaetzliche Kontextgrenzen, um Datenherkunft (Provenienz) in Datasets abzubilden.
+    *   Gut fuer spaetere Quellenarbeit und Nachvollziehbarkeit im Demo-Storytelling.
+
 ---
 
-## Folie 4: Zusammenfassung – Von isolierten Fakten zur globalen Struktur
+## Folie 6: Zusammenfassung – Von isolierten Fakten zur globalen Struktur
 **Kernbotschaft (Roter Faden):** Die Kombination aus Triples, Flexibilität und URIs schafft eine skalierbare Wissensstruktur.
 
 *   **Wissen vernetzen:**

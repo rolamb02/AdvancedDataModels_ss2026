@@ -7,7 +7,8 @@
 # Benutzung:     bash run_demo.sh
 # =============================================================
 
-ENDPOINT="http://localhost:7878"
+ENDPOINT="${OXIGRAPH_ENDPOINT:-http://localhost:7878}"
+LAN_HOST="${OXIGRAPH_LAN_HOST:-}"
 QUERY_DIR="./queries"
 DATA_DIR="./data"
 
@@ -41,6 +42,18 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 BOLD='\033[1m'
 NC='\033[0m' # No Color
+
+print_access_hints() {
+    echo -e "${BLUE}[INFO] Access URLs${NC}"
+    echo "  Lokal (Presenter): $ENDPOINT"
+    if [ -n "$LAN_HOST" ]; then
+        echo "  LAN (Studierende): http://$LAN_HOST:7878"
+    else
+        echo "  LAN (Studierende): setze OXIGRAPH_LAN_HOST=<DEINE_IPV4>"
+        echo "  Beispiel: OXIGRAPH_LAN_HOST=192.168.178.35 bash run_demo.sh"
+    fi
+    echo ""
+}
 
 # Hilfsfunktion: auf Enter warten
 pause() {
@@ -124,6 +137,7 @@ echo -e "${BOLD}  TRIPLESTORE DEMO – RDF + SPARQL${NC}"
 echo -e "${BOLD}  Gruppe 2 | Universität Stuttgart${NC}"
 echo -e "${BOLD}=============================================================${NC}"
 echo ""
+print_access_hints
 
 # =============================================================
 echo -e "${BLUE}[SCHRITT 1] Verbindung zu Oxigraph prüfen${NC}"

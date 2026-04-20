@@ -1,4 +1,10 @@
-next task: 
-Ist query 7 nicht geschumelt, weil der Vorteil eigentlich ist, dass ein url aus lokal und global auf dasselbe Stuttgart zeigt und damit eben Infos verknüpft werden können? 
+**Volesung**
+- Queries fertig lesen, Fragen fertig schreiben und folienstruktur erstellen 
 
-und ist das die semantische info die eine triplestore im verlgeich zu SQL hat? 
+**Interaktion**
+- Remote Access  testen of url with 2nd device, siehe in readme Demo 
+- Further steps überlegen
+
+
+
+

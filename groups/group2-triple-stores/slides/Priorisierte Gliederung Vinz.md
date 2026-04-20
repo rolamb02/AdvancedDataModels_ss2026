@@ -2,6 +2,8 @@
 
 ## Motivation
 
+> Introduce the data model and explain why it was developed. Relate to AI use cases (e.g., graph models for recommendations).
+
 **Prio 1:**
 - Schwachstellen relationaler Datenbanken:
   - Starre Schemata
@@ -33,6 +35,8 @@
 ---
 
 ## Conceptual Model
+
+> Describe the core data structures (nodes/edges, triples, vectors, documents, key–value pairs, columns, data lake objects). Use diagrams and analogies.
 
 **Prio 1:**
 - RDF-Struktur und Komponenten:
@@ -69,6 +73,8 @@
 
 ## Data Structure
 
+> Show how data are stored physically and logically. Discuss schema flexibility or constraints.
+
 **Prio 1:**
 - Triple-basierte Speicherung
 - Schema-Flexibilität
@@ -94,6 +100,8 @@
 ---
 
 ## Query Model
+
+> Introduce the query language (Cypher, SPARQL, ANN API, MongoDB queries, Redis commands, CQL, DuckDB SQL). Explain how queries differ from SQL.
 
 **Prio 1:**
 - SPARQL:
@@ -124,6 +132,8 @@
 ---
 
 ## Architektur
+
+> Outline how the system is deployed (single node vs. distributed, replication, partitioning). Mention open-source tools and cloud options.
 
 **Prio 1:**
 - Aufbau eines Triple Stores:
@@ -157,6 +167,8 @@
 ---
 
 ## Comparison
+
+> Highlight differences in data model, schema flexibility, scalability and performance.
 
 **Prio 1:**
 - Modell:
