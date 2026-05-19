@@ -18,6 +18,30 @@ open http://localhost:7878
 bash run_demo.sh
 ```
 
+### Interaktive Live-Queries im gleichen WLAN/LAN
+
+Ziel: Studierende sollen auf dieselbe Oxigraph-Web-UI zugreifen können.
+
+1. Docker-Setup bleibt unverändert (Oxigraph bindet bereits auf `0.0.0.0:7878`).
+2. Auf Windows einmalig Port 7878 freigeben (PowerShell als Admin):
+
+```powershell
+New-NetFirewallRule -DisplayName "Oxigraph 7878" -Direction Inbound -LocalPort 7878 -Protocol TCP -Action Allow
+```
+
+3. Eigene IPv4-Adresse ermitteln (`ipconfig`) und an die Gruppe teilen:
+    - Web-UI: `http://<DEINE_IPV4>:7878`
+    - Query-Endpoint: `http://<DEINE_IPV4>:7878/query`
+4. Optional im Script LAN-Hinweis anzeigen:
+
+```bash
+OXIGRAPH_LAN_HOST=192.168.x.x bash run_demo.sh
+```
+
+**Read-only-Regel für die Übung (empfohlen):**
+- Nur `SELECT`-Queries in der Web-UI.
+- Keine `INSERT`/`DELETE`/`UPDATE` und keine Schreibzugriffe auf `/store`.
+
 ---
 
 ## Verzeichnisstruktur
@@ -421,18 +445,20 @@ Hier kann man gut zeigen, dass SPARQL nicht nur filtern kann, sondern auch aggre
 ### Query 7 – Federated Query (Optional)
 
 ```sparql
-SELECT ?uniname ?description
+SELECT ?uniname ?stadtname ?description
 WHERE {
     # Lokal: Unis in BW
     ?u a uni:University .
     ?u rdfs:label ?uniname .
     ?u uni:location ?stadt .
     ?stadt uni:bundesland "Baden-W\u00FCrttemberg" .
+    ?stadt rdfs:label ?stadtname .
+    ?stadt owl:sameAs ?dbCity .
 
-    # Von DBpedia: Beschreibung der Uni Stuttgart
+    # Von DBpedia: Beschreibung zur verlinkten Stadt-Ressource
     SERVICE <https://dbpedia.org/sparql> {
-        dbr:Stuttgart dbo:description ?description .
-        FILTER (lang(?description) = "en")
+        ?dbCity dbo:abstract ?description .
+        FILTER (lang(?description) = "de")
     }
 }
 ```
@@ -440,8 +466,10 @@ WHERE {
 **Was passiert:** `SERVICE` delegiert einen Teil der Query an den
 DBpedia-Endpunkt. Der lokale Store kombiniert beide Ergebnisse automatisch.
 
-Das funktioniert, weil beide denselben URI-Standard nutzen.
-`dbr:Stuttgart` ist in DBpedia die korrekte, case-sensitive Ressource für die Stadt Stuttgart. URIs sind immer exakt und unterscheiden Groß- und Kleinschreibung.
+Der entscheidende Linked-Data-Schritt ist `owl:sameAs`:
+Unsere lokale Ressource `uni:Stuttgart` ist explizit auf `dbr:Stuttgart` gemappt.
+Dadurch wird nicht "geschummelt" (hart codierter DBpedia-Knoten), sondern sauber
+über eine semantische Identitätsverknüpfung zwischen lokalem und globalem Wissen gejoint.
 
 **Erklärung für Publikum:** "Das ist die Stärke von Linked Data.
 Wir brauchen nicht alle Daten der Welt selbst zu speichern.
@@ -487,6 +515,8 @@ PREFIX dbo: <http://dbpedia.org/ontology/>
 - [ ] `docker-compose up -d` ausgeführt
 - [ ] `http://localhost:7878` öffnet sich im Browser
 - [ ] `bash run_demo.sh` einmal vollständig durchgetestet
+- [ ] Port 7878 in Windows-Firewall freigegeben (falls LAN-Interaktion geplant)
+- [ ] Zugriff von einem zweiten Gerät getestet (`http://<DEINE_IPV4>:7878`)
 - [ ] Fallback-Screenshot von Query 7 (DBpedia) gespeichert
 - [ ] Für Interaktive Übung: Query 4 und 5 als Aufgabe vorbereitet
 

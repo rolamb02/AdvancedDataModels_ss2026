@@ -1,9 +1,8 @@
-# Key-Value Stores
+# MemPalace
 
 ## Group Members
 
-- Ilyas Tachakor
-- Nick Albrecht
+- (Add your names here.)
 
 ## Overview
 

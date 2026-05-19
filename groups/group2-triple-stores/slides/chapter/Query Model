@@ -1,0 +1,469 @@
+## Query Model
+
+**Prio 1:**
+- SPARQL:
+  - Pattern Matching
+- Queries:
+  - Basics (SELECT, WHERE)
+  - FILTER / OPTIONAL
+  - Aggregationen
+- Federated Queries
+- Unterschied zu SQL
+
+**Prio 2:**
+- SPARQL als W3C-Standard
+- Triple Patterns mit Variablen
+- Query-Typen:
+  - SELECT, CONSTRUCT, ASK, DESCRIBE
+- Weitere Features:
+  - UNION
+  - Subqueries
+  - Property Paths
+- Entailment-Regimes (RDFS, OWL)
+
+**Prio 3:**
+- Live-Beispiel (Universitaets-Datensatz)
+- Ausgabeformate (JSON, CSV, TSV)
+
+-------------------------------------------------------------
+
+# Query Model - Lernunterlage (ausformuliert)
+
+## 0) Zielbild dieses Kapitels
+
+Dieses Kapitel zeigt, wie aus einem RDF-Graphen beantwortbares Wissen wird.
+Der rote Faden bleibt:
+
+"Wissen vernetzen: von isolierten Fakten zur globalen Wissensstruktur."
+
+In SQL fragst du primar Tabellen ab. In SPARQL beschreibst du Muster, die im Graphen gefunden werden sollen.
+Die Grundidee ist nicht "mehr Features als SQL", sondern ein anderes Denkmodell:
+
+- SQL fragt Zeilen in Relationen ab.
+- SPARQL matcht Triple-Muster im Wissensgraphen.
+
+Didaktische Leitfrage fur den Vortrag:
+"Welche Information ist explizit gespeichert, und welche kann aus Semantik/Inferenz erschlossen werden?"
+
+## 1) Prio 1 - Das operative Kernwissen
+
+### 1.1 SPARQL als Pattern Matching
+
+SPARQL arbeitet mit Triple-Patterns. Ein Pattern sieht aus wie ein RDF-Tripel, enthalt aber Variablen.
+Variablen beginnen mit `?`.
+
+Beispiel-Denken:
+- `?u a uni:University .` bedeutet: "Finde alle Ressourcen, die vom Typ University sind."
+- `?u rdfs:label ?name .` bedeutet: "Hole zum selben ?u den Label-Wert."
+
+Wichtig:
+Der Variablenname ist semantisch egal (`?u`, `?x`, `?baum` liefern dasselbe, solange die Struktur gleich bleibt).
+Die Bedeutung entsteht uber Pradikate wie `rdf:type`, `uni:studiesAt`, `uni:worksAt`.
+
+### 1.2 Basics: SELECT + WHERE
+
+`SELECT` bestimmt, welche Variablen im Ergebnis erscheinen.
+`WHERE` enthalt das Muster, das gematcht werden muss.
+
+Beispiel (aus eurer Query 1):
+
+```sparql
+PREFIX uni:  <http://example.org/uni/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?u ?name
+WHERE {
+    ?u a uni:University .
+    ?u rdfs:label ?name .
+}
+ORDER BY ?name
+```
+
+Warum didaktisch gut als Einstieg:
+- Einfache Typabfrage (`rdf:type` uber `a`)
+- Danach direkte Attributausgabe (`rdfs:label`)
+- Zeigt sofort, wie mehrere Triple-Patterns uber dieselbe Variable verknupft sind
+
+Typischer Denkfehler:
+"Das ist doch nur SELECT * FROM University".
+Nein: Es gibt keine Tabelle `University`, sondern verteilte Fakten (Triples), die uber Muster gebunden werden.
+
+### 1.3 Mehrere Muster kombinieren (ohne JOIN-Keyword)
+
+Eure Query 2:
+
+```sparql
+PREFIX uni:  <http://example.org/uni/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?uniname ?stadtname
+WHERE {
+    ?u  a            uni:University .
+    ?u  rdfs:label   ?uniname .
+    ?u  uni:location ?stadt .
+    ?stadt rdfs:label    ?stadtname .
+    ?stadt uni:bundesland "Baden-W\u00FCrttemberg" .
+}
+ORDER BY ?uniname
+```
+
+Was hier passiert:
+- `?u` und `?stadt` sind Bindungsvariablen zwischen mehreren Mustern.
+- Alle Muster mussen gleichzeitig erfullt sein.
+
+SQL-Abgrenzung:
+- In SQL ware das ein Join-Szenario.
+- In SPARQL ist Join-Logik implizit durch geteilte Variablen im Pattern.
+
+Praxis-Hinweis fur euer Setup:
+Die Unicode-Schreibweise `Baden-W\u00FCrttemberg` ist robust fur Windows/Git-Bash/Editor-Encoding.
+
+### 1.4 FILTER und OPTIONAL
+
+`FILTER` schrankt vorhandene Bindungen ein.
+`OPTIONAL` erweitert Ergebnisse um optionale Informationen, ohne Treffer zu verlieren.
+
+Beispiel FILTER:
+
+```sparql
+SELECT ?name ?semester
+WHERE {
+  ?s a uni:Student .
+  ?s rdfs:label ?name .
+  ?s uni:semester ?semester .
+  FILTER(?semester >= 5)
+}
+```
+
+Beispiel OPTIONAL:
+
+```sparql
+SELECT ?name ?fachgebiet
+WHERE {
+  ?p a uni:Professor .
+  ?p rdfs:label ?name .
+  OPTIONAL { ?p uni:fachgebiet ?fachgebiet . }
+}
+```
+
+SQL-Abgrenzung:
+- `OPTIONAL` entspricht konzeptionell einem LEFT JOIN.
+- Unterschied in der Denke: Im Graphen sind fehlende Fakten normal (Open-World-Perspektive), nicht automatisch "Fehler im Datensatz".
+
+Typischer Fehler:
+OPTIONAL-Muster als Pflichtwissen interpretieren und danach uber leere Felder wundern.
+
+### 1.5 Aggregationen
+
+Eure Query 6 zeigt Aggregation mit Inferenzbezug:
+
+```sparql
+PREFIX uni:  <http://example.org/uni/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?uniname (COUNT(?person) AS ?personenanzahl)
+WHERE {
+    ?person a        ?typ .
+    ?typ    rdfs:subClassOf* uni:Person .
+    ?person (uni:studiesAt | uni:worksAt) ?u .
+    ?u      rdfs:label ?uniname .
+}
+GROUP BY ?uniname
+ORDER BY DESC(?personenanzahl)
+```
+
+Lernpunkte:
+- `COUNT`, `GROUP BY`, `ORDER BY` sind SQL-ahnlich.
+- Die Treffermenge entsteht aber durch Graph-Pattern-Matching.
+- `(uni:studiesAt | uni:worksAt)` zeigt Alternativen uber Property Path Union.
+
+Typischer Fehler:
+Variablen im SELECT zu nutzen, die nicht aggregiert oder gruppiert sind.
+
+### 1.6 Federated Query (Linked Data in der Praxis)
+
+Eure Query 7 (optional):
+
+```sparql
+PREFIX uni:    <http://example.org/uni/>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:    <http://www.w3.org/2002/07/owl#>
+PREFIX dbo:    <http://dbpedia.org/ontology/>
+
+SELECT ?uniname ?stadtname ?description
+WHERE {
+    ?u  a uni:University .
+    ?u  rdfs:label ?uniname .
+    ?u  uni:location ?stadt .
+    ?stadt uni:bundesland "Baden-W\u00FCrttemberg" .
+    ?stadt rdfs:label ?stadtname .
+    ?stadt owl:sameAs ?dbCity .
+
+    SERVICE <https://dbpedia.org/sparql> {
+        ?dbCity dbo:abstract ?description .
+        FILTER (lang(?description) = "de")
+    }
+}
+```
+
+Was didaktisch wichtig ist:
+- Das ist Linked-Data-Integration uber Identitatslink (`owl:sameAs`), nicht "Hardcoding-Hack".
+- Lokale `uni:`-URIs bleiben erhalten (Hybrid-Strategie), gezielt mit globalen URIs verknupft.
+
+Demo-Hinweis:
+- Internetabhangig, kann langsam sein oder fehlschlagen.
+- Screenshot-Fallback bereithalten.
+
+## 2) Prio 1 Kernvergleich: SQL vs SPARQL
+
+| Perspektive | SQL | SPARQL |
+|---|---|---|
+| Datenmodell | Tabellen/Relationen | Graph aus Triples |
+| Verknupfung | explizite JOIN-Klauseln | geteilte Variablen in Triple-Patterns |
+| Schema | stark vorstrukturiert | flexibel, semantikgetrieben |
+| Bedeutung | meist im Anwendungscode | explizit uber Pradikate/Ontologie |
+| Inferenz | i. d. R. nicht nativ | nativ uber RDFS/OWL und Entailment |
+
+Merksatz:
+SQL fragt Datenstrukturen ab. SPARQL fragt Bedeutungsstrukturen ab.
+
+## 3) Prio 2 - Vertiefung und Standardwissen
+
+### 3.1 SPARQL als W3C-Standard
+
+SPARQL 1.1 ist ein W3C-Standard fur RDF-Abfragen.
+Das ist wichtig fur Interoperabilitat:
+- gleiche Grundsprache uber verschiedene Triple Stores hinweg
+- standardisierte Ergebnisformate
+- standardisierte Erweiterungen (Federation, Update, Property Paths)
+
+### 3.2 Triple Patterns mit Variablen
+
+Ein Triple Pattern besteht aus Subjekt, Pradikat, Objekt - mit Variablen an beliebigen Stellen.
+Beispiele:
+
+```sparql
+?s a uni:Student .
+?s uni:studiesAt ?u .
+?u rdfs:label ?uniname .
+```
+
+Je mehr Patterns dieselbe Variable teilen, desto starker wird die Ergebnismenge eingeschrankt.
+
+Typischer Denkfehler:
+"Die Variable hat einen Typ, weil sie ?student heisst."
+Nein. Typisiert wird uber Pattern (`?s a uni:Student`).
+
+### 3.3 Query-Typen
+
+- `SELECT`: tabellarische Bindungen (haufigster Typ in der Demo)
+- `ASK`: boolesche Existenzfrage (`true`/`false`)
+- `CONSTRUCT`: erzeugt neuen RDF-Graph aus Treffern
+- `DESCRIBE`: gibt eine Store-definierte Beschreibung zu Ressourcen aus
+
+Beispiel ASK:
+
+```sparql
+ASK {
+  uni:AliceSchmidt a uni:Student .
+}
+```
+
+Beispiel CONSTRUCT:
+
+```sparql
+CONSTRUCT {
+  ?s uni:isPerson "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+}
+WHERE {
+  ?s a ?typ .
+  ?typ rdfs:subClassOf* uni:Person .
+}
+```
+
+### 3.4 UNION und Subqueries
+
+`UNION` fur alternative Muster:
+
+```sparql
+SELECT ?person ?rolle
+WHERE {
+  {
+    ?person a uni:Student .
+    BIND("Student" AS ?rolle)
+  }
+  UNION
+  {
+    ?person a uni:Professor .
+    BIND("Professor" AS ?rolle)
+  }
+}
+```
+
+Subquery (Voraggregation/Teilergebnis):
+
+```sparql
+SELECT ?u ?count
+WHERE {
+  {
+    SELECT ?u (COUNT(?s) AS ?count)
+    WHERE {
+      ?s a uni:Student .
+      ?s uni:studiesAt ?u .
+    }
+    GROUP BY ?u
+  }
+}
+ORDER BY DESC(?count)
+```
+
+### 3.5 Property Paths
+
+Property Paths erlauben Pfadabfragen im Graphen.
+Beispiele:
+- `/` = Sequenz
+- `|` = Alternative
+- `*` = null oder mehr Schritte
+- `+` = ein oder mehr Schritte
+
+Euer Schlusselbeispiel ist `rdfs:subClassOf*`.
+Damit traversierst du Klassenhierarchien transitiv.
+
+### 3.6 Entailment-Regimes (RDFS, OWL)
+
+Entailment-Regimes definieren, wie stark semantisch geschlossen wird.
+
+- Ohne Entailment:
+  - nur explizit gespeicherte Fakten
+  - Query 4 liefert 0 Treffer fur `uni:Person`
+
+- RDFS-basiert:
+  - nutzt z. B. `rdfs:subClassOf`, `rdfs:domain`, `rdfs:range`
+  - Student/Professor konnen als Personen miterkannt werden
+
+- OWL-basiert:
+  - reichere Ontologiekonstrukte und tiefere Schlussfolgerungen
+  - leistungsfahig, aber komplexer und potentiell teurer in Laufzeit/Erklarung
+
+Typischer SQL-Umsteigerfehler:
+"Wenn ich es nicht inserted habe, existiert es nicht."
+Im semantischen Modell kann Wissen auch implizit vorhanden und abfragbar sein.
+
+## 4) Prio 3 - Live-Story entlang Query 1 bis 7
+
+### 4.1 Didaktische Dramaturgie (empfohlen)
+
+1. Query 1: Einstieg - einfache Typ- und Labelabfrage.
+2. Query 2: Mehrere Bedingungen - Verknupfung uber Variablen.
+3. Query 3: Konkrete URI als harter Filter (`uni:UniStuttgart`) + Typbedingung fur Students.
+4. Query 4: Erwartungsbruch - 0 Ergebnisse bei `a uni:Person`.
+5. Query 5: Auflosung - 7 Ergebnisse via `rdfs:subClassOf*`.
+6. Query 6: Analyseebene - Aggregation und Ranking.
+7. Query 7: Oeffnung ins Web of Data - Federation via `SERVICE`.
+
+### 4.2 Der zentrale Aha-Moment (muss exakt bleiben)
+
+- Query 4 (ohne Inferenz): 0 Ergebnisse.
+- Query 5 (mit Klassenhierarchie via `rdfs:subClassOf*`): 7 Ergebnisse.
+
+Interpretation auf Vortragsniveau:
+Nicht nur die Daten wurden abgefragt, sondern das Modellwissen uber Klassenbeziehungen wurde ausgenutzt.
+Genau hier zeigt sich der Unterschied zu "Graph DB + Query" ohne semantische Ebene.
+
+### 4.3 Ausgabeformate
+
+Fur `SELECT` sind vor allem relevant:
+- JSON: ideal fur APIs, Python, RAG-Pipelines
+- CSV/TSV: gut fur Tabellenanalyse und schnellen Export
+- XML: standardisiert, aber in moderner Praxis oft weniger ergonomisch als JSON
+
+Praxisregel:
+- Demo/Backend-nahe Verarbeitung: JSON
+- Nachbearbeitung in Tabellenwerkzeugen: CSV/TSV
+
+## 5) Abgrenzung zu Property-Graph-Queries (kurz und klar)
+
+Warum nicht einfach Cypher statt SPARQL?
+
+- Property Graph + Cypher ist stark bei Traversal-Performance und operativen Graphanalysen.
+- RDF + SPARQL ist stark bei Standardisierung, globaler Identitat (URIs), Linked Data und semantischer Inferenz.
+
+Query-Perspektive:
+- Cypher: Muster uber Nodes/Edges im Property-Graph-Modell.
+- SPARQL: Muster uber RDF-Triples mit Ontologie- und Entailment-Anschluss.
+
+Fur euren Vortrag reicht als Merksatz:
+"Cypher navigiert Graphstrukturen sehr effizient. SPARQL fragt semantisch standardisiertes Wissen ab - inklusive ableitbarer Fakten."
+
+## 6) AI-Bezug (Report-konform)
+
+### 6.1 RAG
+
+RDF/SPARQL kann als strukturierte Retrieval-Schicht fur RAG dienen:
+- faktenbasiertes, nachvollziehbares Retrieval statt nur embeddingbasierter Ahnlichkeit
+- geringere Halluzinationsgefahr bei klar modellierten Beziehungen
+- bessere Auditierbarkeit (welches Triple fuhrte zu welcher Aussage)
+
+### 6.2 Semantische Suche
+
+Uber Klassenhierarchien und Property Paths konnen Ergebnisse gefunden werden,
+die reine Keyword-Suche nicht robust abdeckt.
+
+Beispiel:
+Eine Anfrage nach "Personen" liefert in einem inferenzfahigen Setup auch Studenten/Professoren,
+obwohl diese nicht explizit als Person getaggt sind.
+
+### 6.3 Explainability
+
+SPARQL-Ergebnisse sind als konkrete Bindungen erklarbar.
+Damit lasst sich besser zeigen, warum ein Resultat zustande kam
+(entscheidend fur wissenschaftliche und AI-nahe Kontexte).
+
+## 7) Typische Fehlerbilder und schnelle Debug-Checks
+
+1. Keine Treffer trotz korrekt wirkender Query:
+- Prufen, ob Daten in den Default Graph geladen wurden (`PUT /store?default`).
+
+2. Umlaute/Filter schlagen fehl:
+- Fur BW-Filter `"Baden-W\u00FCrttemberg"` nutzen.
+
+3. Erwartete Inferenz fehlt:
+- Query/Store-Modus auf Entailment-Logik prufen oder Path explizit nutzen (`rdfs:subClassOf*`).
+
+4. Federated Query instabil:
+- Internet/Endpoint-Verfugbarkeit prufen, Query 7 als optional kennzeichnen, Screenshot-Fallback nutzen.
+
+## 8) Kurzes Kapitel-Fazit
+
+Wenn du dieses Kapitel beherrschst, kannst du:
+- SPARQL-Muster systematisch formulieren,
+- Ergebnisse semantisch statt nur syntaktisch interpretieren,
+- den Unterschied zu SQL und Property-Graph-Abfragen klar erklaren,
+- den Mehrwert fur AI-Workflows (RAG, semantische Suche, Explainability) argumentieren.
+
+Damit ist die Bruecke gebaut von Datenstruktur (wie Wissen gespeichert ist)
+zu Architektur (wie Query Engine, Indexierung und Reasoning das performant ausfuhren).
+
+## 9) Quellenhinweise (fur dieses Kapitel)
+
+[Q-QM-1] W3C: SPARQL 1.1 Overview
+https://www.w3.org/TR/sparql11-overview/
+
+[Q-QM-2] W3C: RDF 1.1 Concepts and Abstract Syntax
+https://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/
+
+[Q-QM-3] W3C: RDF 1.1 Primer
+https://www.w3.org/TR/rdf11-primer/
+
+[Q-QM-4] Dataversity: Triplestores 101: Storing Data for Efficient Inferencing
+https://www.dataversity.net/articles/triplestores-101-storing-data-efficient-inferencing/
+
+[Q-QM-5] Interne Demo-Quellen (Runtime Truth):
+- demo/files/triplestore-demo/data/universitaeten.ttl
+- demo/files/triplestore-demo/queries/01_alle_universitaeten.sparql
+- demo/files/triplestore-demo/queries/02_unis_in_bw.sparql
+- demo/files/triplestore-demo/queries/03_studenten_uni_stuttgart.sparql
+- demo/files/triplestore-demo/queries/04_personen_OHNE_inferenz.sparql
+- demo/files/triplestore-demo/queries/05_personen_MIT_inferenz.sparql
+- demo/files/triplestore-demo/queries/06_count_pro_uni.sparql
+- demo/files/triplestore-demo/queries/07_federated_dbpedia.sparql

@@ -7,29 +7,30 @@
 #   Der lokale Triplestore sendet die Teilanfrage an DBpedia
 #   Ergebnisse werden automatisch zusammengeführt
 #
-# Zeigt: Warum URIs global sind – dieselbe URI für Universität Stuttgart
-# funktioniert in unserem Store UND in DBpedia
+# Zeigt: Wie lokale und globale Ressourcen per owl:sameAs verknüpft werden
+# (uni:Stuttgart -> dbr:Stuttgart)
 #
 # Hinweis: Braucht Internetzugang. DBpedia-Endpunkt kann langsam sein.
 # Als Fallback: Screenshot der Ergebnisse zeigen.
 
 PREFIX uni:    <http://example.org/uni/>
 PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX dbr:    <http://dbpedia.org/resource/>
+PREFIX owl:    <http://www.w3.org/2002/07/owl#>
 PREFIX dbo:    <http://dbpedia.org/ontology/>
-PREFIX dbp:    <http://dbpedia.org/property/>
 
-SELECT ?uniname ?description
+SELECT ?uniname ?stadtname ?description
 WHERE {
     # Aus unserem lokalen Store: alle Universitäten in BW
     ?u  a uni:University .
     ?u  rdfs:label ?uniname .
     ?u  uni:location ?stadt .
     ?stadt uni:bundesland "Baden-W\u00FCrttemberg" .
+    ?stadt rdfs:label ?stadtname .
+    ?stadt owl:sameAs ?dbCity .
 
-    # Von DBpedia: kurze Beschreibung zu Stuttgart
+    # Von DBpedia: Beschreibung zur verlinkten Stadt-Ressource
     SERVICE <https://dbpedia.org/sparql> {
-        dbr:Stuttgart dbo:description ?description .
-        FILTER (lang(?description) = "en")
+        ?dbCity dbo:abstract ?description .
+        FILTER (lang(?description) = "de")
     }
 }

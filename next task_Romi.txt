@@ -1,0 +1,10 @@
+**Volesung**
+- Queries fertig lesen, Fragen fertig schreiben und folienstruktur erstellen 
+
+**Interaktion**
+- Remote Access  testen of url with 2nd device, siehe in readme Demo 
+- Further steps überlegen
+
+
+
+

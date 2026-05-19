@@ -13,6 +13,8 @@
 @prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix dbr:  <http://dbpedia.org/resource/> .
 @prefix uni:  <http://example.org/uni/> .
 
 # =============================================================
@@ -52,6 +54,7 @@ uni:City
 uni:Stuttgart
     a uni:City ;
     rdfs:label "Stuttgart"@de ;
+    owl:sameAs dbr:Stuttgart ;
     uni:bundesland "Baden-Württemberg" ;
     uni:einwohner 635911 .
 
