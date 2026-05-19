@@ -38,6 +38,7 @@
 ## Schwachstellen relationaler Datenbanken
 
 - **Starre Schemata**
+--> infos sind in verschiedenen Tabellen gespeichert, muss wissen wo was steht bei bespielsweise ergänzungen. 
   - Tabellen haben eine feste Struktur (Schema), die im Voraus definiert werden muss  
   - Änderungen (z. B. neues Attribut wie „Wohnort“) erfordern Schema-Anpassungen  
   - Beispiel:
@@ -57,6 +58,7 @@
     - unflexibel bei sich ändernden Daten
     - hoher Wartungsaufwand
     - ineffizient bei heterogenen Daten
+    - wenn bob beispielsweise in einer anderen Stadt wohnt, muss erst herausfinden, obs eine andere tabelle gibt, wo wohnorte festgehalten werden. 
   - RDF:
     ```
     Alice —studiesAt→ KIT
