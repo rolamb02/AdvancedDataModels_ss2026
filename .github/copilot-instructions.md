@@ -68,7 +68,7 @@ When files disagree, use this precedence:
   - Use PUT /store?default
   - Avoid plain POST /store for this demo flow
 - Keep Query 2 robust across Windows shell/editor setups:
-  - Use Baden-W\u00FCrttemberg in SPARQL where encoding issues may occur
+  - Use Baden-Wuerttemberg in SPARQL where encoding issues may occur
 - Query 7 is optional and internet-dependent:
   - Always mention possible timeout/failure and keep a screenshot fallback
 - For script/tooling suggestions on Windows + Git Bash:

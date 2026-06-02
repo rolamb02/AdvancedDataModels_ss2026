@@ -47,7 +47,7 @@ The following textbooks provide broader context and are recommended as supplemen
 
 ## 4. Practical Demonstrations
 
-Each group must prepare a **runnable demo** showing how their data model solves a practical problem.  Demos must use **open‑source or free‑tier tools** installable via Docker or simple packages and should execute in under a few minutes on a laptop.
+Each group must prepare a **runnable demo** showing how their data model solves a practical problem.  Demos must use **open‑source or free‑tier tools** installable via Docker or simple packages and should execute in under a few minutes on a laptop.*   `?s dbo:location dbr:Stuttgart` -> bekanntes Prädikat + Objekt (`POS` oder `OPS`
 
 - **Graph database demo** – Use Neo4j (community edition) or the open‑source Neo4j Desktop.  Import a small dataset (e.g., movie actors or citation networks) and implement a recommendation algorithm using Cypher queries.  Visualize node/edge relationships and show multi‑hop traversals to answer questions like *“Which movies are connected through common actors?”*.  Highlight how graph traversal is faster than complex joins.
 

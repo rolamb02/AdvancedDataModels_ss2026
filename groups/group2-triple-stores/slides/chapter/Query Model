@@ -35,7 +35,7 @@ Dieses Kapitel zeigt, wie aus einem RDF-Graphen beantwortbares Wissen wird.
 Der rote Faden bleibt:
 
 "Wissen vernetzen: von isolierten Fakten zur globalen Wissensstruktur."
-
+ 
 In SQL fragst du primar Tabellen ab. In SPARQL beschreibst du Muster, die im Graphen gefunden werden sollen.
 Die Grundidee ist nicht "mehr Features als SQL", sondern ein anderes Denkmodell:
 
@@ -102,7 +102,7 @@ WHERE {
     ?u  rdfs:label   ?uniname .
     ?u  uni:location ?stadt .
     ?stadt rdfs:label    ?stadtname .
-    ?stadt uni:bundesland "Baden-W\u00FCrttemberg" .
+    ?stadt uni:bundesland "Baden-Wuerttemberg" .
 }
 ORDER BY ?uniname
 ```
@@ -116,7 +116,7 @@ SQL-Abgrenzung:
 - In SPARQL ist Join-Logik implizit durch geteilte Variablen im Pattern.
 
 Praxis-Hinweis fur euer Setup:
-Die Unicode-Schreibweise `Baden-W\u00FCrttemberg` ist robust fur Windows/Git-Bash/Editor-Encoding.
+Die Unicode-Schreibweise `Baden-Wuerttemberg` ist robust fur Windows/Git-Bash/Editor-Encoding.
 
 ### 1.4 FILTER und OPTIONAL
 
@@ -150,8 +150,7 @@ SQL-Abgrenzung:
 - `OPTIONAL` entspricht konzeptionell einem LEFT JOIN.
 - Unterschied in der Denke: Im Graphen sind fehlende Fakten normal (Open-World-Perspektive), nicht automatisch "Fehler im Datensatz".
 
-Typischer Fehler:
-OPTIONAL-Muster als Pflichtwissen interpretieren und danach uber leere Felder wundern.
+
 
 ### 1.5 Aggregationen
 
@@ -177,6 +176,8 @@ Lernpunkte:
 - Die Treffermenge entsteht aber durch Graph-Pattern-Matching.
 - `(uni:studiesAt | uni:worksAt)` zeigt Alternativen uber Property Path Union.
 
+Frage 3: Kann ich nicht einfach ?person rdfs:subClassOf* uni:Person schreiben und dann den Rest ohne die erste Zeile? Wenn nicht, warum nicht? Antwort: Nein, das reicht nicht. rdfs:subClassOf* bewegt sich auf der Klassenebene: Es findet Klassen, die unterhalb von uni:Person liegen. Um konkrete Personen zu finden, brauchst du zusätzlich ein Muster, das Individuen an ihre Klasse bindet, zum Beispiel ?person a ?typ . ?typ rdfs:subClassOf* uni:Person .. Ohne diese Bindung fragst du nur Klassen ab, nicht Instanzen. Quelle: Query Model Abschnitt 3.5 und 3.6; SPARQL 1.1 Overview
+
 Typischer Fehler:
 Variablen im SELECT zu nutzen, die nicht aggregiert oder gruppiert sind.
 
@@ -195,7 +196,7 @@ WHERE {
     ?u  a uni:University .
     ?u  rdfs:label ?uniname .
     ?u  uni:location ?stadt .
-    ?stadt uni:bundesland "Baden-W\u00FCrttemberg" .
+    ?stadt uni:bundesland "Baden-Wuerttemberg" .
     ?stadt rdfs:label ?stadtname .
     ?stadt owl:sameAs ?dbCity .
 
@@ -205,6 +206,8 @@ WHERE {
     }
 }
 ```
+
+
 
 Was didaktisch wichtig ist:
 - Das ist Linked-Data-Integration uber Identitatslink (`owl:sameAs`), nicht "Hardcoding-Hack".
@@ -281,6 +284,13 @@ WHERE {
 }
 ```
 
+Erklärung zum CONSTRUCT‑Beispiel:
+- `CONSTRUCT` erzeugt als Ergebnis neue RDF‑Tripel (nicht nur Tabellenwerte). Hier wird für jede Ressource `?s`, deren Typ in der Klassenhierarchie unter `uni:Person` liegt, ein neues Tripel erzeugt.
+- `"true"^^<http://www.w3.org/2001/XMLSchema#boolean>` verwendet `^^`, um dem Literal einen XML‑Schema‑Datentyp (hier `xsd:boolean`) zuzuweisen; das bedeutet, das Literal ist ein boolescher Wert, kein einfacher String.
+- Verwendung: `CONSTRUCT` wird genutzt, um abgeleitete Graphen zu erzeugen (z. B. für Export, Weiterverarbeitung oder Materialisierung von Regeln).
+
+Hinweis zur Praxis: Manche Stores unterstützen Materialized Views (gespeicherte CONSTRUCT‑Ergebnisse), andere liefern die Tripel nur bei Anfrage (on‑the‑fly).
+
 ### 3.4 UNION und Subqueries
 
 `UNION` fur alternative Muster:
@@ -299,6 +309,22 @@ WHERE {
   }
 }
 ```
+
+
+  Erklärung + SQL‑Vergleich:
+  - `UNION` kombiniert alternative Muster (A oder B). In SQL würde man in vielen Fällen zwei SELECTs mit `UNION` kombinieren oder in einer Tabelle eine Rollen‑Spalte auswerten.
+  - Beispiel SQL (ähnlicher Output):
+
+  ```sql
+  SELECT p.id, 'Student' AS rolle
+  FROM Person p JOIN Student s ON p.id = s.person_id
+  UNION
+  SELECT p.id, 'Professor' AS rolle
+  FROM Person p JOIN Professor r ON p.id = r.person_id;
+  ```
+
+  - In SPARQL arbeitet man direkt auf dem Graphen (keine expliziten Join‑Keys nötig — die gemeinsame Variable `?person` verbindet Patterns).
+
 
 Subquery (Voraggregation/Teilergebnis):
 
@@ -344,6 +370,27 @@ Entailment-Regimes definieren, wie stark semantisch geschlossen wird.
 - OWL-basiert:
   - reichere Ontologiekonstrukte und tiefere Schlussfolgerungen
   - leistungsfahig, aber komplexer und potentiell teurer in Laufzeit/Erklarung
+
+Vertiefung: Was sind Entailment‑Regimes und warum relevant?
+- Ein Entailment‑Regime definiert ein formales Regelwerk (Semantik), das beschreibt, welche zusätzlichen Tripel logisch aus einem gegebenen Graphen folgen müssen. Beispiele sind: Simple Entailment (nur Tripel), RDF Entailment, RDFS Entailment, OWL Entailment.
+- Beispiel (RDFS‑Entailment): Gegeben sind die Tripel
+
+```
+:Student rdfs:subClassOf :Person .
+:alice a :Student .
+```
+
+unter RDFS‑Entailment folgt logisch:
+
+```
+:alice a :Person .
+```
+
+- Praxis: Manche Stores wenden solche Regeln implizit (Materialization) oder bei Abfrage (Query‑time reasoning). OWL‑Entailments liefern mächtigere Ableitungen (z. B. Äquivalenzen, Restriktionen), sind aber rechenintensiver.
+
+Leistungsaspekt:
+- Query‑time Reasoning (Backward chaining): weniger Speicher, längere Laufzeiten.
+- Materialization (Forward chaining): schnellere Abfragen, höheren Speicherbedarf.
 
 Typischer SQL-Umsteigerfehler:
 "Wenn ich es nicht inserted habe, existiert es nicht."
@@ -395,6 +442,35 @@ Query-Perspektive:
 Fur euren Vortrag reicht als Merksatz:
 "Cypher navigiert Graphstrukturen sehr effizient. SPARQL fragt semantisch standardisiertes Wissen ab - inklusive ableitbarer Fakten."
 
+Konkretere Vergleichsbeispiele + Einsatzgebiete:
+- Cypher / Property Graph (Beispielplattform: Neo4j):
+  - Beispielabfrage (Traversal):
+
+```cypher
+MATCH (u:University)-[:LOCATED_IN]->(c:City)
+WHERE c.name = 'Stuttgart'
+RETURN u.name, u.founded
+```
+  - Typische Einsatzgebiete: Echtzeit‑Graphanalysen, Pfad‑/Routing‑Abfragen, Social‑Network‑Analysen, Recommendation Engines. Stark optimiert für schnelle Traversals und transaktionale Workloads.
+
+- SPARQL / RDF (Beispielplattformen: Blazegraph, Jena, Virtuoso):
+  - Beispielabfrage (semantisch + Inferenz möglich):
+
+```sparql
+PREFIX uni: <http://example.org/uni/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?u ?name
+WHERE {
+  ?u a uni:University .
+  ?u uni:location ?c .
+  ?c rdfs:label "Stuttgart"@de .
+}
+```
+  - Typische Einsatzgebiete: Knowledge Graphs, Linked Data Integration, semantische Suche, wissensbasierte Systeme mit Reasoning/Inferenz. Gut, wenn globale Identitäten (URIs), Ontologien und erklärbare Ableitungen wichtig sind.
+
+Hinweis zur Wahl: Für datenintensive Traversals (z. B. Millionen von hops) ist ein Property Graph oft performanter; für semantische Interoperabilität, Web‑Integration und Inferenz ist RDF/SPARQL die bessere Wahl.
+
 ## 6) AI-Bezug (Report-konform)
 
 ### 6.1 RAG
@@ -425,7 +501,7 @@ Damit lasst sich besser zeigen, warum ein Resultat zustande kam
 - Prufen, ob Daten in den Default Graph geladen wurden (`PUT /store?default`).
 
 2. Umlaute/Filter schlagen fehl:
-- Fur BW-Filter `"Baden-W\u00FCrttemberg"` nutzen.
+- Fur BW-Filter `"Baden-Wuerttemberg"` nutzen.
 
 3. Erwartete Inferenz fehlt:
 - Query/Store-Modus auf Entailment-Logik prufen oder Path explizit nutzen (`rdfs:subClassOf*`).
@@ -467,3 +543,190 @@ https://www.dataversity.net/articles/triplestores-101-storing-data-efficient-inf
 - demo/files/triplestore-demo/queries/05_personen_MIT_inferenz.sparql
 - demo/files/triplestore-demo/queries/06_count_pro_uni.sparql
 - demo/files/triplestore-demo/queries/07_federated_dbpedia.sparql
+
+## Fragen & Antworten (aus Datei: Fragen Query Model)
+
+Frage 1: Was hat es mit Präfixen auf sich? Ist das eine Art Datenbank hinter dem Link, die angefunkt wird?
+Antwort: Präfixe sind Kurzschreibweisen für Namespace‑IRIs (URI‑Basen) und ersetzen lange URIs in Turtle/SPARQL. Sie referenzieren Vokabulare oder Namensräume, nicht eine aktive Datenbank. Die Präfix-IRI gibt nur an, zu welchem Namensraum ein Begriff gehört; die Abfrage läuft gegen den geladenen Graphen/Endpoint.
+Quelle: RDF 1.1 Primer, RDF 1.1 Concepts
+
+- In Turtle/TTL deklarierst du Präfixe, z. B.: 
+
+```ttl
+@prefix uni: <http://example.org/uni/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+```
+
+- Das ist syntaktischer Zucker: `uni:Stuttgart` wird beim Parsen zu `<http://example.org/uni/Stuttgart>` expandiert. Der Triplestore speichert intern die vollständigen IRIs (nicht die Kürzel). Präfixe sind also nur in den Quelldateien/Abfragen sichtbar und müssen beim Schreiben von TTL oder SPARQL deklariert werden.
+- In der Demo: die TTL‑Datei enthält Präfixe; beim Laden expandiert der Parser die Kürzel. Manche UIs zeigen die Präfixe weiterhin an, aber intern sind es IRIs.
+
+
+
+Frage 2: Sind rdfs sozusagen standardisierte Labels, die in der Demo verwendet wurden?
+Antwort: rdfs ist ein Standard‑Vokabular (RDF Schema). `rdfs:label` ist ein standardisiertes Prädikat für menschenlesbare Bezeichnungen, rdfs selbst enthält Klassen-/Eigenschafts‑Konstrukte (z. B. rdfs:Class, rdfs:subClassOf).
+Quelle: RDF 1.1 Primer; RDF Schema
+
+Frage 3: Warum ist `a` = `rdf:type` und warum ist rdf dann nicht im Präfix aufgelistet?
+Antwort: `a` ist syntaktischer Zucker in Turtle/SPARQL als Kurzform für `rdf:type` (liest sich „ist ein/e“). Manche Beispiele lassen den `rdf:`‑Prefix weg, weil Implementierungen `rdf:type` oft implizit kennen; dennoch kann man `PREFIX rdf: <...>` explizit angeben.
+Quelle: RDF 1.1 Primer
+
+Frage 4: "Es gibt keine Tabelle `University`, sondern verteilte Fakten (Triples), die über Muster gebunden werden." Bitte erklären.
+Antwort: RDF speichert Aussagen als Tripel (Subjekt‑Prädikat‑Objekt). Es existiert keine fest definierte Tabellenzeile für `University`; stattdessen werden mehrere Tripel, die dasselbe Subjekt betreffen, durch ein SPARQL‑Pattern (geteilte Variablen) zu einem logischen „Datensatz" verknüpft—analog zu Joins, aber durch Pattern Matching, nicht durch tabellenbasierte Schemata.
+Quelle: RDF 1.1 Concepts; Triplestores 101
+
+Frage 5: Kannst du LEFT JOIN in SQL erklären/zeigen, analog zu SPARQL OPTIONAL?
+Antwort: Ein LEFT JOIN gibt alle Zeilen der linken Tabelle und passende Zeilen der rechten zurück; fehlende Treffer liefern NULL. In SPARQL entspricht `OPTIONAL { ... }` dieser Idee: die Bindungen aus dem optionalen Block werden ergänzt, falls vorhanden, andernfalls bleiben die Variablen ungebunden, das Ergebnis bleibt erhalten.
+Quelle: SQL‑Lehrbuch; SPARQL 1.1 Overview
+
+- SQL LEFT JOIN Beispiel (Professoren; evtl. kein `fachgebiet`):
+```sql
+SELECT p.name, f.name AS fachgebiet
+FROM professor p
+LEFT JOIN fachgebiet f ON p.fachgebiet_id = f.id;
+```
+
+- SPARQL OPTIONAL entsprechendes Muster:
+```sparql
+SELECT ?name ?fach
+WHERE {
+    ?p a uni:Professor .
+    ?p rdfs:label ?name .
+    OPTIONAL { ?p uni:fachgebiet ?fach . }
+}
+```
+
+Frage 6: Was bedeutet Aggregation generell? Was ist in Query 6 Aggregation, was ist Inferenz (wegen `*`), und wie heißt `(a | b)`?
+Antwort: Aggregation fasst mehrere Werte zu einem Skalar zusammen (z. B. `COUNT`, `SUM`, `AVG`). In Query 6 ist `COUNT(?person)` die Aggregation; `GROUP BY` gruppiert pro Universität. `rdfs:subClassOf*` ist ein Property‑Path mit Kleene‑Stern (null‑oder‑mehr Schritte) — das ist ein Pfadmuster; Inferenz/Entailment (z. B. RDFS/OWL) kann zusätzlich implizite Tripel liefern. `(uni:studiesAt | uni:worksAt)` ist ein Property‑Path‑Union (Alternative der Pfade).
+Quelle: SPARQL 1.1 Overview; RDF 1.1 Primer
+
+Inferenz vs. Entailment — sind das das Gleiche?
+- Kurz: Nein. `Entailment` ist eine formal definierte logische Folgebeziehung zwischen Graphen. `Inference`/`Reasoning` ist der Prozess, mit dem ein System zusätzliche Tripel ableitet, basierend auf Regeln; Entailment‑Regimes liefern diese Regeln.
+
+Frage 7: Praxisbezug: Wo wird Federated Query verwendet?
+Antwort: Federation wird eingesetzt, wenn lokale Daten mit entfernten Linked‑Data‑Quellen kombiniert werden sollen (z. B. lokale Entitäten mit DBpedia/Wikidata anreichern). Beispiele: wissenschaftliche Metadatenanreicherung, Katalog‑Enrichment, Knowledge Graph‑Integration. Praktisch: `SERVICE <endpoint>` delegiert Teilabfragen an entfernte SPARQL‑Endpoints.
+Quelle: SPARQL 1.1 Federated Query; Triplestores 101
+
+- Wikidata Query Service (SPARQL endpoint) — sehr häufig für Forschung und Datenanreicherung.
+- DBpedia SPARQL endpoint — oft in Demos und Integrationsszenarien verwendet.
+- Weitere: verschiedene staatliche/open‑data Endpoints, kulturwissenschaftliche Linked‑Data Dienste.
+
+Frage 8: Was bedeutet `@de` in TTL? Optional? (Sprach‑Tag)
+Antwort: `"Text"@de` ist ein Language‑Tag für Literale und markiert den Text als deutschsprachig. Er ist optional, aber nützlich bei mehrsprachigen Labels (z. B. rdfs:label kann mehrere Sprachvarianten haben).
+Quelle: RDF 1.1 Primer
+
+Frage 9: "Bedeutung: SQL meist im Anwendungscode, SPARQL explizit über Prädikate/Ontologie" Bitte erklären.
+Antwort: In klassischer Anwendungsarchitektur werden relationale Schemata in Anwendungen modelliert und Semantik oft im Code interpretiert. SPARQL/ RDF tragen Semantik explizit in den Prädikaten/Ontologien (URIs, Klassen, Properties), sodass Bedeutung nicht nur im Code, sondern im Datenmodell selbst steht — das erleichtert Interoperabilität und wiederverwendbare Abfragen.
+Quelle: Priorisierte Gliederung; RDF 1.1 Concepts
+
+- SQL ist relational und in vielen Anwendungslayern eingebettet; SPARQL fragt ein flexibles Graphenmodell ab, das sich gut für heterogene, verlinkte Daten eignet.
+
+Frage 10: Wird SPARQL nur bei Triplestores verwendet?
+Antwort: SPARQL ist der Standard für RDF‑Stores (Triplestores), wird aber auch über Views auf relationale DBs oder in Frameworks (z. B. Jena, RDF4J) eingesetzt. Man kann RDF‑Sichten über relationale Daten legen, sodass SPARQL über relationalen Daten läuft.
+Quelle: Triplestores 101; Apache Jena Dokumentation
+
+Frage 11: Inferenz über RDFS/OWL und Entailment: Was heißt Entailment? Warum Inferenz explizit bei RDFS/OWL und nicht bei RDF?
+Antwort: Entailment = logische Folgerung: Graph A entails B, wenn jede mögliche Interpretation, die A wahr macht auch B wahr macht. RDF selbst definiert nur die Tripel‑Semantik; RDFS/OWL definieren zusätzliche Schlussregeln (z. B. `rdfs:subClassOf`), deshalb werden Inferenzregimes für RDFS/OWL spezifiziert und von Reasonern angewendet.
+Quelle: RDF 1.1 Concepts; SPARQL 1.1 Entailment Regimes
+
+- `A entails B` bedeutet: Aus A lassen sich logisch B ableiten (jede Interpretation, die A wahr macht, macht B wahr).
+- RDF (Simple Entailment) beschreibt nur Tripel; RDFS/OWL definieren zusätzliche Regeln (z. B. `subClassOf`). Ohne ein Entailment‑Regime würde ein Store `:alice a :Student` nicht automatisch als `:alice a :Person` zurückgeben.
+
+
+Frage 12: CONSTRUCT: Warum `"true"^^xsd:boolean` und warum `^^`?
+Antwort: `^^` weist einem Literal einen Datentyp zu (hier XML Schema boolean). `"true"^^xsd:boolean` sagt: der Literalwert ist der boolesche Wert true (nicht nur ein String). CONSTRUCT erzeugt Tripel und kann Datentyp‑Literalwerte explizit setzen.
+Quelle: RDF 1.1 Primer; SPARQL 1.1 Overview
+
+Frage 13: Bitte ein Beispiel mit DESCRIBE + Erklärung.
+Antwort: Beispiel:
+```
+DESCRIBE <http://example.org/uni/UniStuttgart>
+```
+Erklärung: `DESCRIBE` gibt eine vom Store definierte Beschreibung der Ressource zurück (meist alle Tripel, in denen die Ressource Subjekt ist, und oft zusätzlich verwandte Metadaten). Das Ergebnis ist nicht strikt normiert und kann je nach Store unterschiedlich sein—gut für schnelle Exploration, aber weniger für reproduzierbare APIs.
+Quelle: SPARQL 1.1 Overview
+
+Frage 14: Bitte UNION und Subqueries mit BIND erklären.
+Antwort: `UNION` kombiniert Ergebnisse alternativer Muster (A oder B). `BIND(expr AS ?v)` weist das Ergebnis eines Ausdrucks einer Variable zu (z. B. feste Labels in einzelnen UNION‑Branches). Subqueries (geschachtelte SELECT) liefern Teilergebnisse/Aggregationen, die außen weiterverwendet werden können.
+Quelle: SPARQL 1.1 Overview
+
+Frage 15: Bei 3.6 Entailment genauer ausführen.
+Antwort: Entailment‑Regimes (Simple, RDF, RDFS, OWL) legen formale Regeln fest, welche zusätzlichen Tripel gelten müssen. Beispiel RDFS: aus `:Student rdfs:subClassOf :Person` und `:alice a :Student` folgt `:alice a :Person`. OWL‑Entailments ermöglichen komplexere Ableitungen (Äquivalenzen, Einschränkungen) und können anspruchsvollere Reasoner erfordern.
+Quelle: SPARQL 1.1 Entailment Regimes; RDF 1.1 Concepts
+
+Frage 16: Abgrenzung zu Cypher mit Beispiel illustrieren.
+Antwort: Cypher (Property Graph) benutzt Knoten mit Labels/Properties und Kanten mit Properties. Beispiel Cypher:
+```
+MATCH (u:University)-[:LOCATED_IN]->(c:City)
+RETURN u.name, c.name
+```
+Äquivalentes SPARQL‑Pattern (RDF):
+```
+?u a uni:University .
+?u uni:location ?c .
+?c rdfs:label ?cname .
+```
+Unterschied: Cypher ist auf effiziente Traversals und lokale Property‑Graph‑Modelle optimiert; SPARQL ist standardisiert für URIs, Ontologien und Inferenz/Linked‑Data‑Integration.
+Quelle: final strucutre.md; 978-3-662-67092-7 (Graphdatenbanken)
+
+---
+Hinweis: Faktenchecks wurden mit NotebookLM (gemini) gegen die Kursquellen und die SPARQL/RDF‑Spezifikationen durchgeführt; zusätzliche Praxisquellen stammen aus "Triplestores 101" (Dataversity). Wenn du möchtest, verschiebe ich die FAQ an eine andere Stelle oder passe die Länge an.
+
+## Fragen & Antworten II (aus Datei: Gedanken_Queries)
+
+Frage 1: Ich fände das SQL-Pendant bei den Queries ganz nice. Kannst du bei den wichtigsten Queries jeweils kurz das SQL-Gegenstück und den Unterschied erklären?
+Antwort: Ja, als Merkhilfe ist das sinnvoll. Query 1 entspricht grob einem SELECT über eine Tabelle mit Filter auf Typ und Label; Query 2 entspricht einem Join über mehrere Tabellen; OPTIONAL verhält sich ähnlich wie LEFT JOIN; Query 6 entspricht GROUP BY + COUNT. Der Unterschied bleibt aber grundlegend: SQL arbeitet auf Tabellen und expliziten Joins, SPARQL auf Graphmustern und geteilten Variablen.
+Quelle: SPARQL 1.1 Overview; Triplestores 101; Query Model Abschnitt 1.2 bis 1.5
+
+Frage 2: Sind Aggregationen dasselbe wie Inferenz bzw. Reasoning?
+Antwort: Nein. Aggregation verdichtet vorhandene Treffer zu Kennzahlen, zum Beispiel COUNT oder SUM. Inferenz/Reasoning leitet zusätzliche, implizite Fakten aus expliziten Fakten und Regeln ab. Das sind zwei verschiedene Ebenen: Aggregation ist Auswertung, Inferenz ist logische Schlussfolgerung.
+Quelle: SPARQL 1.1 Overview; RDF 1.1 Concepts and Abstract Syntax; RDF 1.1 Primer
+
+Frage 3: Kann ich nicht einfach `?person rdfs:subClassOf* uni:Person` schreiben und dann den Rest ohne die erste Zeile? Wenn nicht, warum nicht?
+Antwort: Nein, das reicht nicht. `rdfs:subClassOf*` bewegt sich auf der Klassenebene: Es findet Klassen, die unterhalb von `uni:Person` liegen. Um konkrete Personen zu finden, brauchst du zusätzlich ein Muster, das Individuen an ihre Klasse bindet, zum Beispiel `?person a ?typ . ?typ rdfs:subClassOf* uni:Person .`. Ohne diese Bindung fragst du nur Klassen ab, nicht Instanzen.
+Quelle: Query Model Abschnitt 3.5 und 3.6; SPARQL 1.1 Overview
+
+Frage 4: Präfixe werden gar nicht erklärt. Müssen die nicht auch hier rein in die Queries oder kommen die bereits in einem anderen Kapitel vor?
+Antwort: Präfixe gehören in SPARQL- und Turtle-Beispiele fast immer an den Anfang, weil sie lange IRIs abkürzen. Inhaltlich sind sie kein eigener Fachpunkt, sondern eine Schreibweise. Sie sollten in den Query-Beispielen sichtbar sein; die eigentliche Erklärung kann kurz im Query-Model-Kapitel oder schon bei den Daten-/Turtle-Beispielen stehen.
+Quelle: RDF 1.1 Concepts and Abstract Syntax; RDF 1.1 Primer
+
+Konkretes Beispiel: SQL vs SPARQL (Universitäten)
+- Annahme relationales Schema: `university(id,name,location_id)`, `city(id,name,state)`.
+
+SQL (Join):
+```sql
+SELECT u.name AS university, c.name AS city
+FROM university u
+JOIN city c ON u.location_id = c.id
+WHERE c.state = 'Baden-Württemberg'
+ORDER BY u.name;
+```
+
+SPARQL (Graph‑Pattern):
+```sparql
+PREFIX uni: <http://example.org/uni/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?uniname ?stadtname
+WHERE {
+    ?u a uni:University .
+    ?u uni:location ?stadt .
+    ?u rdfs:label ?uniname .
+    ?stadt rdfs:label ?stadtname .
+    ?stadt uni:bundesland "Baden-Wuerttemberg" .
+}
+ORDER BY ?uniname
+```
+
+
+Frage 5: Bei DBpedia gibt es ja nicht nur `/ontology`, sondern auch `/resource`. Was ist der Unterschied? Ist `resource` meist Subjekt/Objekt und `ontology` das Prädikat? Kann es auch sein, dass es ein Prädikat bei mehreren Datenbanken gibt? Kann ich in Query 7 auch `rdfs:abstract` bei DBpedia machen?
+Antwort: Grob gesagt: `/resource` benennt konkrete Entitäten wie Personen, Städte oder Werke; `/ontology` beschreibt Klassen und Eigenschaften, also das Vokabular. Deine Intuition ist im Kern richtig: Ressourcen-IRIs werden typischerweise als Subjekte oder Objekte benutzt, Ontologie-IRIs typischerweise für Klassen und Prädikate. Ja, die gleiche Eigenschaft kann in mehreren Datenquellen wiederverwendet werden, wenn die Vokabulare kompatibel sind oder über Mapping/Reuse eingebunden werden. In Query 7 wäre `dbo:abstract` korrekt, nicht `rdfs:abstract`.
+Quelle: RDF 1.1 Primer; Triplestores 101; SPARQL 1.1 Federated Query
+
+Frage 6: Präfixe sind ja die Speicherorte bzw. Verlinkungen auf die URLs, wo Subjekt-Prädikat-Objekt hinterlegt ist. Ist W3C dann auch eine Datenbank, die Ressourcen und Ontologien hat? Und ist Ontologie einfach ein anderes Wort für Prädikate?
+Antwort: Nein, Präfixe sind keine Speicherorte und auch keine Datenbankzeiger. Sie sind nur Kürzel für Namespace-IRIs, also für Namensräume von Begriffen. Das W3C ist kein Datenspeicher, sondern ein Standardisierungsgremium, das Spezifikationen wie RDF, RDFS und SPARQL veröffentlicht. Eine Ontologie ist außerdem mehr als ein Prädikat: Sie beschreibt ein formales Begriffsmodell mit Klassen, Eigenschaften und Regeln. Prädikate sind nur ein Teil dieser Ontologie.
+Quelle: RDF 1.1 Concepts and Abstract Syntax; RDF 1.1 Primer
+
+Frage 7: Wäre es nicht sinnvoll, probehalber den URI von Stuttgart durch den DBpedia-URI zu ersetzen, z. B. `dbr:Stuttgart`? Was spricht dafür/dagegen?
+Antwort: Dafür spricht vor allem Eindeutigkeit und Linked-Data-Anschluss: `dbr:Stuttgart` ist global referenzierbar und kann mit externen Daten angereichert werden. Dagegen spricht, dass du dann stärker von der Existenz und Stabilität des externen Identifiers abhängig bist und lokale Datenmodelle weniger sauber getrennt bleiben. Für eine Demo ist das okay, wenn du bewusst zeigen willst, wie lokale und externe Identitäten zusammengeführt werden; für das Grundbeispiel ist eine lokale URI oft didaktisch einfacher.
+Quelle: RDF 1.1 Primer; SPARQL 1.1 Federated Query; final strucutre.md
+
+Hinweis für die Präsentation: Die SQL-Pendants können als kurze Randnotizen oder in einer kleinen Vergleichsbox neben Query 1, 2, 4/5 und 6 ergänzt werden. Das hilft beim Einordnen, ohne den SPARQL-Fokus zu verlieren.

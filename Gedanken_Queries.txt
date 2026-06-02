@@ -1,0 +1,23 @@
+irgendwie fände ich glaube ich immer das SQL pendant bei den ganzen queries ganz nice, dass man einfach sieht, wie das im unterschied aussieht und dann diese immer auch kurz erklärt. 
+
+sind Aggregationen dasselbe wie Inferenz bzw reasoning?
+
+kann ich nicht einfach machen: 
+?person rdfs:subClassOf* uni:Person und dann den rest ohne die erste Zeile? Wenn nicht, wieso nicht, was würde da passieren? 
+
+Prefixe werden gar nicht erklärt, müssen die nicht auch hier rein in queries oder kommen die bereits in einem anderen Kapitel vor? 
+
+bei dbpedia gibt es ja nicht nur die url /ontology sondern auch glaube ich als Beispiel /ressource, was sit der unterschied? ich lgaube ressource ist meist objekt oder Subjekt während ontology das Prädikat ist? kann es auch sein, dass es ein Prädikat bei mehreren Datenbanken gibt, also dass beispielsweise w3 auch ein abstract hat und kann ich das dann auch nehmen? also kann ich auch rdfs:abstract bei dem dbpedia in query 7 machen? 
+
+Präfixe sind ja so wie ich das verstehe die speicherorte bzw Verlinkungen auf die URLs, wo Subjekt Prädikat objekt hinterlegt ist. w3 ist wahrscheinlich dann auch eine Datenbank die Ressourcen und Ontologien hat oder? und Ontologien ist einfach ein anderes wort für Prädikate? 
+
+und ich überlege die ganze zeit ob wir nicht mal probehalber den uri von Stuttgart ersetzen durch den dbpedia uri, da spricht doch eigenltich ncihts dagegen oder? alos so: 
+dbr:Stuttgart
+a uni:City
+rdfs:label "Stuttgart"
+uni: ...
+
+
+
+
+
