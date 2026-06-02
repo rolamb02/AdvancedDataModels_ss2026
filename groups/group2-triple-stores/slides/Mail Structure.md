@@ -15,7 +15,7 @@ Conceptual Model
 
 Data Structure: 
 - Triple Basierte Speicherung
-- physische Organisation: 
+- Physische Organisation:  Indizes (SPO, POS, …)
 - schema flexibilität & Daten integration über URI
 (semantische Struktur)
 

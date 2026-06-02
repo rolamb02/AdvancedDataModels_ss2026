@@ -104,3 +104,47 @@
     3.  **Flexibilität:** Wissen organisch wachsen lassen (keine starren Grenzen).
 *   **Ergebnis:** Eine globale Wissensstruktur, die über Datenbankgrenzen hinweg maschinenlesbar und inferenzfähig bleibt.
 *   *Überleitung zum nächsten Slot:* "Wie fragen wir dieses vernetzte Wissen nun effizient ab? -> SPARQL Query Model"
+
+---
+
+## Sektion: Query Model – Folienstruktur (kompakt)
+
+### Folie 1: Kernidee & Lernziele
+- **Kern:** Was macht SPARQL anders als SQL? (Graph vs. Tabelle)
+- **Lernziele:** Pattern-Matching verstehen, Inferenz‑Impact erkennen, einfache Queries schreiben
+- **Visual:** 1‑Zeilen Vergleichstabelle SQL ↔ SPARQL
+Kommentar: Unnötig? 
+
+### Folie 2: Triple Patterns + SELECT/WHERE
+- **Kern:** Triple-Pattern = Subjekt‑Prädikat‑Objekt (Variablen mit `?`)
+- **Beispiel:** einfache `SELECT`/`WHERE` Query (Typ + Label)
+- **Takeaway:** geteilte Variablen verbinden Muster (implizite JOINs)
+Kommentar:  Präfixe erklären in diesem Kontext? 
+
+### Folie 3: FILTER, OPTIONAL, UNION (Kurzreferenz)
+- **FILTER:** Eingrenzen von Bindungen (kurzes Beispiel)
+- **OPTIONAL:** wie LEFT JOIN, fehlende Fakten bleiben erlaubt
+- **UNION:** Alternativen in Mustern (kurze Notation)
+Kommentar: Kann ich statt Union nicht einfach das | verwenden oder geht das nur bei  prädikaten diese property paths?  
+
+### Folie 4: Aggregation & Praxisbeispiel
+- **Konzepte:** `COUNT`, `GROUP BY`, `ORDER BY` in SPARQL
+- **Beispiel:** Personenanzahl pro Universität (mit `rdfs:subClassOf*`)
+- **Hinweis:** Aggregation + Gruppierung korrekt verwenden
+
+### Folie 5: Property Paths & Inferenz (RDFS/OWL kurz)
+- **Property Paths:** `/`, `|`, `*`, `+` — Beispiel `rdfs:subClassOf*`
+- **Inferenz:** ohne vs. mit RDFS/OWL (Aha‑Moment: Query4 vs. Query5)
+- **Visual:** kleine Klassen‑Hierarchy mit Traversalpfeil
+Kommentar: Im Vergleich zu Porperty Graph kann ich ja auch da durchgehen, wie sieht das da konkret aus und warum heißt dass dann, das die besser sind im langen durchgehen (also so hab ich das verstanden, weil da stand, property grpah stark bei traversal performance)? 
+
+### Folie 6: Federation, Ausgabeformate & Debug‑Checks
+- **Federation:** `SERVICE`‑Pattern kurz erwähnen (dbpedia Beispiel)
+- **Formate:** JSON (API), CSV (Analysen) — kurzer Tipp
+- **Debug:** typische Fehlerchecks (DefaultGraph, Encoding, Entailment)
+
+### Vielleicht Folie 7 mit ASK / CONSTRUCT / DESCRIBE
+
+
+Fragen: wir machen ja ne live demo später mit Oxigraph, aber wenn ich das ganze mti einer beliebig anderen software mache wie bspw. Apache Jena TDB with Fuseki server, sieht das immer gleich aus, auch mit dem SERVICE und so? nach w3c ist das ja immer gleich, weil sparql ja diesem standart folgt. gibt es dann überhaupt unterschiede in der abfrage? 
+Was ist jetzt genau der unterschied zwsichen rdf und sparql? 

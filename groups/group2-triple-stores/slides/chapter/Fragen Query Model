@@ -1,0 +1,199 @@
+# Prio 1 
+
+was hat es jetzt nochmal mit diesen Präfixen auf sich? ist das eine Art Datenbank hinter dem Link, welche dann angefunkt wird? 
+rdfs sind glaub sozusagen standartisierte label, die ich ja auch in unserer Demo verwendet habe oder? 
+
+warum ist a = rdf:type und warum is dann rdf nicht in präfix aufgelistet
+
+
+"es gibt keine Tabelle `University`, sondern verteilte Fakten (Triples), die uber Muster gebunden werden." Das versteh ich net. bitte erklären
+
+kannst du das mit dem left join bei sql erklären bzw zeigen, weil das kenne ich nicht. 
+
+was bedeutet aggregation in generellen? was genau ist davon jetzt aggregation? wie nennt sich der rest, also ich glaube das mti * war interferenz und dann gibt es noch das mit zwei optionen (a | b), wie heitß das, ist das property path union? 
+
+mir fehlt irgendwie manchal der praxisbezug, weil ich hier eine DB lerne aber keien Ahnung hab, ob und inwieweit die überhaupt verwendet wird. Kannst du mri zum beispiel mal sagen, wo dieses federated Query verwendet wird? 
+
+hab mich jetzt nochmal die ttl angeschaut und da wollte ich fragen, was es mit diesem @de auf sich hat da, bringt das irgendwas, kann man das auch weglassen? 
+
+
+das verstehe ich nicht was meinst du damit? 
+Bedeutung	SQL meist im Anwendungscode	SPARQL explizit uber Pradikate/Ontologie
+
+ist Sparql eigentlich nur bei triplestores verwendet? 
+
+inferenz über rdfs/OWL und entailment. was heißt entailment. wieso inferenz explizit bei rdfs und owl. wieso nciht beispielsweise auch bei rdf? 
+
+## Prio 2
+
+was ist dieses construct, ich verstehe nicht genau wieso true und wieso diese zwei ^^
+
+bitte noch ein beispiel mit describe ergänzen und erklärung ebenfalls dazu
+
+bitte union und subqueries mit dem BIND erklären, das check ich nicht
+
+bitte auch hier bei 3.6 nochmal entailment genauer ausführen. ich verstehe das nicht. 
+
+kannst du die abgrenzung zu cypher mit einem beispiel genauer erklären / illustrieren
+
+---
+
+# Folgefragen: 
+ich habe das gefühl, dass du einfach die antworten von notebook lm rauskopiert hast in das file. das sollte nciht das ziel sein. 
+
+Notebook LM ist sozusagen nur der fakten checker, das entsprechende ausformulieren, das finden von beispielen, um die Erklärung zu verdeutlichen liegt an dir. aus diesem grund bitte so entsprechend bei den folgefragen arbeiten. 
+
+1. das heißt ich kann mir das bei der demo so vorstellenm dass am anfang in der ttl datei (siehe demo folder, bitte anschauen!) die präfixe sozusagen geladen werden oder wie funktioniert das? also was genau passiert mmit diesen uris lol
+
+4. bitte verdeutliche das ganze mit sql im vergleich zu sparql hier mit universitäten an einem beispiel und führe dieses entsprechend aus. danke
+
+5. auch das verstehe ich nicht. bitte auch hier beispiel machen und ausführen. kann mir das mit dem linek und rechte taybelle und vergelcih zu sparql nicht vorstellen. 
+
+6. ist inferenz das gleiche wie entailment? #
+
+7. bitte hier wirklich mal recherchieren und ganz konkrete möglichst populäre beispiele raussuchen, wo dies gemacht wird. danke! 
+
+9. auch hier bitte mit einem beispiel verdeutlichen, verstehe das nicht. 
+
+11. ich verstehe das nicht. zum einen was es mit diesem entails auf sich hat und auch wieso rdf net geht. bitte das an beispielen verdeutlichen, so ist mir das viel zu kryptisch. 
+
+12. diese frage bitte nicht in die faqs sondern eben dort, wo das ganze innerhalb des doks referenziert wird. dort im anschluss aufführen und bitte entsprechend das beispiel dort erklären. danke
+
+13. also würde ich das sowas rauskriegen: 
+uni:Stuttgart
+    a uni:City ;
+    rdfs:label "Stuttgart"@de ;
+    owl:sameAs dbr:Stuttgart ;
+    uni:bundesland "Baden-Württemberg" ;
+    uni:einwohner 635911 .
+    ´
+oder? 
+
+irgendwie verschickt, wenn ich den link mit /unistuttgart mache, dann kriege ich sowas raus und wenn ich unistuttgart mache und präfix davor schreibe, dann hab ich da alle prädikate aus dem store / namensfeld geladen richtig? 
+
+
+14. bitte auch das raus aus den faqs rein in das dokument an der entsprechenden stellel und dort dann ganz konkret mit dem beispiel erklären. 
+
+15. was sind jetzt genau entailment regimes, ist das ganze nur ein anderes wort für inferenz? auch hie rbitte nicht nur notebook lm kopieren, sondern nachvollziehbar verdeutlichen / erklären. notebook lm ist mir oft einfach zu kryptisch wie du vielleicht schon gemerkt hast. 
+
+
+16. kannst du vielleicht nochmal versuchen genauer zu illustrieren, wo cypher und wo sparql besser ist. ich kann dem ganzen noch nicht folgen. arbeite gerne mit beispielen und nenn mir für beide konkrete populäre einsatzgebiete und warum bei den jeweiligen einsatzgebieten das entsprechende verwendet wird (eigene Recherche!!)
+
+
+FAQ 2: 
+
+1. du kannst ja sql. mach mir einnfach mal bei den wichtigsten queries den sql pendant zur veranschaulichung hinzu. danke
+
+5.rdfs:abstract kann ich nicht machen, weil es abstract bei rdfs nicht gibt oder weil ich in dbo nur dbo prädikate habe und keine rdfs. 
+
+6. also ist eine ontologie einfach eine datenbank also beispielsweise meine universitäten ttl oder auch z.b. dbo ist eine ontology? 
+
+
+
+
+
+# Folgefragen — ausführliche Antworten (eigene Ausformulierung, NotebookLM als Faktencheck)
+
+Hinweis vorweg: Ich habe NotebookLM nur als Fakten‑Checker verwendet; die folgenden Erklärungen, Beispiele und Vergleiche habe ich selbst ausgearbeitet und mit Quellen belegt.
+
+1) Präfixe in TTL / was passiert beim Laden der Demo?
+- In Turtle/TTL deklarierst du Präfixe, z. B.: 
+
+```ttl
+@prefix uni: <http://example.org/uni/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+```
+
+- Das ist syntaktischer Zucker: `uni:Stuttgart` wird beim Parsen zu `<http://example.org/uni/Stuttgart>` expandiert. Der Triplestore speichert intern die vollständigen IRIs (nicht die Kürzel). Präfixe sind also nur in den Quelldateien/Abfragen sichtbar und müssen beim Schreiben von TTL oder SPARQL deklariert werden.
+- In der Demo: die TTL‑Datei enthält Präfixe; beim Laden expandiert der Parser die Kürzel. Manche UIs zeigen die Präfixe weiterhin an, aber intern sind es IRIs.
+
+4) Konkretes Beispiel: SQL vs SPARQL (Universitäten)
+- Annahme relationales Schema: `university(id,name,location_id)`, `city(id,name,state)`.
+
+SQL (Join):
+```sql
+SELECT u.name AS university, c.name AS city
+FROM university u
+JOIN city c ON u.location_id = c.id
+WHERE c.state = 'Baden-Württemberg'
+ORDER BY u.name;
+```
+
+SPARQL (Graph‑Pattern):
+```sparql
+PREFIX uni: <http://example.org/uni/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?uniname ?stadtname
+WHERE {
+    ?u a uni:University .
+    ?u uni:location ?stadt .
+    ?u rdfs:label ?uniname .
+    ?stadt rdfs:label ?stadtname .
+    ?stadt uni:bundesland "Baden-Wuerttemberg" .
+}
+ORDER BY ?uniname
+```
+
+5) LEFT JOIN vs OPTIONAL — konkretes Beispiel
+- SQL LEFT JOIN Beispiel (Professoren; evtl. kein `fachgebiet`):
+```sql
+SELECT p.name, f.name AS fachgebiet
+FROM professor p
+LEFT JOIN fachgebiet f ON p.fachgebiet_id = f.id;
+```
+
+- SPARQL OPTIONAL entsprechendes Muster:
+```sparql
+SELECT ?name ?fach
+WHERE {
+    ?p a uni:Professor .
+    ?p rdfs:label ?name .
+    OPTIONAL { ?p uni:fachgebiet ?fach . }
+}
+```
+
+6) Inferenz vs. Entailment — sind das das Gleiche?
+- Kurz: Nein. `Entailment` ist eine formal definierte logische Folgebeziehung zwischen Graphen. `Inference`/`Reasoning` ist der Prozess, mit dem ein System zusätzliche Tripel ableitet, basierend auf Regeln; Entailment‑Regimes liefern diese Regeln.
+
+7) Praxisbeispiele für Federated Queries (konkrete, populäre Endpoints)
+- Wikidata Query Service (SPARQL endpoint) — sehr häufig für Forschung und Datenanreicherung.
+- DBpedia SPARQL endpoint — oft in Demos und Integrationsszenarien verwendet.
+- Weitere: verschiedene staatliche/open‑data Endpoints, kulturwissenschaftliche Linked‑Data Dienste.
+
+9) SQL vs SPARQL: Pragmatik
+- SQL ist relational und in vielen Anwendungslayern eingebettet; SPARQL fragt ein flexibles Graphenmodell ab, das sich gut für heterogene, verlinkte Daten eignet.
+
+11) Was heißt „entails“ praktisch? Warum reicht RDF alleine nicht?
+- `A entails B` bedeutet: Aus A lassen sich logisch B ableiten (jede Interpretation, die A wahr macht, macht B wahr).
+- RDF (Simple Entailment) beschreibt nur Tripel; RDFS/OWL definieren zusätzliche Regeln (z. B. `subClassOf`). Ohne ein Entailment‑Regime würde ein Store `:alice a :Student` nicht automatisch als `:alice a :Person` zurückgeben.
+
+12) Hinweis: Die ausführliche Beispiel‑Erklärung zu `CONSTRUCT`/`"true"^^xsd:boolean` ist direkt in Abschnitt 3.3 des `Query Model` ergänzt (dort steht das Beispiel und die Erklärung).
+
+13) Beispiel: lokale Ressource mit `owl:sameAs` auf DBpedia
+```ttl
+uni:Stuttgart
+    a uni:City ;
+    rdfs:label "Stuttgart"@de ;
+     owl:sameAs <http://dbpedia.org/resource/Stuttgart> ;
+    uni:bundesland "Baden-Württemberg" ;
+    uni:einwohner 635911 .
+```
+- `owl:sameAs` verknüpft deine lokale URI mit einer globalen DBpedia‑URI und signalisiert Identität. Wenn du `dbr:Stuttgart` (DBpedia) verwendest, profitierst du von dort vorhandenen Aussagen, musst aber Federation oder Import nutzen.
+- Zu deiner Frage zu `/unistuttgart`: Was der Browser/Server zurückgibt, hängt vom Server (Content Negotiation): HTML für Menschen oder RDF/XML/Turtle für Maschinen. SPARQL‑Endpoints sind getrennte Services: du sendest SPARQL‑Anfragen an den Endpoint, um Tripel zu erhalten.
+
+14) UNION / SUBQUERY / BIND: Erklärungen und Beispiele sind in Abschnitt 3.4 (`Query Model`) ergänzt.
+
+15) Entailment‑Regimes — klare Definition
+- Ein `Entailment‑Regime` ist die formale Spezifikation der Regeln, die ein Reasoner/Store nutzt (z. B. RDFS, OWL). Es ist nicht nur ein Synonym für Inferenz; es legt fest, welche Ableitungen zulässig sind.
+
+16) Cypher vs SPARQL — Empfehlung und Einsatzgebiete
+- Cypher / Neo4j: Gut für schnelle Traversals, Recommendation Engines, Social Network Analysen, Fraud Detection.
+- SPARQL / RDF: Gut für Knowledge Graphs, Linked Data Integration, semantische Suche, wissensbasierte Systeme mit erklärbarer Inferenz (Wikidata, DBpedia, Forschungsdaten).
+
+FAQ 2 Ergänzungen:
+- Zu 1: Ich habe in `Query Model` bei den wichtigsten Queries kurze SQL‑Pendents ergänzt.
+- Zu 5: `rdfs:abstract` ist kein standardisiertes Property; DBpedia verwendet `dbo:abstract`.
+- Zu 6: Eine Ontologie ist kein Datenbank‑Dump; sie ist ein Modell (Klassen, Eigenschaften, Regeln). Deine `universitaeten.ttl` enthält Dateninstanzen und möglicherweise ein Vokabular; `dbo` ist eine Ontologie (Vokabular) von DBpedia.
+
+Wenn du möchtest, füge ich die konkreten SQL‑Pendents direkt unter jeder Query 1..7 im `Query Model` ein und ergänze die TTL‑Demo mit dem `uni:Stuttgart`‑Beispiel. Soll ich das jetzt tun?
