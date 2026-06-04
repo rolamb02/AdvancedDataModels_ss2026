@@ -1,0 +1,30 @@
+# Fragen Copmarision 
+## Folie 1 
+1. bei beziehungen hast du einmal joins und kanten. kannst du das genauer ausführen, was genau kannten sind? bei joins gehts glaub darum, dass man eben verschiedene Bedingungen kombiniert. also Student hat prüfung x geschrieben und studiert an der Uni stuttgart. oder? 
+2. was genau heißt semantik? also inferenz hab ich mittlerweile verstanden, dass ist ja das gleiche wie traversierung oder? also subclassof * oder mit + lol.  
+3. Datenintegration meint halt das integrieren externen daten und uris ist dann entsprechend, dass halt mti SERVICE externe sahcen verlinkt werden könnten oder? 
+4. sobald vernetzung und semantik wichtig werden. bitte genauer erklären
+
+## Folie 2 
+1. Nur via Reifikation? was ist das genau? bitte erklären
+2. Standartisierung: was genau bedeutet das? weil bei cypher ist ja als beispiel auch definiert wie sozusagen die syntax einer db abfrage aussieht oder? oder geht es darum dass sozusagen wir definiert standarts für prädiate und objekte und subjekte wie rdfs und owl haben? 
+3. Ich dachte immer INferenz und traversal ist das gleiche. wieso ist da ein unterschied und wo besteht der genau? 
+4. uris linked data, federation. sind das alles die gleichen sachen, wo liegen unterschiede? 
+5. use case bitte begründen. danke
+
+## Folie 3 
+1. wieso einfacher einstieg tooling mit den entpsrechenden zeichen? 
+2. bitte den AI RAG Knowledge graphs erläutern. was genau meinst du damit? 
+
+
+# FAQ 2
+## Folie 1 
+was heißt nativ und auch native kanten. Kannst du das anhand eines beispiels konkret zeigen? 
+und was sind transaktionale daten, also geht es konkret um beispw. transaktionen, die ein Kunde gemacht hat bei bankaccount? 
+
+## Folie 2 
+was ist reifikation genau, kannst du bitte das Beipsiel konkretisieren, wie das aussehen würde in einer ttl datensatz, so eine Reifikation? 
+
+wenn ich in meiner eigenen ttl datenbank hier dbo prädikate nehme, dass sind das ja auch externe sachen. wieso brauche ich aber für diese externe prädikate sozusagen keine SERVICE, wenn ich aber das stuttgart wil schon? (schau dir die ttl bzw. query 7 datei an.). Ist das einfach richtig so, dass sozusagend die prädikate immer verfügbar sind, wenn ich jedoch objekte externe will, dann bruach ich service? bzw die prädikate werden bei initialisierung einfach an anfang geladen oder wie funktiioniert das genau? also wenn halt in der demo die ttl in oxigraph geladen wird oder? 
+
+bitte erläutere nochmal ausführlich. wieso genau property graph bei tiefer graphennavigation. das mit dem pointer verstehe ich nicht, wieso ist technisch betrachtet der aufwand bei property graph geringer, was genau passiert technisch. bitte anhand von beispiel verdeutlichen. 

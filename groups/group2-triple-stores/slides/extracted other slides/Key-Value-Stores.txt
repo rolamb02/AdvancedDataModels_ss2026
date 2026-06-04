@@ -1,0 +1,1572 @@
+Advanced Data Models
+
+
+
+
+Key-Value Stores
+
+Ilyas Tachakor | Nick Albrecht
+
+Sommersemester 2026
+Agenda
+
+01   Motivation                    10 Min   07   Ethik & Governance   10 Min
+
+
+
+
+02   Konzeptuelles Modell          10 Min   08   Praktische Demo      30 Min
+
+
+
+
+03   Datenstruktur                 15 Min   09   Challenge            20 Min
+
+
+
+
+04   Query-Modell (Redis-Python)   15 Min   10   Quiz                 10 Min
+
+
+
+
+05   Architektur                   10 Min   11   Diskussion           10 Min
+
+
+
+
+06   Amazon Dynamo                 30 Min
+01   Motivation
+
+     Warum Key-Value Stores? Datenmodell und Anwendungsfälle --
+     10 Minuten
+Warum brauchen wir Alternativen zu relationalen Datenbanken?
+
+
+
+  Skalierungsprobleme
+
+  Vertikale Skalierung (teurere Hardware) ist begrenzt. Horizontale Skalierung mit JOINs über viele Tabellen ist extrem komplex.
+
+
+
+  Unnötige Komplexität
+  Viele Services brauchen nur: Schlüssel rein, Wert raus. ACID-Transaktionen, Schema-Definitionen und SQL-Parsing verursachen
+  Overhead.
+
+
+  Verfügbarkeits-Tradeoff
+
+  Relationale Replikation priorisiert Konsistenz. Bei Netzwerkausfällen werden Daten lieber unavailable als inkonsistent.
+Das Key-Value Datenmodell
+        KEY                          VALUE
+
+
+     user:1001     -->      {"name":"Anna","age":29}
+
+
+
+
+    session:abc    -->        "tok_98afbd12c4e7"
+
+
+
+
+    price:item42   -->               12.99
+
+
+
+
+    config:theme   -->            "dark-mode"
+Anwendungsfälle für Key-Value Stores
+
+High-Performance Caching      Seiteninhalte und API-Antworten im RAM speichern.
+                              Beispiel: Redis als Cache-Layer vor einer SQL-Datenbank.
+
+
+Session Management            User-Sessions speichern: key = session_id,
+                              value = User-Objekt (Login-Status, Sprache, Warenkorb).
+
+
+Warenkorb (Shopping Cart)     cart:user_id --> JSON mit Artikeln.
+                              Genau so setzt Amazon es mit Dynamo ein.
+
+
+Echtzeit-Anwendungen          Aktienkurse, Sport-Scores, IoT-Sensordaten.
+                              key = AAPL, value = 182.50 -- jede Sekunde aktualisiert.
+
+
+Feature Flags und A/B-Tests   flag:dark_mode --> true/false.
+                              Schnell änderbar ohne Deployment.
+Geschichte und Entstehung
+
+1990er   Relationale Datenbanken dominieren. ACID überall.
+
+
+ 2003    Google: Bigtable -- verteilter Speicher für strukturierte Daten.
+
+
+ 2007    Amazon Dynamo Paper (SOSP) -- hochverfügbarer KV-Store für E-Commerce.
+
+
+ 2009    Redis 1.0 erscheint -- In-Memory KV-Store mit reichen Datentypen.
+
+
+2010+    Memcached, Riak, Voldemort, DynamoDB verbreiten sich.
+
+
+ heute   KV-Stores als Kernkomponente jeder modernen Cloud-Architektur.
+02   Konzeptuelles
+     Modell
+
+     Kernstruktur, Analogien und Abgrenzung -- 10 Minuten
+Analogie: Das Wörterbuch
+
+
+Kernprinzipien                                     Wörterbuch-Prinzip
+
+                                                   Schlüssel ist einzigartig. Suche erfolgt direkt,
+Eindeutiger Key
+                                                   ohne sequentielles Durchsuchen.
+Jeder Key existiert genau einmal
+
+O(1) Zugriff                                        Apfel
+                                                    Frucht, rund, rot oder grün
+Hash-Funktion garantiert konstante Zugriffszeit
+
+                                                    Datenbank
+Opaque Value
+                                                    sehr schnell, gut skalierbar
+DB kennt Struktur des Values nicht (schema-less)
+
+                                                    Redis
+Keine Relationen
+                                                    Remote Dictionary Server
+Kein JOIN, kein Schema, kein Foreign Key
+Cache im Key-Value-Store
+
+
+Funktion                                                                              Client
+
+                                                          Request key “user123”                   Value
+Cache speichert im RAM (schnell aber begrenzt)
+Lösung: Neue Cache Schicht
+                                                                                   Webserver
+ Was wird gecacht?                                                                        Cache    Schreibt in
+                                                          Hast du Key “user123”?
+                                                                                           Hit       Cache
+ Hot Data, komplexe Querriers, zuletzt Verwendete Daten
+
+                                                                                      Cache
+ Wann wird Cache gelöscht?
+ TTL, Eviction (LRU, LFU), Invalidation, restart
+                                                                             Cache Miss
+
+ Cache-Aside Pattern
+ Webserver entscheidet woher die Daten kommen                                      Datenbank
+Key-Value Store vs. Document Store
+
+                     Key-Value Store                       Document Store
+
+
+Value ist für die DB ein opaker Blob   DB versteht die Dokument-Struktur
+
+
+
+Lookup nur per exaktem Key             Queries auf Felder im Dokument möglich
+
+
+
+Extrem schnell und einfach             Flexibler, aber höherer Overhead
+
+
+
+Ideal: Caching, Sessions, Counters     Ideal: Produktkataloge, User-Profile
+
+
+
+Redis, Memcached, DynamoDB             MongoDB, CouchDB, Firestore
+03   Datenstruktur
+
+     Physische und logische Speicherung, Schema-Flexibilität -- 15
+     Minuten
+Logische Struktur: Die Hash Table
+
+       Key        Hash(Key)   Bucket                      Value
+
+
+    user:1001     0x3F4A       #2      {"name":"Anna","email":"a@ex.com"}
+
+
+
+
+   session:abc    0x12BE       #7      "tok_98afbd12"
+
+
+
+
+   price:item42   0xA1C3       #4      29.99
+
+
+
+
+    flag:beta     0x77F2       #1      true
+Physische Speicherung: In-Memory vs. On-Disk
+
+
+
+In-Memory                               On-Disk
+
+Daten liegen vollständig im RAM         Daten auf SSD/HDD (LSM-Tree oder B-Tree)
+
+
+Mikrosekunden-Latenz (Sub-ms)           Millisekunden-Latenz
+
+
+Persistenz optional via RDB-Snapshots   Persistenz ist garantiert
+
+
+Ideal für Caching und Sessions          Ideal für grosse Datenmengen (TB-Bereich)
+
+
+Begrenzter Speicher: RAM ist teuer      Langsamer als In-Memory, aber günstiger
+Schema-Flexibilität: Schema-less
+
+
+                                                                                                                Python
+
+
+# Dieselbe Datenbank -- völlig unterschiedliche Value-Strukturen
+import redis
+r = redis.Redis()
+
+r.set("user:1001", '{"name":"Anna","age":29,"premium":true}')
+r.set("user:1002", '{"name":"Bob","city":"Berlin"}')
+r.set("user:1003", '{"name":"Cara","tags":["admin","beta"]}')
+
+# Kein Schema nötig -- jeder Value darf anders strukturiert sein
+
+
+
+Risiko                                                       Unterschied zu Document Stores
+Schema-less bedeutet: Die Applikation muss Datenqualität     MongoDB kann Schema-Validierung erzwingen und auf Felder
+selbst sicherstellen. Tippfehler in Keys führen zu stillen   innerhalb des Dokuments querien. KV-Stores behandeln den
+Datenverlusten.                                              Value als Black Box.
+04   Query-Modell
+
+     Redis-Python-Befehle und Grundoperationen -- 15 Minuten
+ Grundoperationen: SET, GET, DELETE
+
+SET (Schreiben)
+ import redis                                                          Python
+ r = redis.Redis(host="localhost", port=6379, decode_responses=True)
+
+ r.set("session:user42", '{"lang":"de","theme":"dark"}')
+ r.set("counter:visits", 0)
+ r.set("price:item99", 19.99, ex=3600) # ex = TTL in Sekunden
+
+GET (Lesen)
+ val = r.get("session:user42")                                         Python
+ print(val) # --> '{"lang":"de","theme":"dark"}'
+
+ missing = r.get("nonexistent")
+ print(missing) # --> None
+
+
+DELETE (Löschen)
+                                                                       Python
+ deleted = r.delete("session:user42")
+ print(deleted) # --> 1 (Anzahl gelöschter Keys)
+
+ r.delete("key1", "key2", "key3")   # Mehrere Keys auf einmal
+ Redis-Datentypen in Python
+
+String / Counter           r.set("hits", 42)
+                           r.incr("hits")       # --> 43
+                           r.get("hits")        # --> "43"
+
+
+List (Queue/Stack)         r.lpush("queue", "job1", "job2")         # --> queue = ["job2", "job1"]
+                           r.rpop("queue")                          # --> "job1"
+                           r.lrange("queue", 0, -1)                 # --> [“job2”]
+
+
+Hash (verschachtelte KV)   r.hset("user:1", mapping={"name": "Anna", "city": "Berlin"})
+                           r.hget("user:1", "name") # --> "Anna"
+                           r.hgetall("user:1")       # --> {"name": "Anna", "city": "Berlin"}
+
+
+Set (Unique Values)        r.sadd("tags", "redis", "python", "redis")
+                           r.smembers("tags")    # --> {"redis","python"}
+                           r.sinter("tags", "other_tags")
+
+
+Sorted Set (Rankings)      r.zadd("scores", {"Anna": 100, "Bob": 85})
+                           r.zrange("scores", 0, -1, withscores=True)              #Bob,85 ; Anna,100
+                           r.zrange("scores", 0, -1, desc=True, withscores=True)   #Anna,100 ; Bob,85
+                           r.zrank("scores", "Anna") # --> 1
+                           r.zrevrank("scores", "Anna") #--> 0
+Redis-Python vs. SQL: Denken in Keys statt Tabellen
+
+SQL                          Redis-Python
+
+
+
+SELECT name, email
+FROM users
+                              user = r.hgetall("user:1001")
+WHERE id = 1001;
+                              # --> {"name":"Anna","email":"a@e.com"}
+INSERT INTO sessions
+                              r.hset("session:abc",
+  (id, token, user_id)
+                                mapping={"token": "tok123",
+VALUES
+                                         "user_id": "1001"})
+  ('abc', 'tok123', 1001);
+                              r.delete("session:abc")
+DELETE FROM sessions
+WHERE id = 'abc';
+ Wichtige weitere Redis-Python-Befehle
+
+TTL und Expiry
+                                                                                                  Python
+ r.set("cache:page", "<html>...</html>", ex=3600)   # 1 Stunde TTL
+ print(r.ttl("cache:page")) # --> 3598
+ r.persist("cache:page")     # TTL entfernen
+ r.expire("cache:page", 7200) # Neuen TTL setzen
+
+
+Multi-Operationen
+                                                                                                  Python
+ r.mset({"k1": "v1", "k2": "v2", "k3": "v3"})   # Atomar
+ values = r.mget("k1", "k2", "k3")
+ print(values) # --> ["v1", "v2", "v3"]
+
+
+
+Existenz und Pattern-Suche
+                                                                                                  Python
+ r.exists("session:abc") # --> 1 (True) oder 0 (False)
+ keys = r.keys("user:*") # Alle User-Keys (Vorsicht: blockiert, langsam bei großen Datenmengen)
+ for key in r.scan_iter("user:*"): # Produktionsfreundlich
+     print(key)
+05   Architektur
+
+     Deployment, Replikation, Partitionierung und Tools -- 10
+     Minuten
+Single Node vs. Verteiltes System
+
+Single Node                                  Verteiltes System (Cluster)
+
+
++ Einfache Einrichtung und Verwaltung        + Horizontale Skalierung (Nodes hinzufügen)
+
+
++ Keine Konsistenz-Probleme                  + Hochverfügbarkeit durch Replikation
+
+
+- Single Point of Failure                    + Partitionierung verteilt Daten und Last
+
+
+- Begrenzte Kapazität (RAM/Disk)             - Konsistenz-Tradeoffs (CAP-Theorem)
+
+
+ Geeignet für Entwicklung, kleine Projekte    Nötig für Produktion mit hohen Anforderungen
+Replikation und Partitionierung
+
+Replikation                                                              Partitionierung (Sharding)
+
+Dieselben Daten auf mehreren Nodes:                                      Verschiedene Daten auf verschiedenen Nodes:
+- Primary --> Replica(s) Replikation                                     - Key-basiertes Sharding
+- Lese-Skalierung via Replicas                                           - Range Partitioning
+- Automatischer Failover: Replica wird Primary                           - Virtual Nodes für gleichm. Verteilung
+- Beispieltool: Redis Sentinel                                           - Beispieltool: Dynamo
+
+
+
+
+CAP-Theorem
+
+Ein verteiltes System kann maximal 2 von 3 garantieren: Consistency, Availability, Partition Tolerance.
+
+
+
+
+Vergleich zu Document Stores: MongoDB nutzt ebenfalls Sharding und Replikation, routet Queries jedoch basierend auf der Dokument-
+Struktur, nicht nur nach Key-Hash.
+Open-Source Tools und Cloud-Angebote
+
+
+
+Redis                                                       AWS
+In-Memory, vielfältige Datentypen, De-facto-Standard.       ElastiCache (Redis/Memcached), DynamoDB, DAX
+
+
+Memcached                                                   Azure
+Simpler reiner In-Memory-Cache. Kein Clustering built-in.   Azure Cache for Redis, Cosmos DB (KV-API), Table Storage
+
+
+RocksDB                                                     GCP
+Embedded KV (LSM-Tree) für persistente On-Disk-Daten.       Cloud Memorystore, Firestore, Bigtable
+06   Amazon
+     Dynamo
+
+     Real-World-Fallstudie (SOSP 2007) -- 30 Minuten
+Amazon Dynamo: Kontext
+
+Amazon.com im Jahr 2007
+
+Weltweit agierendes Unternehmen. Müssen viele Kundenanfragen gleichzeitig verarbeiten.
+
+
+
+Kernanforderung:                 Kunden müssen ihren Warenkorb jederzeit nutzen können -- auch wenn Disks ausfallen,
+                                 Netzwerke flackern oder ganze Datenzentren zerstört werden.
+
+
+Hunderte Services                                                   Einfache Queries
+
+Dezentral und lose gekoppelt                                        Nur Primary-Key-Zugriff nötig
+
+
+Commodity Hardware                                                  Always-On
+
+Keine teuren Enterprise-Server                                      24/7 Verfügbarkeit ohne Downtime
+Dynamo: Design-Prinzipien
+
+Always Writeable               Schreiboperationen werden niemals abgelehnt -- auch bei Ausfällen. Verfügbarkeit hat
+                               Vorrang vor Konsistenz.
+
+
+
+Eventual Consistency           Alle Replicas werden irgendwann konsistent. Konflikte werden später aufgelöst -- nicht beim
+                               Schreiben.
+
+
+
+Dezentralisierung              Keine Master-Knoten. Jeder Node hat dieselben Verantwortlichkeiten (Symmetrie). Kein
+                               Single Point of Failure.
+
+
+
+Inkrementelle Skalierbarkeit   Nodes können einzeln hinzugefügt oder entfernt werden, ohne den gesamten Cluster zu
+                               beeinflussen.
+
+
+
+Heterogenität                  Die Lastverteilung passt sich der Kapazität einzelner Server an -- stärkere Nodes
+                               übernehmen mehr.
+Dynamo: System Interface
+
+Nur zwei Operationen -- bewusst minimalistisch:
+
+get(key)                                          put(key, context, object)
+
+Gibt ein Objekt (oder mehrere konfliktäre         Schreibt das Objekt auf die zuständigen Nodes.
+Versionen) plus einen Context zurück.             Context enthält Versions Informationen.
+
+
+
+
+Opake Byte-Arrays                                 MD5-Hashing
+
+Key und Value werden nicht interpretiert          128-Bit-Identifier zur Node-Zuordnung
+
+
+
+Kleine Objekte                                    Kein ACID
+
+Typisch < 1 MB (Warenkorb, Sessions)              Konsistenz bewusst aufgeweicht fuer Availability
+Dynamo: Consistent Hashing und Virtual Nodes
+
+Consistent Hashing                                     Virtual Nodes
+
+
+                                                       Problem: Zufällige Positionen führen zu ungleichmäßiger
+Der Hashraum wird als Ring (Kreis) modelliert. Jeder   Lastverteilung.
+Node erhält eine Position auf dem Ring. Ein Key wird
+gehasht und dem nächsten Node im Uhrzeigersinn         Lösung: Jeder physische Node erhält mehrere Positionen
+zugeordnet.                                            (Tokens) auf dem Ring. Ein physischer Node erscheint als
+                          A                            mehrere virtuelle Nodes.
+
+                                                       Vorteile:
+                                                       - Gleichmäßige Lastverteilung
+                                                       - Bei Ausfall wird Last verteilt
+                                                       - Stärkere Nodes: mehr Virtual Nodes
+                                                       - Heterogenität wird berücksichtigt
+
+            C                         B
+Dynamo: Klassisches Hashing
+
+Beispiel                     hash(key)       Server   hash(key)       Server
+
+12 Pairs, 3 Server (A,B,C)   1           A            1           A
+
+
+                             2           B            2           B
+
+Klassisches Hashing          3           C            3           C
+
+Node: hash(key) mod 3
+                             4           A            4           D
+
+
+                             5           B            5           A
+Neuer Node
+                             6           C            6           B
+Node: hash(key) mod 4
+                             7           A            7           C
+
+
+                             8           B            8           D
+
+
+                             9           C            9           A
+
+
+                             10          A            10          B
+
+
+                             11          B            11          C
+
+
+                             12          C            12          D
+Dynamo: Consistent Hashing
+
+Beispiel                                   hash(key)       Server
+                                   A
+12 Pairs                                   1           A
+
+
+                                   4       2           A
+
+
+Consistent hashing                         3           A
+
+Node: Bereich auf dem
+                                           4           A
+Ring
+                                           5           B
+
+
+                                           6           B
+
+
+                                           7           B
+
+
+                                           8           B
+Node             Positionen
+                                           9           C
+
+A (4)            1-4          C        B
+                                           10          C
+
+
+B (8)            5-8                   8   11          C
+                              12
+                                           12          C
+C (12)           9-12
+Dynamo: Consistent Hashing
+
+Beispiel                                    hash(key)       Server
+                                   A
+12 Pairs                                    1           A
+
+
+                                   4        2           A
+
+
+Consistent hashing                          3           A
+
+Node: Bereich auf dem
+                                            4           A
+Ring
+                                            5           B
+
+Neuer Node                                  6           B
+
+Stelle 10
+                                            7           B
+
+
+                                            8           B
+Node             Positionen
+                                            9           D
+A (4)            1-4          C         B
+                                            10          D
+B (8)            5-8
+                                   10
+                              12        8   11          C
+
+C (12)           11-12
+                                            12          C
+                                   D
+D (10)           9-10
+Dynamo: Consistent Hashing
+
+Beispiel                hash(key)       Server   hash(key)       Server
+
+12 Pairs                1           A            1           A
+
+
+                        2           A            2           A
+
+
+Consistent hashing      3           A            3           A
+
+Node: Bereich auf dem
+                        4           A            4           A
+Ring
+                        5           B            5           B
+
+Neuer Node              6           B            6           B
+
+Stelle 10
+                        7           B            7           B
+
+
+                        8           B            8           B
+
+
+                        9           C            9           D
+
+
+                        10          C            10          D
+
+
+                        11          C            11          C
+
+
+                        12          C            12          C
+Dynamo: Virtual Nodes
+
+Virtual Nodes
+Zufällig verteilte virtuelle                                A
+Nodes eines Servers
+
+Data                   Virtual Node   Physischer Node
+
+1                      B1             B
+
+2                      B1             B
+
+3                      C1             C
+
+4                      A2             A
+
+5                      C3             C
+                                                        C       B
+6                      A2             A
+
+7                      B3             B
+
+…                      …              …
+Dynamo: Replikation mit Preference Lists
+
+N Replicas
+                   Jeder Key wird auf N Hosts repliziert (typisch N=3).
+                   Coordinator speichert lokal + repliziert auf N-1 Nachbarn im Ring.
+
+
+
+Preference List
+                   Geordnete Liste der Nodes für einen Key.
+                   Enthält > N Einträge, um Ausfälle abzufangen.
+
+
+
+Beispiel (N=3)
+                   Key K --> Node B koordiniert, speichert lokal.
+                   Repliziert auf C und D. Preference List: [B, C, D, E, ...].
+
+
+
+Multi-Datacenter
+                   Preference List verteilt Nodes über mehrere Datenzentren.
+                   Ganzer DC-Ausfall wird ohne Datenverlust überlebt.
+Dynamo: Versionierung mit Vector Clocks
+
+Eventual Consistency                                Vector Clocks
+
+put() kehrt zurück, bevor alle Replicas
+                                                     A: [2|1|0]
+aktualisiert sind. Mehrere Versionen können          B: [1|1|0]        <-Anfrage (B=Coordinator node)
+gleichzeitig existieren.                             C: [1|0|0]
+
+                                                     A dominiert -> Wert genommen
+  Syntaktische Rekonziliation (Vector Clocks)
+                                                     A: [2|0|1]
+  System erkennt automatisch die neueste Version.
+                                                     B: [1|1|0]        <-Anfrage (B=Coordinator node)
+                                                     C: [1|0|0]
+
+  Semantische Rekonziliation                         keine Dominanz -> Konflikt, beide Versionen
+  Bei Konflikten: Applikation merged Versionen.      existieren parallel, Rekonziliation nötig
+
+
+                                                    Node dominiert, wenn alle Werte von z.B. Node A >= B sind
+Beispiel: Shopping Cart merged
+verschiedene Warenkorb-Versionen.
+Dynamo: Quorum (N, R, W) und Sloppy Quorum
+
+Quorum-Parameter                                                       Sloppy Quorum + Hinted Handoff
+N = Anzahl Replicas (typisch: 3)                                       Kein striktes Quorum! Reads/Writes gehen an
+R = Schreib Quorum                                                     die ersten N gesunden Nodes.
+W = Lese Quorum
+                                                                       Node A fällt aus --> Replica geht an Node D
+R + W > N --> Quorum. Standard: (3, 2, 2)                              (mit Hint). Nach Recovery: Nachlieferung.
+
+
+Konfigurierbare Tradeoffs:
+
+W = 1                    Max. Verfügbarkeit, Risiko für Inkonsistenz
+
+
+
+W = N                    Max. Konsistenz, niedrige Verfügbarkeit
+
+
+
+R = 1, W = N             High-Performance Read Engine (z.B. Produktkatalog)
+Dynamo: Anti-Entropy und Membership
+
+Merkle Trees (Anti-Entropy)                                         Gossip-Protokoll
+Zur effizienten Replikat-Synchronisation. Ein Hash-Baum,            Membership-Informationen werden dezentral über ein
+dessen Blätter die Hashes einzelner Keys sind.                      Gossip-Protokoll verbreitet. Jede Sekunde kontaktiert ein
+Elternknoten hashen ihre Kinder.                                    Node einen zufällig gewählten Peer.
+
+Vergleich: Zwei Nodes tauschen Root-Hashes aus. Gleich?             Seed-Nodes verhindern logische Partitionen im Ring. Failure
+Alles synchron. Unterschiedlich? Nur die betroffenen                Detection: Ein Node gilt als ausgefallen, wenn er auf
+Branches werden tiefer verglichen.                                  Nachrichten nicht antwortet.
+
+Minimiert Datentransfer und Disk-Reads.                             Vorteil: Kein zentrales Registry. Symmetrisch.
+
+
+
+Read Repair
+
+
+Nach einem Read wartet der Coordinator kurz auf späte Antworten. Enthalten diese veraltete Versionen, werden die
+betroffenen Nodes opportunistisch mit der neuesten Version aktualisiert. Das entlastet den Anti-Entropy-Prozess erheblich.
+Dynamo: Nutzungsmuster
+
+Business-Logic Reconciliation
+
+Applikation führt eigene Merge-Logik aus. Beispiel: Shopping Cart merged verschiedene Warenkorb-Versionen.
+
+
+Timestamp-based Reconciliation
+
+Last-Write-Wins anhand physischer Timestamps. Einfacher, aber weniger präzise. Beispiel: Session-Management.
+
+
+High-Performance Read Engine
+
+R=1, W=N. Viele Reads, wenige Writes. Genutzt als autoritativer Cache für Produktkataloge.
+Dynamo: Ergebnisse in Produktion
+
+
+99.9995%                                 < 300ms                              3 Replicas                                           0
+     Verfuegbarkeit                           SLA (p99.9)                         (N, R, W) = (3, 2, 2)                        Datenverluste
+
+
+
+
+Holiday Season: Shopping Cart Service bediente Millionen Requests mit über 3 Mio. Checkouts pro Tag -- ohne Downtime.
+
+
+Divergente Versionen sind selten: 99.94% der Anfragen sahen genau eine Version. Nur 0.00057% sahen zwei.
+
+
+Client-driven Koordination senkte die p99.9-Latenz um mindestens 30ms gegenüber dem Load-Balancer-Ansatz.
+
+
+Write-Buffering reduzierte die p99.9-Latenz um Faktor 5 bei nur 1.000 gepufferten Objekten.
+
+
+Partitionierungsstrategie 3 (Q/S Tokens, feste Partitionen) erzielte die beste Lastverteilung und vereinfachte Archivierung.
+07   Ethik &
+     Governance
+     Verantwortungsvoller Umgang mit Key-Value Stores -- 10
+     Minuten
+Datenschutz und DSGVO-Konformität
+
+Frage: Welche personenbezogenen Daten können in einem Redis-Cache landen -- und wüsste man es?
+Datenschutz und DSGVO-Konformität
+
+Frage: Welche personenbezogenen Daten können in einem Redis-Cache landen -- und wüsste man es?
+
+
+Datenpersistenz unklar                In-Memory KV-Stores ohne Persistenz: Bei Neustart sind Daten weg -- aber kein Audit-
+                                      Trail, wann was gespeichert war.
+
+
+
+Personenbezogene Daten                Session-IDs, User-Tokens, IP-Adressen, Suchverläufe -- oft ohne explizite
+                                      Dokumentation gecached.
+
+
+
+Datenlokalisierung                    Cloud-Dienste (AWS ElastiCache) können Daten in andere Länder replizieren. DSGVO
+                                      verlangt Datenhaltung im EWR.
+
+
+
+Recht auf Löschung (Art. 17 DSGVO)    TTL-basiertes Ablaufen von Keys ist kein vollständiger Ersatz für aktive Löschung
+                                      personenbezogener Daten.
+Bias durch Caching-Mechanismen
+
+Das Feedback-Loop-Problem
+Populärer Content wird gecached --> schnellere Auslieferung --> wird häufiger angeklickt --> wird noch stärker gecached.
+Seltene Inhalte haben einen systematischen Nachteil.
+
+
+
+Beispiel: Nachrichten-Plattform                                   Beispiel: E-Commerce
+
+Top-100-Artikel gecached, Nischen-Themen                          Empfehlungen basieren auf gecachten Bestsellern.
+nicht. Minoritäre Inhalte verschwinden.                           Neue oder spezialisierte Produkte benachteiligt.
+
+
+
+Gegenmassnahmen:
+
+Cache-Strategie bewusst designen (nicht nur LRU)                  Monitoring: Welche Inhalte werden nie gecached?
+
+
+Zufällige Exploration einbauen (Epsilon-Greedy)                   Regelmäßige Audits der Cache-Hit-Verteilung
+Datenqualität bei Schema-less Systemen
+
+Risiken                                                                 Gegenmassnahmen
+Falsche Datentypen                                                       Key-Namenskonventionen
+String statt Integer im Value                                            z.B. user:{id}:profile dokumentieren
+
+
+Tippfehler in Keys                                                       Schema-Validierung
+usre:1001 statt user:1001 --> stiller Verlust                            Pydantic, JSON Schema im Application-Layer
+
+
+Inkonsistente Strukturen                                                 Monitoring
+Manche Objekte mit email-Feld, andere ohne                               Anomalie-Erkennung auf Key-Patterns
+
+
+Keine referenzielle Integrität                                           Data-Quality-Audits
+Gelöschte User bleiben als Waisen                                        Regelmäßig prüfen und bereinigen
+
+
+In Document Stores (MongoDB) kann Schema-Validierung direkt in der DB erzwungen werden -- in KV-Stores nicht.
+Erklärbarkeit und Auditierbarkeit
+
+Wer hat wann welchen Wert gesetzt -- und warum?
+
+  Kein eingebautes Audit-Log
+  KV-Stores bieten typischerweise keine Query-History oder Daten-Lineage. Wenn ein Wert falsch ist, gibt es keinen DB-seitigen
+  Hinweis, wer ihn wann geändert hat.
+
+  Keine Transaktions-Historie
+  Anders als relationale Datenbanken mit Transaction Logs oder Redo-Logs fehlt in vielen KV-Stores ein vollständiges Write-
+  Ahead-Log für Compliance-Zwecke.
+
+  Regulatorische Anforderungen
+  DSGVO Art. 30 verlangt ein Verzeichnis von Vorbereitungstätigkeiten. Branchenregulierung (z.B. Finanz) fordert Audit-Trails für
+  Datenänderungen.
+
+  Empfehlung
+  Applikationsseitiges Logging implementieren. Änderungen in einem separaten Audit-Stream festhalten (z.B. Redis Streams,
+  Kafka, Elasticsearch).
+Governance-Empfehlungen: Zusammenfassung
+
+Key-Namenskonventionen
+                          Dokumentierte Naming-Patterns (z.B. entity:id:field). Automatisierte Checks.
+
+
+TTL-Policies
+                          Personenbezogene Daten mit TTL versehen. Kein unendliches Caching von PII.
+
+
+Verschlüsselung
+                          At-rest und in-transit.
+
+
+Audit-Logging
+                          Application-Layer Logs für alle Schreiboperationen.
+
+
+Monitoring und Alerting
+                          Cache-Hit-Raten, Key-Verteilung, Memory-Nutzung. Alerts bei ungewöhnlichen Mustern.
+
+
+Dokumentation             Data Dictionary pflegen: Welche Key-Patterns existieren, wer ist Owner, welche Daten
+                          stecken drin?
+08   Praktische Demo
+
+     30 Minuten
+09   Challenge
+
+     20 Minuten
+10   Quiz
+
+     Wissensüberprüfung -- 10 Minuten
+Frage 1
+
+
+
+ Was ist die Zeitkomplexität eines Key-Lookups in einem Key-Value Store?
+Frage 1
+
+
+
+ Was ist die Zeitkomplexität eines Key-Lookups in einem Key-Value Store?
+
+
+
+
+ A        Quadratisch
+Frage 1
+
+
+
+ Was ist die Zeitkomplexität eines Key-Lookups in einem Key-Value Store?
+
+
+
+
+ A        Quadratisch                                     B      Logarithmisch
+Frage 1
+
+
+
+ Was ist die Zeitkomplexität eines Key-Lookups in einem Key-Value Store?
+
+
+
+
+ A        Quadratisch                                     B      Logarithmisch
+
+
+
+
+  C       Linear
+Frage 1
+
+
+
+ Was ist die Zeitkomplexität eines Key-Lookups in einem Key-Value Store?
+
+
+
+
+ A        Quadratisch                                     B      Logarithmisch
+
+
+
+
+  C       Linear                                          D      Konstant
+Frage 2
+
+
+
+ Welcher Python-Redis-Befehl setzt einen Key mit automatischer Ablaufzeit von 60 Sekunden?
+Frage 2
+
+
+
+ Welcher Python-Redis-Befehl setzt einen Key mit automatischer Ablaufzeit von 60 Sekunden?
+
+
+
+
+ A        r.set("k", "v", timeout=60)
+Frage 2
+
+
+
+ Welcher Python-Redis-Befehl setzt einen Key mit automatischer Ablaufzeit von 60 Sekunden?
+
+
+
+
+ A        r.set("k", "v", timeout=60)                    B      r.set("k", "v", ex=60)
+Frage 2
+
+
+
+ Welcher Python-Redis-Befehl setzt einen Key mit automatischer Ablaufzeit von 60 Sekunden?
+
+
+
+
+ A        r.set("k", "v", timeout=60)                    B      r.set("k", "v", ex=60)
+
+
+
+
+  C       r.insert("k", "v", ttl=60)
+Frage 2
+
+
+
+ Welcher Python-Redis-Befehl setzt einen Key mit automatischer Ablaufzeit von 60 Sekunden?
+
+
+
+
+ A        r.set("k", "v", timeout=60)                    B      r.set("k", "v", ex=60)
+
+
+
+
+  C       r.insert("k", "v", ttl=60)                     D      r.put("k", "v", expire=60)
+Frage 3
+
+
+
+ Was unterscheidet einen Key-Value Store grundlegend von einem Document Store?
+Frage 3
+
+
+
+ Was unterscheidet einen Key-Value Store grundlegend von einem Document Store?
+
+
+
+
+ A        KV-Stores sind immer schneller
+Frage 3
+
+
+
+ Was unterscheidet einen Key-Value Store grundlegend von einem Document Store?
+
+
+
+
+ A        KV-Stores sind immer schneller               B     KV-Stores können kein JSON speichern
+Frage 3
+
+
+
+ Was unterscheidet einen Key-Value Store grundlegend von einem Document Store?
+
+
+
+
+ A        KV-Stores sind immer schneller               B     KV-Stores können kein JSON speichern
+
+
+
+
+          Document Stores verstehen die Struktur des
+  C
+          Values
+Frage 3
+
+
+
+ Was unterscheidet einen Key-Value Store grundlegend von einem Document Store?
+
+
+
+
+ A        KV-Stores sind immer schneller               B     KV-Stores können kein JSON speichern
+
+
+
+
+          Document Stores verstehen die Struktur des
+  C                                                    D     KV-Stores unterstützen kein Clustering
+          Values
+Frage 4
+
+
+
+ Amazon Dynamo priorisiert im CAP-Theorem welche Kombination?
+Frage 4
+
+
+
+ Amazon Dynamo priorisiert im CAP-Theorem welche Kombination?
+
+
+
+
+ A        Consistency + Availability
+Frage 4
+
+
+
+ Amazon Dynamo priorisiert im CAP-Theorem welche Kombination?
+
+
+
+
+ A        Consistency + Availability                  B     Consistency + Partition Tolerance
+Frage 4
+
+
+
+ Amazon Dynamo priorisiert im CAP-Theorem welche Kombination?
+
+
+
+
+ A        Consistency + Availability                  B     Consistency + Partition Tolerance
+
+
+
+
+  C       Availability + Partition Tolerance
+Frage 4
+
+
+
+ Amazon Dynamo priorisiert im CAP-Theorem welche Kombination?
+
+
+
+
+ A        Consistency + Availability                  B     Consistency + Partition Tolerance
+
+
+
+
+  C       Availability + Partition Tolerance          D     Alle drei gleichzeitig
+Frage 4
+
+
+
+ Amazon Dynamo priorisiert im CAP-Theorem welche Kombination?
+
+
+
+
+ A        Consistency + Availability                                     B      Consistency + Partition Tolerance
+
+
+
+
+  C       Availability + Partition Tolerance                            D       Alle drei gleichzeitig
+
+
+
+
+ Erklärung: Dynamo ist ein AP-System: Writes werden nie abgelehnt. Konsistenz wird durch Eventual Consistency und
+ applikationsseitige Rekonziliation erreicht.
+Frage 5
+
+
+
+ Welches Verfahren nutzt Dynamo zur Versionierung und Konflikterkennung?
+Frage 5
+
+
+
+ Welches Verfahren nutzt Dynamo zur Versionierung und Konflikterkennung?
+
+
+
+
+ A        Timestamps (Last-Write-Wins)
+Frage 5
+
+
+
+ Welches Verfahren nutzt Dynamo zur Versionierung und Konflikterkennung?
+
+
+
+
+ A        Timestamps (Last-Write-Wins)                  B     Two-Phase Commit
+Frage 5
+
+
+
+ Welches Verfahren nutzt Dynamo zur Versionierung und Konflikterkennung?
+
+
+
+
+ A        Timestamps (Last-Write-Wins)                  B     Two-Phase Commit
+
+
+
+
+  C       Optimistic Locking
+Frage 5
+
+
+
+ Welches Verfahren nutzt Dynamo zur Versionierung und Konflikterkennung?
+
+
+
+
+ A        Timestamps (Last-Write-Wins)                  B     Two-Phase Commit
+
+
+
+
+  C       Optimistic Locking                            D     Vector Clocks
+Frage 5
+
+
+
+ Welches Verfahren nutzt Dynamo zur Versionierung und Konflikterkennung?
+
+
+
+
+ A        Timestamps (Last-Write-Wins)                                     B       Two-Phase Commit
+
+
+
+
+  C       Optimistic Locking                                               D       Vector Clocks
+
+
+
+
+ Erklärung: Vector Clocks sind Listen von (Node, Counter)-Paaren, die Kausalität zwischen Versionen erfassen. Parallele Branches
+ bedeuten Konflikte.
+Frage 6
+
+
+
+ Was ist der Standardwert für die Konfiguration (N, R, W) in Dynamo?
+Frage 6
+
+
+
+ Was ist der Standardwert für die Konfiguration (N, R, W) in Dynamo?
+
+
+
+
+ A        (1, 1, 1)
+Frage 6
+
+
+
+ Was ist der Standardwert für die Konfiguration (N, R, W) in Dynamo?
+
+
+
+
+ A        (1, 1, 1)                                        B     (3, 2, 2)
+Frage 6
+
+
+
+ Was ist der Standardwert für die Konfiguration (N, R, W) in Dynamo?
+
+
+
+
+ A        (1, 1, 1)                                        B     (3, 2, 2)
+
+
+
+
+  C       (5, 3, 3)
+Frage 6
+
+
+
+ Was ist der Standardwert für die Konfiguration (N, R, W) in Dynamo?
+
+
+
+
+ A        (1, 1, 1)                                        B     (3, 2, 2)
+
+
+
+
+  C       (5, 3, 3)                                        D     (3, 1, 3)
+Frage 6
+
+
+
+ Was ist der Standardwert für die Konfiguration (N, R, W) in Dynamo?
+
+
+
+
+ A        (1, 1, 1)                                                       B       (3, 2, 2)
+
+
+
+
+  C       (5, 3, 3)                                                      D        (3, 1, 3)
+
+
+
+
+ Erklärung: N=3 Replicas, R=2 für Reads, W=2 für Writes. Diese Konfiguration balanciert Performance, Konsistenz und Verfügbarkeit.
+Frage 7
+
+
+
+ Welches DSGVO-Recht ist für In-Memory-Caching besonders herausfordernd?
+Frage 7
+
+
+
+ Welches DSGVO-Recht ist für In-Memory-Caching besonders herausfordernd?
+
+
+
+
+ A        Recht auf Datenportabilität (Art. 20)
+Frage 7
+
+
+
+ Welches DSGVO-Recht ist für In-Memory-Caching besonders herausfordernd?
+
+
+
+
+ A        Recht auf Datenportabilität (Art. 20)        B     Recht auf Auskunft (Art. 15)
+Frage 7
+
+
+
+ Welches DSGVO-Recht ist für In-Memory-Caching besonders herausfordernd?
+
+
+
+
+ A        Recht auf Datenportabilität (Art. 20)        B     Recht auf Auskunft (Art. 15)
+
+
+
+
+  C       Recht auf Löschung (Art. 17)
+Frage 7
+
+
+
+ Welches DSGVO-Recht ist für In-Memory-Caching besonders herausfordernd?
+
+
+
+
+ A        Recht auf Datenportabilität (Art. 20)        B     Recht auf Auskunft (Art. 15)
+
+
+
+
+  C       Recht auf Löschung (Art. 17)                 D     Recht auf Widerspruch (Art. 21)
+Frage 7
+
+
+
+ Welches DSGVO-Recht ist für In-Memory-Caching besonders herausfordernd?
+
+
+
+
+ A        Recht auf Datenportabilität (Art. 20)                              B       Recht auf Auskunft (Art. 15)
+
+
+
+
+  C       Recht auf Löschung (Art. 17)                                      D        Recht auf Widerspruch (Art. 21)
+
+
+
+
+ Erklärung: TTL-basiertes Ablaufen ist kein Ersatz für aktive Löschung. Art. 17 (Right to be Forgotten) muss explizit implementiert
+ werden.
+Frage 8
+
+
+
+ Wie heisst das Verfahren, mit dem Dynamo bei temporären Ausfällen Replicas an Ersatz-Nodes
+ weiterleitet?
+Frage 8
+
+
+
+ Wie heisst das Verfahren, mit dem Dynamo bei temporären Ausfällen Replicas an Ersatz-Nodes
+ weiterleitet?
+
+
+
+
+ A        Read Repair
+Frage 8
+
+
+
+ Wie heisst das Verfahren, mit dem Dynamo bei temporären Ausfällen Replicas an Ersatz-Nodes
+ weiterleitet?
+
+
+
+
+ A        Read Repair                                    B     Merkle Tree Sync
+Frage 8
+
+
+
+ Wie heisst das Verfahren, mit dem Dynamo bei temporären Ausfällen Replicas an Ersatz-Nodes
+ weiterleitet?
+
+
+
+
+ A        Read Repair                                    B     Merkle Tree Sync
+
+
+
+
+  C       Hinted Handoff
+Frage 8
+
+
+
+ Wie heisst das Verfahren, mit dem Dynamo bei temporären Ausfällen Replicas an Ersatz-Nodes
+ weiterleitet?
+
+
+
+
+ A        Read Repair                                    B     Merkle Tree Sync
+
+
+
+
+  C       Hinted Handoff                                 D     Gossip Forwarding
+Frage 8
+
+
+
+ Wie heisst das Verfahren, mit dem Dynamo bei temporären Ausfällen Replicas an Ersatz-Nodes
+ weiterleitet?
+
+
+
+
+ A        Read Repair                                                     B       Merkle Tree Sync
+
+
+
+
+  C       Hinted Handoff                                                  D       Gossip Forwarding
+
+
+
+
+ Erklärung: Bei Hinted Handoff geht die Replica an einen Ersatz-Node mit einem Hint (Vermerk), an wen sie eigentlich gehört. Nach
+ Recovery wird nachgeliefert.
+Frage 9
+
+
+
+ Wie kann Caching-Bias in Empfehlungssystemen reduziert werden?
+Frage 9
+
+
+
+ Wie kann Caching-Bias in Empfehlungssystemen reduziert werden?
+
+
+
+
+ A        Nur populäre Inhalte cachen
+Frage 9
+
+
+
+ Wie kann Caching-Bias in Empfehlungssystemen reduziert werden?
+
+
+
+
+ A        Nur populäre Inhalte cachen                   B     Größeren Redis-Server nutzen
+Frage 9
+
+
+
+ Wie kann Caching-Bias in Empfehlungssystemen reduziert werden?
+
+
+
+
+ A        Nur populäre Inhalte cachen                   B     Größeren Redis-Server nutzen
+
+
+
+
+  C       Cache komplett deaktivieren
+Frage 9
+
+
+
+ Wie kann Caching-Bias in Empfehlungssystemen reduziert werden?
+
+
+
+
+ A        Nur populäre Inhalte cachen                   B     Größeren Redis-Server nutzen
+
+
+
+
+  C       Cache komplett deaktivieren                   D     Epsilon-Greedy Exploration einbauen
+Frage 9
+
+
+
+ Wie kann Caching-Bias in Empfehlungssystemen reduziert werden?
+
+
+
+
+ A        Nur populäre Inhalte cachen                                      B       Größeren Redis-Server nutzen
+
+
+
+
+  C       Cache komplett deaktivieren                                      D       Epsilon-Greedy Exploration einbauen
+
+
+
+
+ Erklärung: Ähnlich wie bei Reinforcement Learning kann zufällige Exploration sicherstellen, dass auch weniger populäre Inhalte eine
+ Chance bekommen.
+11   Diskussion
+
+     10 Minuten
+             [1] DeCandia, G. et al. (2007). Dynamo: Amazon's Highly Available Key-value Store. SOSP '07.
+
+
+             [2] Everpure (2024). What Are Key-value Databases? everpuredata.com/knowledge/key-
+             value-databases
+
+
+             [3] Redis Documentation. Commands Reference. redis.io/commands
+
+
+
+Referenzen   [4] Brewer, E. (2000). Towards Robust Distributed Systems (CAP Theorem). PODC Keynote.
+
+
+
+& Quellen    [5] Karger, D. et al. (1997). Consistent Hashing and Random Trees. STOC '97.
+
+
+             [6] Lamport, L. (1978). Time, Clocks, and the Ordering of Events. ACM Communications 21(7).
+
+
+             [7] European Parliament (2016). DSGVO/GDPR. Art. 17 -- Right to Erasure.
+
+
+             [8] Redis Ltd. Redis Cluster Specification. redis.io/docs/management/scaling
+
+
+             [9] redis-py Documentation. redis.readthedocs.io

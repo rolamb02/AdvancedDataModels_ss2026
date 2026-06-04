@@ -1,0 +1,807 @@
+Grundlagen
+Vom relationalen Modell zur Vektordatenbank
+Relationale Datenbanken: Aufbau
+
+    Daten sind strukturiert, tabellarisch und über Relationen verknüpft.
+
+Tabelle: Kunden                                                   Tabelle: Bestellungen
+
+KundenID      Name                     Stadt                      BestellID     KundenID         Produkt
+
+1             Anna Müller              Berlin                     101           1                Laptop
+
+2             Ben Schmidt              München                    102           1                Maus
+
+3             Clara Weber              Hamburg                    103           2                Tastatur
+
+
+Tabellen                                   Geordnet                                 Relationen
+Daten in Zeilen und Spalten – jede         Jedes Feld hat einen festen Typ:         Tabellen sind über Schlüssel
+Zeile ein Datensatz, jede Spalte ein       Text, Zahl, Datum – keine freien         verbunden – ermöglicht komplexe,
+Attribut                                   Strukturen                               verschachtelte Abfragen
+Relationale Datenbanken: Stärken & Schwächen
+
+Stärken                                                     Schwächen
+
+      Exakte Suche                                                Unstrukturierte Daten
+ ✓ WHERE preis = 49.99 — findet genau diesen Wert,           ✗ Bilder, Audiodateien, Fließtext — kein festes Schema,
+      immer.                                                      kein natürlicher Platz.
+
+
+      Filtern über Relationen                                     Ähnlichkeitssuche
+ ✓ JOIN über Tabellen — alle Bestellungen eines Kunden       ✗ SQL kennt kein "ähnlich wie" — nur exakte Werte
+      aus Berlin.                                                 oder Ranges.
+
+
+      Konsistenz & Integrität
+ ✓ Transaktionen, ACID-Garantien, keine inkonsistenten
+      Zustände.
+
+
+
+                                Genau diese Schwächen löst eine Vektordatenbank.
+Was sind Vektordatenbanken?
+
+ Eine Datenbank, die für unstrukturierte Daten und Ähnlichkeitssuche gebaut ist.
+
+📄 Unstrukturierte Daten                                    🔍 Ähnlichkeitssuche
+Texte, Bilder, Audio, Video — keine festen Schemas         Statt "exakt gleich" findet sie "semantisch ähnlich" — das
+erforderlich. Die Daten müssen nicht in Tabellen passen.   nächste Bild, den ähnlichsten Text, das relevanteste
+                                                           Dokument.
+
+
+
+
+🤖 Kein manuelles Labeln                                    📐 Vektoren als Repräsentation
+Embedding-Modelle extrahieren Bedeutung automatisch.       Jedes Objekt wird als Zahlenvektor im hochdimensionalen
+Menschen müssen Daten nicht kategorisieren.                Raum dargestellt. Ähnlichkeit = geometrische Nähe.
+Embedding-Modelle: Überblick
+
+ Wie werden Texte, Bilder oder Audio in Vektoren umgewandelt?
+
+ Frequenzbasiert                                       Vorhersagebasiert
+ Basiert auf dem Zählen von Wort-Vorkommen und         Lernt Wortbedeutungen aus dem Kontext durch neuronale
+ -Häufigkeiten                                         Netze
+
+
+   Co-Occurrence Matrix                                  Word2Vec (CBOW / SkipGram)
+
+
+
+   TF-IDF                                                GloVe
+
+
+
+                                                         Kontextuell
+Co-Occurrence Matrix
+
+    Kernidee: Wörter, die oft zusammen auftreten, haben ähnliche Bedeutung.
+
+•     Zählt Wort-Paar-Auftritte in einem festen                   Beispiel: Fenster = 2
+      Kontext-Fenster
+•     Erzeugt eine Matrix der Größe Vokabular × Vokabular                       Hund      isst   Fleisch   Katze   Fisch
+
+•     Jede Zeile repräsentiert ein Wort als Vektor
+                                                                      Hund        0        1       1        0       0
+•     Einfache Repräsentation — aber Dimension wächst
+      mit dem Vokabular                                               isst        1        0       2        2       1
+
+•     Bsp: “Hund isst Fleisch”, “Katze isst Fisch”, “Katze isst       Fleisch     1        2       0        1       1
+
+      Fleisch”                                                        Katzte      0        2       1        0       1
+
+                                                                      Fisch       0        1       0        1       0
+TF-IDF – Term Frequency · Inverse Document Frequency
+
+  Kernidee: Wichtigkeit eines Wortes im Dokument relativ zum gesamten Korpus bestimmen.
+
+TF – Term Frequency (lokal)                                      IDF – Inverse Document Frequency (global)
+Wie oft kommt ein Wort im aktuellen Dokument vor?                Wie selten ist das Wort im gesamten Korpus?
+
+TF(t, d) = Anzahl von t in d / Gesamtwörter in d                 IDF(t) = log(N / df(t))
+
+→ Häufiges Wort im Dokument = hoher TF-Wert                      → Seltenes Wort im Korpus = hoher IDF-Wert
+
+  TF-IDF = TF × IDF — stark bei seltenen, aussagekräftigen Begriffen. Schwach bei Stoppwörtern wie „der",
+  „ist", „und".
+
+  Beispiel:
+  In einem Medizin-Dokument: „Aspirin" hat hohen TF (oft genannt) und hohen IDF (selten in anderen Dokumenten) → hoher
+  TF-IDF Score. „Der" hat hohen TF aber niedrigen IDF → niedriger Score.
+Word2Vec – CBOW & SkipGram
+
+   Kernidee: Vorhersage-basierte Embeddings durch neuronale Netze.
+
+
+  CBOW                                                        SkipGram
+  Continuous Bag of Words                                     Zielwort → Kontext
+
+  Kontext → Zielwort                                          „Hund"
+                                                              → Vorhersage: „bellt", „treues", „Tier"
+  „Der ___ bellt laut"
+  → Vorhersage: „Hund"                                        Besonders gut bei seltenen Wörtern.
+
+  Nutzt mehrere Kontextwörter gleichzeitig.
+
+
+   Die Embeddings sind die trainierten Gewichte des neuronalen Netzes — nicht das Ergebnis der Vorhersage.
+
+Neuronales Netz (vereinfacht):
+
+          Input                     Hidden              Output
+        (Kontext)                (Embeddings)          (Zielwort)
+GloVe – Global Vectors for Word Representation
+
+    Kernidee: Das Beste aus beiden Welten — globale Co-Occurrence-Statistik + effiziente Vektoren.
+
+•     Nutzt globale Co-Occurrence-Statistik des gesamten                                 Vergleich
+      Korpus — nicht nur lokale Kontext-Fenster
+                                                                                                               Lokal         Global
+•     Matrix-Faktorisierung auf Log-Wahrscheinlichkeiten der
+      Kookkurrenzen                                                                           Co-Occ.           ✓              ✗
+
+•     Skaliert exzellent auf große Datensätze                                                Word2Vec           ✓              ✗
+
+•     Kombination: statistische Stärke von Co-Occurrence
+                                                                                              GloVe             ✓              ✓
+      Matrix + Effizienz von Word2Vec
+
+
+
+    Beispiel:
+    GloVe lernt: P(Eis | Wasser) ist viel höher als P(Feuer | Wasser). Diese Verhältnisse aus dem gesamten Korpus kodiert es direkt
+    in die Vektoren — präziser als lokale Fenster allein.
+Semantische Ähnlichkeit
+
+ Ähnlichkeit ist Distanz im Vektorraum.                2D Vektorraum (vereinfacht)
+
+ •   Jedes Wort, Dokument oder Objekt wird als Punkt
+     im hochdimensionalen Raum dargestellt
+ •   Semantisch ähnliche Konzepte liegen geometrisch       Mann
+     nah beieinander
+                                                          nah       Junge
+ •   Die Distanz zwischen zwei Punkten = Maß für
+     Unähnlichkeit
+                                                                         weit
+ •   Die Richtung des Vektors trägt die semantische
+     Information
+                                                                                     Auto
+Kosinusähnlichkeit
+
+ Misst den Winkel zwischen zwei Vektoren — nicht ihre Länge.
+
+Berechnung & Wertebereich                                                 Winkel θ zwischen A und B
+Wertebereich: −1 bis +1
+ +1 = gleiche Richtung (sehr ähnlich)
+ 0 = orthogonal (kein Zusammenhang)                                                                   A
+ −1 = entgegengesetzt
+
+
+Besonderheit
+Ignoriert die Länge der Vektoren komplett — nur die Richtung zählt. Ein
+kurzes und ein langes Dokument über dasselbe Thema haben hohe                                             B
+Kosinusähnlichkeit.
+
+Typischer Einsatz
+Dokumentenähnlichkeit, Texte unterschiedlicher Länge vergleichen,
+Empfehlungssysteme.
+Euklidische Distanz (L2)
+
+ Misst die direkte "Luftlinie" zwischen zwei Punkten im Vektorraum.
+
+Berechnung                                                                   L2-Distanz im 2D-Raum
+
+Kleine Distanz = ähnlich Große Distanz = unähnlich
+                                                                         A
+
+
+Unterschied zu Kosinus
+L2 berücksichtigt sowohl Richtung als auch Länge. Zwei Vektoren mit                      d(A,B)
+gleicher Richtung aber unterschiedlicher Länge haben eine L2-Distanz
+größer 0.
+
+Typischer Einsatz                                                                                    B
+Bilder, Farben, Feature-Vektoren aus Computer Vision. Überall dort, wo
+die Magnitude des Vektors eine inhaltliche Bedeutung hat.
+Skalarprodukt (Dot Product)
+
+ Effizient, skalierbar — und bei normalisierten Vektoren äquivalent zu Kosinus.
+
+Berechnung                                                                 Vergleich der drei Metriken
+
+Einfache elementweise Multiplikation und Summe
+                                                                           Metrik                Länge          Winkel
+
+
+                                                                           Kosinus                    ✗              ✓
+Berücksichtigt
+                                                                           L2                         ✓              ✓
+Sowohl Länge als auch Winkel — ähnlich wie L2, aber andere Formel.
+Große Werte = ähnlich (wenn Vektoren normalisiert sind).
+                                                                           Dot                        ✓              ✓
+
+Besonderer Vorteil
+Rechnerisch günstiger als Kosinus, da keine Division durch Längen nötig.   Faustregel: Kosinus für Text, L2 für Bilder, Dot
+→ Ideal für Large-Scale und Echtzeit-Systeme.                              für Geschwindigkeit.
+→ Bei normalisierten Vektoren: Dot Product = Kosinus-Ähnlichkeit.
+Die Architektur
+Wie ist eine Vektordatenbank aufgebaut?
+Das Grundprinzip: Trennung von Verantwortlichkeiten
+
+Warum eine Schichtenarchitektur?                         Kernprinzip
+
+ •   Moderne Vektordatenbanken bestehen aus vier klar    Wenn jede Schicht unabhängig
+                                                         arbeitet, kann sie auch
+     getrennten Schichten                                unabhängig skalieren, ausfallen
+ •   Jede Schicht trägt eine eigene, abgegrenzte         und optimiert werden.
+     Verantwortung
+ •   Die Trennung ist eine bewusste Designentscheidung
+ •   Ziel: Unabhängige Skalierbarkeit, Wartbarkeit und
+     Fehlertoleranz
+Überblick: Die vier Schichten
+
+     Dienstschicht
+     Verbindungen · Routing · Sicherheit · Multi-Tenancy
+
+
+
+     Abfrageschicht
+     Anfragen verarbeiten · Strategie wählen · Caching
+
+
+
+     Indexschicht
+     Indexierungsalgorithmen · Hardware-Optimierung
+
+
+
+     Speicherschicht
+     Persistente Datenhaltung · Komprimierung · I/O
+Schicht 1: Speicherschicht
+▼ Unterste Schicht – Fundament
+
+
+   •     Persistente Speicherung aller Vektoren und          Maßstab
+         zugehöriger Metadaten                               100 Mio. Vektoren
+                                                             × 1.024 Dimensionen
+   •     Spezialisierte Kodierung und Komprimierung für      × 4 Byte (float32)
+         hochdimensionale Daten                              = ~400 GB RAM
+
+   •     Optimierte I/O-Muster für vektorspezifische         → Ohne SSD-Indexierung nicht
+         Zugriffsmuster                                      wirtschaftlich skalierbar.
+
+   •     RAM für schnellen Zugriff — NVMe-SSD für
+         kosteneffiziente Skalierung (DiskANN)
+
+
+
+
+   Schlüsselwort: Spezialisierung – kein Allzweck-Speicher
+Schicht 2: Indexschicht
+▼ Strukturierung für schnellen Zugriff
+
+
+   Was ist ein Index?
+   Eine vorberechnete Datenstruktur über die gespeicherten Vektoren. Sie speichert keine Vektoren selbst — das macht
+   die Speicherschicht. Sie speichert eine Karte: Welche Vektoren liegen nah beieinander? Wenn eine Anfrage kommt, folgt
+   die Suche dieser Karte statt alles zu durchsuchen.
+
+
+   •      Verwaltet mehrere Indexierungsalgorithmen gleichzeitig – je               Algorithmen (Vorschau)
+          nach Anwendungsfall
+                                                                                    HNSW · IVF · PQ · DiskANN
+   •      Wird fortlaufend aktualisiert, wenn neue Daten eintreffen
+                                                                                    → Im Suchalgorithmen Teil erklärt
+   •      Hardwarespezifische Optimierungen: (AVX512,
+          SIMD-Instruktionen, GPU-Beschleunigung)
+Warum Vektorsuche grundlegend schwierig ist
+
+Das Problem: Hohe Dimensionalität heißt viele Daten
+
+ Exakte Suche (kNN)                             Approximate Nearest Neighbor (ANN)
+ Bei 1 Milliarde Vektoren:                      Statt exakter Suche: intelligente Abkürzungen.
+ Jede Anfrage vergleicht den Query-Vektor mit
+ ALLEN gespeicherten Vektoren.                  Der Index strukturiert Vektoren vorab so,
+                                                dass man nur einen kleinen Bruchteil
+ → 1 Mrd. Berechnungen pro Anfrage              durchsuchen muss.
+ → Bei 1.024 Dimensionen: Milliarden von
+ Multiplikationen                               → Millisekunden statt Minuten
+ → Nicht in Echtzeit möglich                    → Kleine Genauigkeitseinbußen (akzeptabel)
+                                                → Das ist die Aufgabe der Indexschicht
+Schicht 3: Abfrageschicht
+▼ Das Gehirn jeder Suchanfrage
+
+
+   •     Nimmt eingehende Suchanfragen entgegen und parst      Warum Caching?
+         sie                                                   1.000 Nutzer suchen dasselbe
+                                                               Produkt → das Ergebnis wird nicht
+   •     Bestimmt die Ausführungsstrategie – welcher Index,    1.000× neu berechnet.
+         welche Partition
+   •     Verarbeitet, bewertet und rankt die zurückgegebenen
+         Ergebnisse
+   •     Implementiert Caching für häufig wiederkehrende
+         Anfragen
+Schicht 4: Dienstschicht
+▲ Oberste Schicht – Schnittstelle zur Außenwelt
+
+
+
+  Verbindungen                                    Monitoring                      Sicherheit
+  API-Endpunkte, Client-Verwaltung,               Logging, Metriken, Alerts bei   Authentifizierung, Autorisierung,
+  Load Balancing                                  Systemfehlern                   Verschlüsselung
+
+
+
+
+   Multi-Tenancy
+   Verschiedene Teams oder Kunden teilen dieselbe Datenbankinstanz – ohne gegenseitigen Datenzugriff.
+   Realisiert durch Sharding, Partitionierung oder Row-Level Security.
+Frage an euch
+
+
+
+
+    Welche dieser vier Schichten haltet ihr für die
+    kritischste — und warum?
+
+
+
+     Denkanstoß: Denkt daran: Was passiert, wenn genau diese eine Schicht ausfällt oder falsch
+     gebaut ist?
+Warum diese Trennung? – Das Prinzip der Disaggregation
+
+Compute und Storage sind entkoppelt
+ •   Monolithische Systeme: Alles skaliert zusammen –             Mehr Speicher?
+     teuer und unflexibel                                         → Nur Speicherschicht erweitern
+ •   Schichtenarchitektur: Jede Einheit skaliert nur dort,
+     wo Bedarf besteht                                            Mehr Anfragen?
+
+ •   Kein Ausfall einer Schicht bringt das gesamte System         → Nur Abfrageschicht skalieren
+     zum Stillstand
+                                                                  Neue Indizes?
+                                                                  → Nur Indexschicht aktualisieren
+
+
+
+
+ Das ermöglicht es, Milliarden von Vektoren in Produktionssystemen zu verwalten – ohne Kompromisse
+ bei der Performance.
+Disaggregation in der Praxis: Ein konkretes Szenario
+
+ Stellt euch vor: Ein Startup, das gerade viral geht.
+
+      Das Problem
+ 01   Euer monolithischer Server hat 64 GB RAM. Ihr habt 50 Mio. Vektoren gespeichert – der Speicher ist fast voll.
+      Gleichzeitig explodiert die Anzahl der Anfragen.
+
+
+      Monolithische Lösung
+ 02   Ihr kauft einen größeren Server: 256 GB RAM, doppelt so viele CPU-Kerne – auch wenn das CPU-Problem gar
+      nicht existiert. Kosten verdoppeln sich.
+
+
+      Disaggregierte Lösung
+ 03   Ihr fügt einen Speicherknoten hinzu. Abfrage- und Indexknoten bleiben unverändert. Nur das Problem wird
+      gelöst – und nur dort, wo es existiert.
+Der Workflow einer Vektorsuche
+Von Rohdaten zum Suchergebnis — Schritt für Schritt
+Kompletter Workflow einer Vector Suchoperation
+Die Pipeline: Architektur in Bewegung
+
+    Rohdaten              Embedding                Speicher                   Index                 Abfrage                 Ergebnis
+
+
+                           ↑ außerhalb           ↑ Speicherschicht         ↑ Indexschicht         ↑ Abfrageschicht
+
+
+      Embedding → außerhalb der DB
+1     Rohdaten werden in Vektoren umgewandelt – durch ein Modell wie BERT oder CLIP – bevor sie die Datenbank erreichen. Die DB
+      nimmt fertige Vektoren entgegen.
+
+
+      Speicher + Index → Speicher- & Indexschicht
+2     Der Vektor wird persistent gespeichert (Speicherschicht) und gleichzeitig in den ANN-Index eingetragen (Indexschicht). Beide
+      Schritte sind eng koordiniert.
+
+
+      Abfrage → Abfrageschicht + Dienstschicht
+3     Eine Suchanfrage trifft über die Dienstschicht ein, wird von der Abfrageschicht verarbeitet, und das Ergebnis wird über dieselbe
+      Dienstschicht zurückgeliefert.
+Schritt 1: Transformation & Embedding
+Außerhalb der Datenbank — vor dem Eintritt in das System
+
+       Rohdaten                 Embedding                  Speicher         Index             Abfrage                Ergebnis
+
+
+   Was passiert hier?                                                               Beispiel: Text-Embedding
+   •     Rohdaten: Text, Bild, Audio, Video; werden einem
+                                                                                     "Der Hund bellt laut"
+         Embedding-Modell übergeben
+   •     Das Modell (z.B. BERT für Text, CLIP für Bilder) wandelt das                ↓ BERT
+         Objekt in einen Zahlenvektor um
+                                                                                     [0.21, -0.84, 0.37,
+   •     Dieser Vektor repräsentiert die semantische Bedeutung des                    0.92, -0.15, 0.63,
+         Objekts                                                                      ... (768 Werte)]
+
+   •     Erst dieser fertige Vektor wird an die Vektordatenbank                      ↓ an die DB
+         übergeben, nicht die Rohdaten
+
+                                                                                                   Vektordatenbank
+           Modellwechsel = Neueinbettung aller Daten
+    ⚠ Wechselt das Embedding-Modell, sind alle gespeicherten Vektoren ungültig.
+           Der gesamte Datensatz muss neu eingebettet werden.
+Schritt 2: Speicherung & Indexierung
+Speicherschicht + Indexschicht arbeiten koordiniert
+
+       Rohdaten                   Embedding           Speicher             Index               Abfrage             Ergebnis
+
+
+
+         Persistente Speicherung (Speicherschicht)                           Index-Aktualisierung (Indexschicht)
+
+          •       Vektor wird mit eindeutiger ID und                          •    Gleichzeitig wird der Vektor in die
+                  Metadaten auf Disk geschrieben                                   Index-Datenstruktur eingetragen
+          •       Spezialisierte Kodierung reduziert                          •    Bei HNSW: Neue
+                  Speicherverbrauch (z.B.                                          Graphverbindungen werden
+  A               Quantisierung)                                       B           berechnet und gesetzt
+          •       Write-Ahead-Log sichert gegen                               •    Inkrementelle Aktualisierung (kein
+                  Datenverlust bei Absturz                                         vollständiger Neuaufbau nötig)
+          •       Ergebnis: Vektor überlebt jeden                             •    Ergebnis: Vektor ist ab sofort in der
+                  Neustart                                                         Suche auffindbar
+
+
+                     Beide Schritte passieren beim Einfügen eines neuen Vektors — koordiniert und transaktional.
+Schritt 3: Abfrageverarbeitung
+Abfrageschicht + Dienstschicht — wenn eine Suchanfrage eintrifft
+
+       Rohdaten                  Embedding                    Speicher        Index                 Abfrage               Ergebnis
+
+
+         Anfrage trifft über die Dienstschicht ein
+  1      Client sendet einen Query-Vektor — embedded mit demselben Modell wie die gespeicherten Daten. Anderes Modell =
+         anderer Vektorraum = falsche Ergebnisse.
+
+         Abfrageschicht wählt eine Strategie
+  2      Welcher Index wird verwendet? Welche Partition ist relevant? Gibt es Metadaten-Filter? Ist das Ergebnis bereits gecacht?
+
+
+         ANN-Suche wird ausgeführt
+  3      Der Index (HNSW, LSH, etc.) traversiert seine Datenstruktur und liefert Kandidaten zurück — die K ähnlichsten Vektoren aus
+         dem relevanten Suchraum.
+
+         Ergebnisse werden assembliert
+  4      Kandidaten werden mit Ähnlichkeitswerten versehen, ggf. nach Metadaten gefiltert (Post-Filtering), gerankt und als Antwort
+         vorbereitet.
+Schritt 4: Post Processing & Ergebnisrückgabe
+Von der Kandidatenliste zum ausgelieferten Ergebnis
+
+       Rohdaten                  Embedding            Speicher      Index               Abfrage              Ergebnis
+
+
+
+  Ähnlichkeitsbewertung                                          Post-Filtering
+  Jeder Kandidat erhält einen Score 🡪 Distanzwert aus der        Metadaten-Filter werden auf die Kandidatenliste
+  ANN-Suche.                                                     angewendet: Preisrange, Kategorie, Datum. Treffer ohne
+  Niedrigere Distanz = höherer Score = relevanteres              passende Metadaten fallen heraus.
+  Ergebnis.
+
+
+
+
+  Ranking & Sortierung                                           Rückgabe über Dienstschicht
+  Die verbleibenden Kandidaten werden nach Score                 Das finale Ergebnis: Vektoren, IDs, Metadaten, Scores
+  geordnet. Optional: Reranking durch ein zweites Modell         Wird serialisiert und über die API an den Client
+  für höhere Relevanz.                                           zurückgeliefert.
+Suchalgorithmen
+Wie findet eine Vektordatenbank ähnliche Einträge?
+Überblick: Suchalgorithmen
+
+ Von exakt zu approximativ — und von einfach zu produktionstauglich.
+
+         KNN                         ANN                        HNSW             LSH
+      Exakt, langsam          Approximativ, schnell           Graph-basiert   Hash-basiert
+
+
+ Erweiterungen & Kombinationen:
+
+ Filtered Search                        Full-Text Search
+ Vektorsuche kombiniert mit             Keyword-Suche + semantische
+ Metadaten-Filtern                      Vektorsuche kombiniert
+K-Nearest Neighbor (KNN)
+
+ Der naive Ansatz — und der genaueste.
+
+Wie es funktioniert                                                                                KNN: K=3
+
+Gegeben ein Query-Vektor: Berechne die Distanz zu ALLEN
+gespeicherten Vektoren. Gib die K nächsten zurück.
+
+Vorteile
+
+      Perfekte Genauigkeit
+ ✓                                                                                                         Q
+      Gibt garantiert die K tatsächlich nächsten Vektoren zurück.
+
+
+Nachteile
+      Lineare Komplexität
+ ✗ O(n) — jede Anfrage vergleicht alle n Vektoren. Bei Millionen Einträgen:
+      Sekunden bis Minuten.
+
+      Nicht skalierbar                                                        ● Query ● K=3 nächste ● Alle anderen
+ ✗
+      Je mehr Daten, desto langsamer — ohne Ausnahme.
+Approximate Nearest Neighbor (ANN)
+
+ Schneller als KNN — mit kontrolliertem Genauigkeitsverlust.
+
+Kernidee
+Statt alle Vektoren zu vergleichen: Durchsuche nur eine intelligente Teilmenge. Die Ergebnisse sind nicht garantiert exakt
+— aber in der Praxis gut genug.
+
+          Genauigkeit ←————————————————— Kompromiss —————————————————→ Geschwindigkeit
+
+
+ KNN — Exakt                                                       ANN — Approximativ
+
+ Genauigkeit: 100%                                                 Genauigkeit: ~95–99%
+ Geschwindigkeit: Langsam                                          Geschwindigkeit: Sehr schnell
+
+
+ Praktisch nicht nutzbar bei Millionen Einträgen                   Millisekunden — selbst bei Milliarden Einträgen
+
+
+
+                                  HNSW und LSH sind konkrete Implementierungen von ANN.
+HNSW – Hierarchical Navigable Small World
+
+ Ein mehrschichtiger Graph, der von grob nach fein sucht.
+                                                                                       HNSW Schichten
+
+Aufbau                                                             Ebene 2 (oben)
+
+Vektoren werden als Knoten in einem mehrschichtigen Graphen
+gespeichert. Jeder Knoten ist mit ähnlichen Knoten verbunden —
+die Verbindungsdichte nimmt nach unten zu.
+                                                                   Ebene 1
+
+Suche
+Start in der obersten Schicht (wenige Knoten, grobe Navigation).
+Springe Ebene für Ebene nach unten, verfeinere dabei die Suche.
+Sehr schnell bei hoher Genauigkeit.                                Ebene 0 (unten)
+
+
+Einsatz
+Beliebtester ANN-Algorithmus in Produktionssystemen. Standard in
+Milvus, Pinecone, Weaviate.
+                                                                             → Navigation: grob oben, fein unten
+LSH – Locality-Sensitive Hashing
+Ähnliche Vektoren landen mit hoher Wahrscheinlichkeit
+im selben Hash-Bucket.                                                            LSH Buckets
+
+Grundprinzip                                                                                    Bucket B
+                                                                   Bucket A
+Wende eine Hash-Funktion an, die ähnliche Vektoren mit hoher
+Wahrscheinlichkeit auf denselben Bucket abbildet. Suche dann nur
+in diesen Buckets — nicht im gesamten Datensatz.
+
+Wie es sich von HNSW unterscheidet
+HNSW nutzt einen Graphen für Navigation. LSH nutzt
+Hash-Funktionen für Gruppierung. Beide sind ANN — mit                 Bucket C
+unterschiedlichen Stärken.
+
+
+Vorteile                        Nachteile
+Sehr schnell bei Einfügen       Schlechtere Genauigkeit
+
+Benötigt wenig RAM              Fehler bei dicht aneinander
+                                liegenden Daten
+                                                                                 Q → Bucket B
+Filtered Search
+
+ Kombination von Metadaten-Filtern und Vektorähnlichkeit.
+
+   Beispiel: „Finde ähnliche Produkte wie dieses Bild — aber nur Produkte unter 50 € aus der Kategorie Schuhe."
+
+
+Zwei Strategien:
+
+ Pre-Filtering                                                Post-Filtering
+ 1. Filter: Nur Schuhe unter 50 €                             1. Vektorsuche über alle Daten
+ 2. Vektorsuche in dieser Teilmenge                           2. Filter: Nur Ergebnisse unter 50 € behalten
+
+ → Schneller, da kleinerer Suchraum                           → Vollständigere Ergebnisse
+ → Risiko: Teilmenge zu klein für gute Treffer                → Teurer: Suche über den gesamten Datensatz
+
+
+
+
+            Möglich nur in einer Vektordatenbank mit Metadatenspeicherung — nicht in einem reinen Index.
+Full-Text Search: Hybrid-Suche
+
+ Keyword-Suche und semantische Vektorsuche kombiniert.
+
+ Beispiel: „Pizza Italien" — exakt nach Keyword und semantisch nach ähnlichen Inhalten suchen.
+
+
+Keyword-Suche (BM25)                                            Vektor-Suche (Semantisch)
+Findet Dokumente, die den exakten Begriff „Pizza" oder          Findet Dokumente mit ähnlicher Bedeutung — auch
+„Italien" enthalten.                                            ohne die exakten Wörter.
+Präzise, aber kein Bedeutungsverständnis —                      „Italienische Küche", „Margherita", „Pasta" werden als
+„Neapolitanische Küche" wird nicht gefunden.                    relevant erkannt.
+
+
+Ergebnisse zusammenführen: RRF & Gewichtetes Scoring
+Reciprocal Rank Fusion (RRF): Rankt Ergebnisse aus beiden Suchen zusammen, ohne Annahmen über Skalen.
+Gewichtetes Scoring: Keyword-Treffer zählen X%, Vektor-Ähnlichkeit Y% — konfigurierbar je Anwendungsfall.
+
+
+
+  Ergebnis: Exakt + Semantisch = mehr relevante Treffer als beide Ansätze allein.
+Was macht es zur „Datenbank"?
+Index vs. vollständige Datenbankinfrastruktur
+Die Ausgangsfrage
+
+
+
+     „Ein Vektorindex kann ähnliche Vektoren finden,
+     aber was fehlt noch, damit es eine vollständige Datenbank ist?"
+
+
+
+ •   Ein Vektorindex ist ein mächtiges Werkzeug, aber kein vollständiges System
+ •   Was unterscheidet das “Werkzeug” von der Infrastruktur?
+ •   Was braucht eine Produktionsanwendung, das ein Index allein nicht liefert?
+Was ein reiner Index leistet
+
+      Schnelle Ähnlichkeitssuche
+ ✓ ANN-Algorithmen finden ähnliche Vektoren in Millisekunden
+
+      Effiziente Algorithmen
+ ✓ HNSW, IVF und andere optimierte Suchstrukturen
+
+      Skaliert für große Mengen
+ ✓ Funktioniert für Millionen von Vektoren auf einer Maschine
+Was einem reinen Index fehlt
+
+       Keine CRUD-Operationen
+ ✗ Kein Aktualisieren oder Löschen einzelner Einträge ohne kompletten Neuaufbau
+
+       Keine Metadatenspeicherung
+ ✗ Keine Filter wie „nur Kategorie X" oder „nur Preis unter 50 €"
+
+       Keine Replikation / Fehlertoleranz
+ ✗ Fällt die Maschine aus, sind alle Daten verloren
+
+       Keine persistente Datenhaltung
+ ✗ Daten leben nur im RAM – kein Neustart möglich
+
+       Keine Zugriffskontrolle
+ ✗ Kein Multi-Tenancy, keine Rollenverwaltung
+CRUD
+
+ Vektoren entstehen nicht einmalig und bleiben unverändert.
+
+🛍 E-Commerce                                  🔍 Betrugserkennung                             📄 Dokumentensuche
+Ein Nutzer aktualisiert seine                 Neue Betrugsmerkmale müssen                    Dokumente werden überarbeitet.
+Präferenzen. Ohne                             sofort eingepflegt werden.                     Der alte Vektor muss ersetzt
+Update-Fähigkeit werden veraltete             Veraltete Daten bedeuten nicht                 werden – ohne kompletten
+Empfehlungen geliefert.                       erkannten Betrug.                              Index-Neuaufbau.
+
+
+
+
+       Löschen in der Praxis: Soft Deletes
+ ⚠ Die meisten Implementierungen markieren Einträge als gelöscht und bereinigen sie periodisch — kein echtes In-Place-Löschen im
+       Index.
+
+
+  Vollständige CRUD-Unterstützung ist kein Komfort – sie ist eine Grundanforderung für Produktionssysteme.
+Das Metadaten-Problem: Warum Vektorsuche allein nicht reicht
+
+ Eine realistische Suchanfrage sieht nie so aus:
+
+  ✗ „Finde die 10 ähnlichsten Vektoren im gesamten Datensatz."
+
+
+ Sondern so:
+
+  ✓ „Finde ähnliche Schuhe, aber nur unter 80 €, nur in Größe 42, nur auf Lager."
+
+
+
+  ✓ „Finde ähnliche Artikel, aber nur aus der Kategorie Outdoor, veröffentlicht nach 2023."
+
+
+
+  ✓ „Finde ähnliche Kandidatenprofile, aber nur mit Standort Berlin und min. 5 Jahren Erfahrung."
+
+
+  Ohne Metadatenspeicherung ist keine dieser Anfragen möglich. Ein reiner Index kennt nur Vektoren.
+Skalierung & Replikation
+
+Horizontales Sharding                                              Replikation
+Daten werden auf mehrere Knoten verteilt – kein                    Redundante Datenkopien für Ausfallsicherheit und
+einzelner Flaschenhals                                             höheren Lesedurchsatz
+
+
+
+
+Unabhängige Skalierung                                             Milliarden von Vektoren
+Suche, Indexierung und Einfügen skalieren separat nach             Konsistente Performance auch bei extremem
+Bedarf                                                             Datenvolumen
+
+
+
+
+           Ein Index läuft auf einer Maschine. Fällt sie aus, ist alles weg. Eine Datenbank verteilt und überlebt.
+Zuverlässigkeit im Produktionsbetrieb
+
+ Was passiert, wenn etwas schiefläuft?
+
+      Szenario: Knotenausfall
+
+⚡     Ein Abfrageknoten fällt aus. In einem monolithischen System: Datenbankausfall. In einer Vektordatenbank: Die
+      Replikationsschicht übernimmt automatisch. Kein Datenverlust, minimale Unterbrechung.
+
+
+
+
+      Szenario: Inkonsistente Daten
+
+⚖     Daten werden gleichzeitig geschrieben und gelesen. Vektordatenbanken nutzen Konsistenzprotokolle wie Raft
+      oder Paxos, um sicherzustellen, dass alle Knoten denselben Zustand sehen.
+Reale Einsatzszenarien
+ Vektordatenbanken in der Produktion.
+
+ Unternehmen                  Anwendungsfall                                              Benötigt DB-Features
+
+ Salesforce                   Kundenunterstützung & Empfehlungen                          CRUD, Filterung, Skalierung
+
+ PayPal                       Betrugserkennung in Echtzeit                                Echtzeit-Updates, Fehlertoleranz
+
+ eBay                         Produktsuche & Ähnlichkeitsmatching                         Metadaten-Filter, Millionen Einträge
+
+ Airbnb                       Unterkunftsempfehlungen                                     CRUD, Multi-Tenancy
+
+ NVIDIA                       KI-Infrastruktur                                            Skalierung, Replikation
+
+Generelle Einsatzgebiete:
+
+ 💬 NLP                      👁 Computer Vision          🧬 Genomik                   🎯 Empfehlungen             🤖 Chatbots & KI
+ Textklassifikation,        Bilderkennung, autonomes   Genetische Ähnlichkeiten,   Musik, Filme, Produkte,    Kontextsuche, virtuelle
+ Sentiment, Übersetzung     Fahren, Medizin            Proteinstrukturen           Inhalte                    Assistenten
+Fazit: Reiner Index vs. Vektordatenbank
+
+ Fähigkeit                          Reiner Index   Vektordatenbank
+
+ Ähnlichkeitssuche (ANN)                     ✓                ✓
+
+ CRUD-Operationen                            ✗                ✓
+
+ Metadaten & Filterung                       ✗                ✓
+
+ Persistente Datenhaltung                    ✗                ✓
+
+ Fehlertoleranz & Replikation                ✗                ✓
+
+ Horizontal skalierbar                       ✗                ✓
+
+ Produktionstauglich                         ✗                ✓
+Frage an euch
+
+
+
+
+    Für welche eigene App-Idee oder welchen
+    Anwendungsfall würdet ihr eine Vektordatenbank
+    einsetzen?
+
+
+     Denkanstoß: Was wäre der konkrete Mehrwert gegenüber einer klassischen
+     Datenbanksuche?
+Ein Vektorindex findet Ähnlichkeit.
+Eine Vektordatenbank verwaltet Wissen.
+
+Vektordatenbanken sind keine Nischenlösung.
+Sie sind vollwertige Datenbankinfrastruktur – gebaut für die KI-Ära.

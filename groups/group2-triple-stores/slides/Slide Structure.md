@@ -146,5 +146,58 @@ Kommentar: Im Vergleich zu Porperty Graph kann ich ja auch da durchgehen, wie si
 ### Vielleicht Folie 7 mit ASK / CONSTRUCT / DESCRIBE
 
 
-Fragen: wir machen ja ne live demo später mit Oxigraph, aber wenn ich das ganze mti einer beliebig anderen software mache wie bspw. Apache Jena TDB with Fuseki server, sieht das immer gleich aus, auch mit dem SERVICE und so? nach w3c ist das ja immer gleich, weil sparql ja diesem standart folgt. gibt es dann überhaupt unterschiede in der abfrage? 
-Was ist jetzt genau der unterschied zwsichen rdf und sparql? 
+---
+
+## Sektion: Comparison – Einordnung & Abgrenzung
+
+### Folie 1: Triple Store vs. SQL – kurze Wiederholung
+- **Kern:** Bekanntes nochmal scharf stellen, bevor wir in den Graph-Vergleich gehen
+- **Tabelle (kompakt):**
+
+| | SQL (Relational) | Triple Store (RDF) |
+|---|---|---|
+| Dateneinheit | Zeile in Tabelle | Subjekt–Prädikat–Objekt |
+| Schema | starr, vordefiniert | flexibel, schema-light |
+| Beziehungen | Joins (teuer, komplex) | Kanten = native Struktur |
+| Abfragesprache | SQL | SPARQL (Pattern Matching) |
+| Semantik | keine | RDFS/OWL, inferenzfähig |
+| Datenintegration | schwierig (ETL) | URIs → direkt verlinkbar |
+
+- **Takeaway:** SQL ist stark bei strukturierten, stabilen Daten – Triple Stores gewinnen, sobald Vernetzung und Semantik wichtig werden.
+
+---
+
+### Folie 2: Triple Store vs. Property Graph – die wichtige Abgrenzung
+- **Kern:** Beide sind Graphmodelle – wo liegt der echte Unterschied?
+- **Tabelle:**
+
+| | Triple Store (RDF) | Property Graph (Neo4j) |
+|---|---|---|
+| Kanten-Eigenschaften | ❌ nur via Reifikation | ✅ nativ an der Kante |
+| Standardisierung | ✅ W3C (SPARQL, OWL) | ❌ vendor-spezifisch (Cypher) |
+| Inferenz | ✅ RDFS/OWL built-in | ❌ manuell implementieren |
+| Traversal-Performance | ⚠️ gut mit Indizes | ✅ sehr gut (pointer-native) |
+| Ext. Datenintegration | ✅ URIs, Linked Data, Federation | ❌ Insellösung |
+| Typischer Use Case | Knowledge Graphs, Linked Data | soziale Netze, Routenplanung |
+
+- **Key Message:** Property Graph gewinnt bei tiefer, performancekritischer Traversal in einer Datenbank. Triple Store gewinnt bei semantischer Reichweite, offener Datenintegration und Standardisierung.
+- **Visual:** kleine Gegenüberstellung zweier Graphdarstellungen (RDF-Triple vs. Property-Graph-Knoten mit Properties an Kanten)
+
+---
+
+### Folie 3: Wann nimmt man was? – Use-Case-Matrix
+- **Kern:** Klare Entscheidungshilfe für die Audience
+- **Matrix:**
+
+| Anforderung | Relational | Property Graph | Triple Store |
+|---|---|---|---|
+| Stabile, strukturierte Daten | ✅ | ⚠️ | ⚠️ |
+| Tiefe Graphnavigation | ❌ | ✅ | ⚠️ |
+| Semantik & Inferenz | ❌ | ❌ | ✅ |
+| Offene Datenintegration (Linked Data) | ❌ | ❌ | ✅ |
+| Einfacher Einstieg / Tooling | ✅ | ✅ | ⚠️ |
+| AI / RAG / Knowledge Graphs | ⚠️ | ⚠️ | ✅ |
+
+- **Takeaway:** Kein Modell gewinnt immer – Triple Stores sind die richtige Wahl, wenn Semantik, Standards und verteilte Datenintegration zählen.
+
+---

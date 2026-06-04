@@ -15,15 +15,36 @@ Und sonst eben die Dateien auf oberste Ebene wie `README.md` und `report.md`
 
 ## Präsentationsstruktur — Übersicht der Slide-Dateien
 
+### Hauptdatei
 | Datei | Rolle |
 |---|---|
-| `slides/final strucutre` | **Inhaltliche Hauptgrundlage** — 9 Slots, ~140 min, mit Entscheidungen, Aha-Momenten, TODOs |
-| `slides/Priorisierte Gliederung Vinz` | **Prio-Liste pro Kapitel (Prio 1/2/3)** — maßgeblich für Fokus und Tiefe |
-| `slides/Presentation Structure renewed` | Bewertungsoptimierte Folienstruktur mit Timing-Hinweisen |
-| `slides/Gliederung Vinz` | Vinzents ursprünglicher Gliederungsvorschlag |
-| `slides/presentation_structure` | Ältere Strukturversion mit Slide-Nummerierung |
-| `slides/Mail Structure` | Kommunikationsstruktur / Abstimmungsnotizen |
+| `slides/Slide Structure.md` | **Aktive Folienstruktur** — wird laufend aktualisiert, enthält alle Kapitel inkl. Comparison |
 
+### Sprechtext / Wissensbasis (pro Kapitel)
+Unter `slides/chapter/` liegen ausformulierte Sprechtexte als Präsentationsgrundlage:
+| Datei | Inhalt |
+|---|---|
+| `slides/chapter/Comparison` | Sprechtext Kapitel Comparison (alle 3 Folien, inkl. Fragen-Antworten) |
+| `slides/chapter/Fragen Comparission` | Rohfragen zu Folie Comparison (Ausgangsbasis für Sprechtext) |
+| `slides/chapter/Fragen Query Model` | Rohfragen zu Folie Query Model |
+| `slides/chapter/Motivation` | Notizen/Entwurf Motivation |
+| `slides/chapter/Query Model` | Notizen/Entwurf Query Model |
+
+### Strukturdateien (Archiv/Referenz)
+Unter `slides/structure/` liegen ältere Gliederungsversionen und Hilfsdokumente:
+| Datei | Rolle |
+|---|---|
+| `slides/structure/final strucutre.md` | Inhaltliche Hauptgrundlage (9 Slots, ~140 min, Aha-Momente, TODOs) |
+| `slides/structure/Priorisierte Gliederung Vinz.md` | **Prio-Liste pro Kapitel (Prio 1/2/3)** — maßgeblich für Fokus und Tiefe |
+| `slides/structure/Presentation Structure renewed.md` | Bewertungsoptimierte Folienstruktur mit Timing-Hinweisen |
+| `slides/structure/Gliederung Vinz.md` | Vinzents ursprünglicher Gliederungsvorschlag |
+| `slides/structure/presentation_structure.md` | Ältere Strukturversion mit Slide-Nummerierung |
+| `slides/structure/Mail Structure.md` | Kommunikationsstruktur / Abstimmungsnotizen |
+| `slides/structure/data-structure-quellen.md` | Quellen- und Claim-Mapping für Kapitel Data Structure |
+
+
+### Sonstige Vorlesungen
+`slides/extraced other slides` Text aus pdf-Slides der anderen Gruppen extrahiert als Ideen / Inspo
 ---
 
 ## Themenstruktur & Prio-Listen pro Kapitel
@@ -67,6 +88,11 @@ Die inhaltliche Ausarbeitung steht in `slides/final strucutre`.
 **Prio 2:** Abfragen (SQL Joins vs. SPARQL Pattern Matching) · Flexibilität bei sich entwickelnden Daten
 **Prio 3:** Vergleichstabelle · Netzwerkartige Domäne als Beispiel · Trade-offs · Kombination beider Ansätze
 
+**Aktuelle Folienstruktur (in `slides/Slide Structure.md`):**
+- Folie 1: Triple Store vs. SQL — kompakte Wiederholung (Tabelle: Dateneinheit, Schema, Beziehungen, Abfragesprache, Semantik, Datenintegration)
+- Folie 2: Triple Store vs. Property Graph — wichtigste Abgrenzung (Kanten-Properties, Standardisierung, Inferenz, Traversal, ext. Datenintegration)
+- Folie 3: Use-Case-Matrix (Relational / Property Graph / Triple Store gegenüber 6 Anforderungsdimensionen)
+
 ---
 
 ## Demo
@@ -74,7 +100,10 @@ Die inhaltliche Ausarbeitung steht in `slides/final strucutre`.
 - `demo/files/demo_README.md` — **Hauptdoku für die Live-Demo**, erklärt alle 7 Queries Schritt für Schritt, Ablaufplan, Vorbereitung-Checkliste
 - `demo/files/triplestore-demo/docker-compose.yml` — Oxigraph Docker-Setup (Port 7878)
 - `demo/files/triplestore-demo/run_demo.sh` — Automatisches Demo-Script
-- `demo/files/triplestore-demo/data/universitaeten.ttl` — Turtle-Datensatz (4 Städte, 4 Unis, 3 Profs, 4 Studenten)
+- `demo/files/triplestore-demo/README_demo.md` — Demo-Doku direkt im triplestore-demo Ordner
+- `demo/files/triplestore-demo/data/` — Turtle-Datensätze
+- `demo/files/triplestore-demo/queries/` — SPARQL-Queries (01–07)
+- `demo/files/triplestore-demo.tar.gz` — Archiv des Demo-Setups
 
 ### SPARQL-Queries (in `demo/files/triplestore-demo/queries/`)
 | Datei | Inhalt | Besonderheit |
@@ -125,4 +154,4 @@ bash run_demo.sh
 
 - `groups/group1-graph-databases/` bis `groups/group7-data-lakes/` — andere Gruppen, nicht relevant
 - `groups/schedule.md` — Semesterplanung für alle Gruppen
-- `report.md`, `cover.jpg`, `LICENSE` — Repo-Boilerplate
+- `cover.jpg`, `LICENSE` — Repo-Boilerplate
