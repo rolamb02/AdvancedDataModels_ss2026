@@ -1,0 +1,52 @@
+**Prio 1:**
+- RDF-Struktur und Komponenten:
+  - Triple
+  - Gerichteter Graph
+  - URIs / Ressourcen
+  - Literale
+  - Blank Nodes
+- Begriffe und Regeln:
+  - RDF Schema (RDFS)
+  - OWL
+  - Ontologien und Vokabulare
+- Inferenz (machine-readable)
+- Named Graphs
+- Unterschied zu Property Graphs
+
+**Details:**
+- **RDF-Grundstruktur**
+  - Triple: Subjekt – Prädikat – Objekt
+  - Darstellung als gerichteter Graph
+  - Subgraphen als Denkmodell statt Tabellen
+- **RDF-Komponenten**
+  - URIs/IRIs zur eindeutigen Identifikation
+  - Literale (Strings, Zahlen, datatypes)
+  - Blank Nodes
+- **RDF Graph vs. RDF Dataset**
+  - Default Graph
+  - Benannte Graphen (Named Graphs)
+- **Ontologien und Vokabulare**
+  - RDF Schema (RDFS): Klassen, Properties, Domain, Range
+  - OWL für erweiterte semantische Modellierung
+  - Bedeutung kontrollierter Vokabulare für Konsistenz
+- **Semantik & Bedeutung**
+  - Maschinenlesbare Bedeutung durch standardisierte Prädikate
+  - Grundlage für Inferenz (Ableitung neuer Aussagen)
+- **Unterschied zu Property Graphs**
+  - RDF: standardisiert, interoperabel, formal
+  - Property Graph: flexibler, aber weniger standardisiert
+
+  Folie 1: 
+  - Triple, Graph
+  Folie 2: 
+  - Ressourcen,Literale, (Blank nodes)
+  (Folie 3: )
+  - (Blank Node)
+  Folie 4: 
+  - Regeln & Begriffe: Vocabulary & RDFS
+  Folie 5: 
+  - Ontology & OWL 
+  - Interferenz
+  Folie 6: 
+  - named graph
+
