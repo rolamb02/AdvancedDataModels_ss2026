@@ -1,0 +1,107 @@
+Context Summary: HTML Slides – Triple Stores
+Original Goal
+HTML presentation slides (1200×675px, Chrome headless PDF export) for a university seminar: Semantic Triple Stores, Advanced Data Models SS 2026, Group 2 (Roman + Vinzent Lahm).
+
+
+Color Palette
+
+:root {
+  --navy:  #1E2761;
+  --coral: #F96167;
+  --gold:  #F9C946;   /* accent only — not dominant */
+  --teal:  #2BC89A;
+  --bg:    #F4F6FB;
+  --text:  #1A1F3A;
+  --muted: #7B82A8;
+  --ok:    #16a34a;
+  --no:    #dc2626;
+  --warn:  #d97706;
+}
+
+Export Rules
+
+@page { size: 1200px 675px; margin: 0; }
+.slide { width: 1200px; height: 675px; page-break-after: always; overflow: hidden; }
+/* Only px units, no vw/vh */
+
+Chrome-Struktur (finales Design — gilt für ALLE Folien)
+
+/* Left bar */
+.lbar  { position:absolute; left:0; top:0; width:18px; height:675px; background:var(--navy); }
+
+/* Header: 62px, single-line format */
+.hdr   { position:absolute; left:18px; top:0; right:0; height:62px;
+         background:var(--navy); border-left:5px solid var(--gold);
+         display:flex; align-items:stretch; }
+
+/* Number badge: 62×62px coral */
+.num   { width:62px; height:62px; background:var(--coral); flex-shrink:0;
+         display:flex; align-items:center; justify-content:center;
+         font-size:14px; font-weight:700; color:#fff; }
+
+/* Meta: tag | separator | title in einer Zeile */
+.meta  { display:flex; align-items:center; padding:0 22px; gap:16px; flex:1; }
+.tag   { font-size:10px; font-weight:700; color:var(--gold); letter-spacing:3.5px; text-transform:uppercase; white-space:nowrap; }
+.sep   { width:1px; height:22px; background:rgba(255,255,255,.3); flex-shrink:0; }
+.title { font-size:24px; font-weight:700; font-family:'Georgia',serif; color:#fff; line-height:1.1; }
+
+/* Slim footer: 26px */
+.footer { position:absolute; left:18px; right:0; bottom:0; height:26px;
+          background:var(--navy); border-top:1px solid rgba(249,201,70,.25);
+          display:flex; align-items:center; padding:0 18px; }
+.footer-center { flex:1; text-align:center; font-size:11px; color:rgba(255,255,255,.45); letter-spacing:.5px; }
+.footer-right  { font-size:11px; color:rgba(255,255,255,.3); white-space:nowrap; font-family:'Consolas',monospace; }
+
+/* Content area */
+.body  { position:absolute; left:18px; right:0; top:62px; bottom:26px; overflow:hidden; }
+
+Footer-Inhalt (per JS automatisch befüllt — am Ende jeder HTML-Datei):
+
+<script>
+lucide.createIcons();
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+slides.forEach((s, i) => {
+  const r = s.querySelector('.footer-right');
+  if (r) r.textContent = `${i + 1} / ${total}`;
+});
+</script>
+
+Footer HTML-Snippet (in jede Folie, direkt vor .body):
+<div class="footer">
+  <div class="footer-center">Roman Lahm · Vinzent Lahm · Semantic Triple Stores</div>
+  <div class="footer-right"></div>
+</div>
+
+Platzübersicht
+- Left bar:  18px
+- Header:    62px
+- Footer:    26px
+- Body:      675 - 62 - 26 = 587px Inhaltsfläche
+
+Typography Rule
+Innerhalb von Folien (exkl. Titel + Chapter-Tag): genau 2 Schriftgrößen, beide ≥ 16px
+
+  Labels / Überschriften: font-size: 18px, uppercase
+  Primärer Inhalt:        font-size: 22px (Fließtext, Cards, Code)
+
+Icons & Grafik
+Verwende Lucide Icons via CDN und inline SVG-Illustrationen statt Emojis.
+Flows als SVG-Diagramme. Kein dominantes Gold — nur als Akzent (Linie, Tag, Trennstrich).
+
+Insight/Fazit-Zeile (OPTIONAL)
+Kein erzwungener Footer-Insight auf jeder Folie. Wenn inhaltlich sinnvoll,
+kann ein Insight-Block direkt als letztes Element im .body eingebaut werden:
+
+  <div style="background:rgba(43,200,154,.08); border-left:4px solid var(--teal);
+              border-radius:8px; padding:14px 18px; margin-top:auto;">
+    <div style="font-size:21px; color:var(--text); line-height:1.4;">
+      Insight-Text hier.
+    </div>
+  </div>
+
+PDF-Export (Chrome Headless)
+& "C:\Program Files\Google\Chrome\Application\chrome.exe" `
+  --headless --print-to-pdf="$env:USERPROFILE\Desktop\triple-stores.pdf" `
+  --print-to-pdf-no-header `
+  "C:\...\slides\presentation.html"

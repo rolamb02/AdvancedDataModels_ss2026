@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+@page { size: 1200px 675px; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:#1E2761; --coral:#F96167; --gold:#F9C946;
+  --teal:#2BC89A; --bg:#F4F6FB; --text:#1A1F3A;
+  --muted:#7B82A8; --ok:#16a34a; --no:#dc2626;
+}
+body { background:#2a2a2a; display:flex; flex-direction:column; align-items:center; gap:40px; padding:48px 32px; }
+
+.slide { width:1200px; height:675px; position:relative; overflow:hidden; page-break-after:always; flex-shrink:0; font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); }
+
+/* ── FINAL CHROME ── */
+/* Navy left bar (from Concept A) */
+.lbar { position:absolute; left:0; top:0; width:18px; height:675px; background:var(--navy); }
+/* Ribbon (from Concept C, slightly taller + bigger title) */
+.hdr {
+  position:absolute; left:18px; top:0; right:0; height:62px;
+  background:var(--navy); border-left:5px solid var(--gold);
+  display:flex; align-items:stretch;
+}
+.num {
+  width:62px; height:62px; background:var(--coral); flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:14px; font-weight:700; color:#fff; letter-spacing:.5px;
+}
+.meta {
+  display:flex; align-items:center; padding:0 22px; gap:16px; flex:1;
+}
+.tag   { font-size:10px; font-weight:700; color:var(--gold); letter-spacing:3.5px; text-transform:uppercase; white-space:nowrap; }
+.sep   { width:1px; height:22px; background:rgba(255,255,255,.3); flex-shrink:0; }
+.title { font-size:24px; font-weight:700; font-family:'Georgia',serif; color:#fff; line-height:1.1; }
+/* Slim footer */
+.footer {
+  position:absolute; left:18px; right:0; bottom:0; height:26px;
+  background:var(--navy); border-top:1px solid rgba(249,201,70,.25);
+  display:flex; align-items:center; padding:0 18px;
+}
+.footer-center { flex:1; text-align:center; font-size:11px; color:rgba(255,255,255,.45); letter-spacing:.5px; }
+.footer-right  { font-size:11px; color:rgba(255,255,255,.3); white-space:nowrap; font-family:'Consolas',monospace; }
+.body  { position:absolute; left:18px; right:0; top:62px; bottom:26px; overflow:hidden; }
+
+/* ── Content helpers ── */
+.code { background:#1A1F3A; border-radius:10px; padding:14px 18px; font-family:'Consolas','Courier New',monospace; font-size:14px; color:#E2E8F0; line-height:1.6; }
+.kw { color:var(--teal); font-weight:700; } .str { color:var(--gold); }
+.var { color:#93C5FD; } .iri { color:#FCA5A5; } .cm { color:var(--muted); }
+.badge { width:28px; height:28px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:#fff; }
+.b-ok { background:var(--ok); } .b-no { background:var(--no); } .b-warn { background:var(--warn); }
+.split { display:flex; height:100%; }
+.sp-l  { flex:1; padding:20px 24px; border-right:1px solid #DDE3F0; display:flex; flex-direction:column; gap:13px; }
+.sp-r  { flex:1; padding:20px 24px; display:flex; flex-direction:column; gap:13px; }
+.lbl   { font-size:17px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; }
+.lbl-coral { color:var(--coral); } .lbl-teal { color:var(--teal); } .lbl-navy { color:var(--navy); }
+.card  { background:#fff; border-radius:12px; padding:16px 18px; border-left:4px solid var(--teal); display:flex; flex-direction:column; gap:7px; box-shadow:0 2px 8px rgba(30,39,97,.07); }
+.card-coral { border-left-color:var(--coral); } .card-navy { border-left-color:var(--navy); }
+.ch { display:flex; align-items:center; gap:10px; }
+.ci { width:34px; height:34px; border-radius:8px; background:var(--bg); display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--navy); }
+.ci svg { width:18px; height:18px; stroke-width:1.75; }
+.ct { font-size:17px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:var(--navy); }
+.cb { font-size:21px; color:var(--text); line-height:1.3; }
+.cs { font-size:17px; color:var(--muted); line-height:1.25; }
+.rows { display:flex; flex-direction:column; height:100%; }
+.row  { display:flex; align-items:center; flex:1; padding:0 28px; border-bottom:1px solid #DDE3F0; gap:14px; }
+.row:last-child { border-bottom:none; }
+.row:nth-child(even) { background:#EEF1FA; }
+.ri { width:38px; height:38px; border-radius:10px; background:var(--bg); flex-shrink:0; display:flex; align-items:center; justify-content:center; color:var(--navy); }
+.ri svg { width:20px; height:20px; stroke-width:1.75; }
+.grid2  { display:grid; grid-template-columns:1fr 1fr; gap:14px; height:100%; padding:18px 26px; }
+.grid3  { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; height:100%; padding:16px 24px; }
+.grid22 { display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:12px; height:100%; padding:16px 24px; }
+/* Comparison helpers */
+.c3rows { display:flex; flex-direction:column; height:100%; }
+.c3row  { display:flex; align-items:stretch; flex:1; border-bottom:1px solid #DDE3F0; }
+.c3row:last-child { border-bottom:none; }
+.c3l,.c3r { flex:1; display:flex; align-items:center; padding:0 16px; gap:12px; font-size:20px; line-height:1.25; }
+.c3l { justify-content:flex-end; color:#64748B; }
+.c3r { color:var(--text); font-weight:500; }
+.c3m { width:210px; flex-shrink:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; background:#E5EAF5; border-left:1px solid #CDD5EC; border-right:1px solid #CDD5EC; font-size:14px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:var(--navy); text-align:center; padding:0 8px; }
+.c3row:nth-child(even) .c3m { background:#DBE2F0; }
+.rdf-w .c3r { background:rgba(43,200,154,.06); }
+.sql-w .c3l { background:rgba(51,65,85,.07); }
+.pg-w  .c3r { background:rgba(249,97,103,.04); }
+.ic-sm svg { width:18px; height:18px; stroke-width:1.75; display:block; }
+.pill  { padding:9px 26px; border-radius:32px; font-size:20px; font-weight:700; color:#fff; display:inline-block; white-space:nowrap; }
+.p-rel { background:#334155; } .p-pg { background:var(--coral); } .p-ts { background:#0d9488; }
+.pill-s { padding:9px 22px; border-radius:32px; font-size:20px; font-weight:600; display:inline-block; white-space:nowrap; border:2px solid; }
+.ps-pg  { color:var(--coral); border-color:var(--coral); background:rgba(249,97,103,.07); }
+.pills { display:flex; gap:12px; align-items:center; }
+</style>
+</head>
+<body>
+
+<!-- ── Demo 1: Split/Code-Layout ── -->
+<div style="color:#888;font-family:Segoe UI;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:3px;align-self:flex-start;">Finales Design — Beispiel mit Code-Split</div>
+
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">01</div>
+    <div class="meta">
+      <div class="tag">Query Model</div><div class="sep"></div>
+      <div class="title">SPARQL – Pattern Matching statt Tabellen</div>
+    </div>
+  </div>
+  <div class="footer"><div class="footer-center">Roman Lahm · Vinzent Lahm · Semantic Triple Stores</div><div class="footer-right"></div></div>
+  <div class="body">
+    <div class="split">
+      <div class="sp-l">
+        <div class="lbl lbl-coral">SQL — Tabellen &amp; Joins</div>
+        <div class="code">
+<span class="kw">SELECT</span> u.name, c.name<br>
+<span class="kw">FROM</span> university u<br>
+<span class="kw">JOIN</span> city c <span class="kw">ON</span> u.location_id = c.id<br>
+<span class="kw">WHERE</span> c.state = <span class="str">'Baden-Württemberg'</span>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span style="background:rgba(220,38,38,.1);color:var(--no);padding:5px 12px;border-radius:8px;font-size:15px;font-weight:600;">Tabellenschema nötig</span>
+          <span style="background:rgba(220,38,38,.1);color:var(--no);padding:5px 12px;border-radius:8px;font-size:15px;font-weight:600;">Explizite JOIN-Keys</span>
+          <span style="background:rgba(220,38,38,.1);color:var(--no);padding:5px 12px;border-radius:8px;font-size:15px;font-weight:600;">Keine Semantik</span>
+        </div>
+        <div style="background:#fff;border-radius:10px;padding:16px 18px;box-shadow:0 2px 8px rgba(30,39,97,.06);margin-top:auto;">
+          <div style="font-size:14px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Relationales Schema</div>
+          <div style="display:flex;gap:12px;align-items:center;">
+            <div style="background:#334155;color:#fff;border-radius:6px;padding:10px 14px;font-family:Consolas;font-size:14px;">university<br><span style="opacity:.55;font-size:12px;">id · name · location_id</span></div>
+            <div style="color:var(--muted);font-size:22px;">→</div>
+            <div style="background:#334155;color:#fff;border-radius:6px;padding:10px 14px;font-family:Consolas;font-size:14px;">city<br><span style="opacity:.55;font-size:12px;">id · name · state</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="sp-r">
+        <div class="lbl lbl-teal">SPARQL — Graph Pattern Matching</div>
+        <div class="code">
+<span class="kw">SELECT</span> <span class="var">?uniname</span> <span class="var">?stadtname</span><br>
+<span class="kw">WHERE</span> {<br>
+&nbsp;&nbsp;<span class="var">?u</span>  <span class="kw">a</span>            <span class="iri">uni:University</span> .<br>
+&nbsp;&nbsp;<span class="var">?u</span>  <span class="iri">rdfs:label</span>   <span class="var">?uniname</span> .<br>
+&nbsp;&nbsp;<span class="var">?u</span>  <span class="iri">uni:location</span> <span class="var">?stadt</span> .<br>
+&nbsp;&nbsp;<span class="var">?stadt</span> <span class="iri">uni:bundesland</span> <span class="str">"Baden-Wuerttemberg"</span> .<br>
+&nbsp;&nbsp;<span class="var">?stadt</span> <span class="iri">rdfs:label</span>   <span class="var">?stadtname</span> .<br>
+}
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span style="background:rgba(22,163,74,.1);color:var(--ok);padding:5px 12px;border-radius:8px;font-size:15px;font-weight:600;">Kein JOIN-Keyword</span>
+          <span style="background:rgba(22,163,74,.1);color:var(--ok);padding:5px 12px;border-radius:8px;font-size:15px;font-weight:600;">Geteilte Variablen</span>
+          <span style="background:rgba(22,163,74,.1);color:var(--ok);padding:5px 12px;border-radius:8px;font-size:15px;font-weight:600;">W3C-Standard</span>
+        </div>
+        <div style="background:rgba(43,200,154,.08);border-left:4px solid var(--teal);border-radius:8px;padding:16px 18px;margin-top:auto;">
+          <div style="font-size:21px;color:var(--text);line-height:1.4;">SQL fragt Tabellen ab. SPARQL beschreibt <strong>Muster im Graphen</strong> — geteilte Variablen verbinden Patterns implizit.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── Demo 2: Card-Grid-Layout ── -->
+<div style="color:#888;font-family:Segoe UI;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:3px;align-self:flex-start;">Finales Design — Beispiel mit Card-Grid</div>
+
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">03</div>
+    <div class="meta">
+      <div class="tag">Motivation</div><div class="sep"></div>
+      <div class="title">Grundidee RDF: Von Daten zu Wissen</div>
+    </div>
+  </div>
+  <div class="footer"><div class="footer-center">Roman Lahm · Vinzent Lahm · Semantic Triple Stores</div><div class="footer-right"></div></div>
+  <div class="body">
+    <div style="position:absolute;left:0;right:0;top:0;height:52px;display:flex;align-items:center;justify-content:center;background:rgba(43,200,154,.07);border-bottom:1px solid rgba(43,200,154,.18);">
+      <div style="font-size:24px;font-weight:700;color:var(--navy);font-family:Georgia,serif;letter-spacing:.5px;">
+        Subjekt <span style="color:var(--coral);">→</span> Prädikat <span style="color:var(--coral);">→</span> Objekt
+      </div>
+    </div>
+    <div class="grid22" style="top:52px;position:absolute;left:0;right:0;bottom:0;">
+      <div class="card">
+        <div class="ch"><div class="ci ic"><i data-lucide="shuffle"></i></div><div class="ct">Flexibilität</div></div>
+        <div class="cb">Kein festes Schema — neue Informationen als neue Triples</div>
+        <div class="cs">Kein ALTER TABLE, kein NULL-Overhead</div>
+      </div>
+      <div class="card card-navy">
+        <div class="ch"><div class="ci ic"><i data-lucide="share-2"></i></div><div class="ct">Beziehungen nativ</div></div>
+        <div class="cb">Kanten sind first-class citizens — keine JOIN-Tabellen nötig</div>
+        <div class="cs">Direkte Navigation im Graph</div>
+      </div>
+      <div class="card card-coral">
+        <div class="ch"><div class="ci ic"><i data-lucide="brain"></i></div><div class="ct">Semantik</div></div>
+        <div class="cb">Daten bekommen Bedeutung durch Ontologien und Klassen</div>
+        <div class="cs">Grundlage für Reasoning &amp; Inferenz</div>
+      </div>
+      <div class="card" style="border-left-color:#7C3AED;">
+        <div class="ch"><div class="ci ic" style="color:#7C3AED;"><i data-lucide="globe"></i></div><div class="ct" style="color:#7C3AED;">Globale Identität</div></div>
+        <div class="cb">URIs identifizieren Ressourcen weltweit eindeutig</div>
+        <div class="cs">Einfache Integration verteilter Datenquellen</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── Demo 3: Comparison-Rows-Layout ── -->
+<div style="color:#888;font-family:Segoe UI;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:3px;align-self:flex-start;">Finales Design — Beispiel mit Comparison-Rows</div>
+
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">01</div>
+    <div class="meta">
+      <div class="tag">Comparison</div><div class="sep"></div>
+      <div class="title">Triple Store vs. SQL</div>
+    </div>
+    <div style="position:absolute;right:36px;bottom:14px;display:flex;gap:10px;align-items:center;">
+      <div style="padding:6px 18px;border-radius:20px;font-size:15px;font-weight:700;color:#fff;background:#334155;">SQL (Relational)</div>
+      <div style="padding:6px 18px;border-radius:20px;font-size:15px;font-weight:700;color:#fff;background:#0d9488;">Triple Store (RDF)</div>
+    </div>
+  </div>
+  <div class="footer"><div class="footer-center">Roman Lahm · Vinzent Lahm · Semantic Triple Stores</div><div class="footer-right"></div></div>
+  <div class="body">
+    <div class="c3rows">
+      <div class="c3row rdf-w">
+        <div class="c3l"><span style="color:#64748B;">Zeile in Tabelle</span><div class="badge b-warn" style="width:32px;height:32px;">≈</div></div>
+        <div class="c3m"><div class="ic-sm ic"><i data-lucide="package"></i></div>Dateneinheit</div>
+        <div class="c3r"><div class="badge b-ok" style="width:32px;height:32px;">✓</div>Subjekt – Prädikat – Objekt</div>
+      </div>
+      <div class="c3row rdf-w">
+        <div class="c3l"><span style="color:#64748B;">starr, vordefiniert</span><div class="badge b-warn" style="width:32px;height:32px;">≈</div></div>
+        <div class="c3m"><div class="ic-sm ic"><i data-lucide="table-2"></i></div>Schema</div>
+        <div class="c3r"><div class="badge b-ok" style="width:32px;height:32px;">✓</div>flexibel, schema-light</div>
+      </div>
+      <div class="c3row rdf-w">
+        <div class="c3l"><span style="color:#64748B;">Joins (teuer, komplex)</span><div class="badge b-no" style="width:32px;height:32px;">✗</div></div>
+        <div class="c3m"><div class="ic-sm ic"><i data-lucide="share-2"></i></div>Beziehungen</div>
+        <div class="c3r"><div class="badge b-ok" style="width:32px;height:32px;">✓</div>Kanten = native Struktur</div>
+      </div>
+      <div class="c3row rdf-w">
+        <div class="c3l"><span style="color:#64748B;">SQL</span><div class="badge b-warn" style="width:32px;height:32px;">≈</div></div>
+        <div class="c3m"><div class="ic-sm ic"><i data-lucide="search"></i></div>Abfragesprache</div>
+        <div class="c3r"><div class="badge b-ok" style="width:32px;height:32px;">✓</div>SPARQL (Pattern Matching)</div>
+      </div>
+      <div class="c3row rdf-w">
+        <div class="c3l"><span style="color:#64748B;">keine</span><div class="badge b-no" style="width:32px;height:32px;">✗</div></div>
+        <div class="c3m"><div class="ic-sm ic"><i data-lucide="brain"></i></div>Semantik</div>
+        <div class="c3r"><div class="badge b-ok" style="width:32px;height:32px;">✓</div>RDFS / OWL, inferenzfähig</div>
+      </div>
+      <div class="c3row rdf-w">
+        <div class="c3l"><span style="color:#64748B;">schwierig (ETL)</span><div class="badge b-no" style="width:32px;height:32px;">✗</div></div>
+        <div class="c3m"><div class="ic-sm ic"><i data-lucide="globe"></i></div>Datenintegration</div>
+        <div class="c3r"><div class="badge b-ok" style="width:32px;height:32px;">✓</div>URIs → direkt verlinkbar</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── Demo 4: Use-Case-Matrix (Rows mit Pills) ── -->
+<div style="color:#888;font-family:Segoe UI;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:3px;align-self:flex-start;">Finales Design — Beispiel mit Use-Case-Matrix</div>
+
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">03</div>
+    <div class="meta">
+      <div class="tag">Comparison</div><div class="sep"></div>
+      <div class="title">Wann nimmt man was?</div>
+    </div>
+    <div style="position:absolute;right:36px;bottom:14px;display:flex;gap:10px;align-items:center;">
+      <div style="padding:5px 16px;border-radius:20px;font-size:15px;font-weight:700;color:#fff;background:#334155;">Relational</div>
+      <div style="padding:5px 16px;border-radius:20px;font-size:15px;font-weight:700;color:#fff;background:var(--coral);">Property Graph</div>
+      <div style="padding:5px 16px;border-radius:20px;font-size:15px;font-weight:700;color:#fff;background:#0d9488;">Triple Store</div>
+    </div>
+  </div>
+  <div class="footer"><div class="footer-center">Roman Lahm · Vinzent Lahm · Semantic Triple Stores</div><div class="footer-right"></div></div>
+  <div class="body">
+    <div class="rows">
+      <div class="row">
+        <div class="ri"><i data-lucide="layers"></i></div>
+        <div style="width:280px;flex-shrink:0;font-size:17px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--navy);">Stabile Struktur</div>
+        <div style="font-size:17px;color:var(--muted);margin-right:20px;">→</div>
+        <div class="pills"><div class="pill p-rel">Relational</div></div>
+      </div>
+      <div class="row">
+        <div class="ri"><i data-lucide="network"></i></div>
+        <div style="width:280px;flex-shrink:0;font-size:17px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--navy);">Tiefe Graphnavigation</div>
+        <div style="font-size:17px;color:var(--muted);margin-right:20px;">→</div>
+        <div class="pills"><div class="pill p-pg">Property Graph</div></div>
+      </div>
+      <div class="row">
+        <div class="ri"><i data-lucide="brain"></i></div>
+        <div style="width:280px;flex-shrink:0;font-size:17px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--navy);">Semantik &amp; Inferenz</div>
+        <div style="font-size:17px;color:var(--muted);margin-right:20px;">→</div>
+        <div class="pills"><div class="pill p-ts">Triple Store</div></div>
+      </div>
+      <div class="row">
+        <div class="ri"><i data-lucide="globe"></i></div>
+        <div style="width:280px;flex-shrink:0;font-size:17px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--navy);">Offene Datenintegration</div>
+        <div style="font-size:17px;color:var(--muted);margin-right:20px;">→</div>
+        <div class="pills"><div class="pill p-ts">Triple Store</div></div>
+      </div>
+      <div class="row">
+        <div class="ri"><i data-lucide="wrench"></i></div>
+        <div style="width:280px;flex-shrink:0;font-size:17px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--navy);">Einstieg &amp; Tooling</div>
+        <div style="font-size:17px;color:var(--muted);margin-right:20px;">→</div>
+        <div class="pills"><div class="pill p-rel">Relational</div><div class="pill-s ps-pg">Property Graph</div></div>
+      </div>
+      <div class="row">
+        <div class="ri"><i data-lucide="bot"></i></div>
+        <div style="width:280px;flex-shrink:0;font-size:17px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--navy);">AI / RAG / Knowledge Graphs</div>
+        <div style="font-size:17px;color:var(--muted);margin-right:20px;">→</div>
+        <div class="pills"><div class="pill p-ts">Triple Store</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+lucide.createIcons();
+// Auto-number slides
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+slides.forEach((s, i) => {
+  const r = s.querySelector('.footer-right');
+  if (r) r.textContent = `${i + 1} / ${total}`;
+});
+</script>
+</body>
+</html>

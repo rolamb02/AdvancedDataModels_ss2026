@@ -49,11 +49,15 @@ vs. RDF: Metadaten dynamisch ergänzbar?
 ## Ideen
 - Überblick nach den jeweiligen Kapiteln / Recap, Studis kurz Zeit lassen zum Durchdenken. 
 - Query Model : FAQ 2 / frage 7 umsetzen. 
+- wie gehts eigentlich weiter nach triplestores, ist das das Ende der Fahnenstange
 
 
 ## Important Todos: 
 - Präfixe an geeigneter stelle ausreichen erklären
+- Finaler Abgleich nochmal mit Report Md, passt alles? 
+- Ist alles von Gedanken zu anderen Präsis drinnen? 
 
+- nochmal andere Datenbanken im Vergleich analyiseren,Vorbereitung auf Fragen von Prof
 
 
 

@@ -1,0 +1,1996 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+@page { size: 1200px 675px; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:#1E2761; --coral:#F96167; --gold:#F9C946;
+  --teal:#2BC89A; --bg:#F4F6FB; --text:#1A1F3A;
+  --muted:#7B82A8; --ok:#16a34a; --no:#dc2626; --warn:#d97706;
+}
+body { background:#3a3a3a; display:flex; flex-direction:column; align-items:center; gap:32px; padding:32px; }
+.slide { width:1200px; height:675px; position:relative; overflow:hidden; page-break-after:always; flex-shrink:0; font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); }
+
+/* ── Chrome ── */
+.lbar  { position:absolute; left:0; top:0; width:18px; height:675px; background:var(--navy); }
+.hdr   { position:absolute; left:18px; top:0; right:0; height:62px; background:var(--navy); border-left:5px solid var(--gold); display:flex; align-items:stretch; }
+.num   { width:62px; height:62px; background:var(--coral); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; color:#fff; }
+.meta  { display:flex; align-items:center; padding:0 22px; gap:16px; flex:1; min-width:0; }
+.tag   { font-size:10px; font-weight:700; color:var(--gold); letter-spacing:3.5px; text-transform:uppercase; white-space:nowrap; flex-shrink:0; }
+.sep   { width:1px; height:22px; background:rgba(255,255,255,.3); flex-shrink:0; }
+.title { font-size:24px; font-weight:700; font-family:'Georgia',serif; color:#fff; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.footer { position:absolute; left:18px; right:0; bottom:0; height:26px; background:var(--navy); border-top:1px solid rgba(249,201,70,.25); display:flex; align-items:center; padding:0 18px; }
+.footer-center { flex:1; text-align:center; font-size:11px; color:rgba(255,255,255,.45); letter-spacing:.5px; }
+.footer-right  { font-size:11px; color:rgba(255,255,255,.3); white-space:nowrap; font-family:'Consolas',monospace; }
+
+/* ── Content area ── */
+.body { position:absolute; left:18px; right:0; top:62px; bottom:26px; overflow:hidden; }
+.body-nofooter { position:absolute; left:18px; right:0; top:62px; bottom:26px; overflow:hidden; }
+
+/* ── Badges ── */
+.badge { width:36px; height:36px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:700; color:#fff; }
+.b-ok { background:var(--ok); } .b-no { background:var(--no); } .b-warn { background:var(--warn); }
+
+/* ── Icons ── */
+.ic svg { width:20px; height:20px; stroke-width:1.75; display:block; }
+.ic-lg svg { width:28px; height:28px; stroke-width:1.6; }
+.ic-xl svg { width:38px; height:38px; stroke-width:1.5; }
+
+/* ── Cards ── */
+.grid2  { display:grid; grid-template-columns:1fr 1fr; gap:16px; height:100%; padding:18px 28px; }
+.grid3  { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; height:100%; padding:18px 28px; }
+.grid22 { display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:14px; height:100%; padding:18px 28px; }
+.card { background:#fff; border-radius:12px; padding:18px 20px; border-left:4px solid var(--teal); display:flex; flex-direction:column; gap:8px; box-shadow:0 2px 8px rgba(30,39,97,.07); }
+.card-navy  { border-left-color:var(--navy); }
+.card-coral { border-left-color:var(--coral); }
+.card-gold  { border-left-color:var(--gold); }
+.card-muted { border-left-color:var(--muted); }
+.ch { display:flex; align-items:center; gap:10px; margin-bottom:4px; }
+.ci { width:36px; height:36px; border-radius:8px; background:var(--bg); display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--navy); }
+.ci svg { width:20px; height:20px; stroke-width:1.75; }
+.ct { font-size:18px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--navy); }
+.cb { font-size:22px; color:var(--text); line-height:1.35; }
+.cs { font-size:18px; color:var(--muted); line-height:1.3; }
+
+/* ── Split ── */
+.split { display:flex; height:100%; }
+.sp-l { flex:1; padding:20px 24px; border-right:1px solid #DDE3F0; display:flex; flex-direction:column; gap:12px; }
+.sp-r { flex:1; padding:20px 24px; display:flex; flex-direction:column; gap:12px; }
+
+/* ── Rows ── */
+.rows { display:flex; flex-direction:column; height:100%; }
+.row  { display:flex; align-items:center; flex:1; padding:0 28px; border-bottom:1px solid #DDE3F0; gap:14px; }
+.row:last-child { border-bottom:none; }
+.row:nth-child(even) { background:#EEF1FA; }
+.ri   { width:38px; height:38px; border-radius:10px; background:var(--bg); flex-shrink:0; display:flex; align-items:center; justify-content:center; color:var(--navy); }
+.ri svg { width:20px; height:20px; stroke-width:1.75; }
+.rl   { font-size:18px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:var(--navy); flex-shrink:0; }
+.rv   { font-size:22px; color:var(--text); flex:1; line-height:1.25; }
+.rv-m { color:var(--muted); }
+
+/* ── Code block ── */
+.code { background:#1A1F3A; border-radius:10px; padding:14px 18px; font-family:'Consolas','Courier New',monospace; font-size:15px; color:#E2E8F0; line-height:1.6; }
+.kw  { color:var(--teal); font-weight:700; }
+.str { color:var(--gold); }
+.var { color:#93C5FD; }
+.iri { color:#FCA5A5; }
+.cm  { color:var(--muted); }
+
+/* ── Label helpers ── */
+.lbl { font-size:18px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; }
+.lbl-teal  { color:var(--teal); }
+.lbl-coral { color:var(--coral); }
+.lbl-navy  { color:var(--navy); }
+.lbl-muted { color:var(--muted); }
+.lbl-gold  { color:var(--gold); }
+.txt22 { font-size:22px; color:var(--text); line-height:1.35; }
+.txt18 { font-size:18px; color:var(--muted); line-height:1.3; }
+
+/* ── Comparison 3-col (reused from comparison.html) ── */
+.c3rows { display:flex; flex-direction:column; height:100%; }
+.c3row  { display:flex; align-items:stretch; flex:1; border-bottom:1px solid #DDE3F0; }
+.c3row:last-child { border-bottom:none; }
+.c3l,.c3r { flex:1; display:flex; align-items:center; padding:0 16px; gap:12px; font-size:20px; line-height:1.25; }
+.c3l { justify-content:flex-end; color:#64748B; }
+.c3r { color:var(--text); font-weight:500; }
+.c3m { width:210px; flex-shrink:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; background:#E5EAF5; border-left:1px solid #CDD5EC; border-right:1px solid #CDD5EC; font-size:15px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:var(--navy); text-align:center; padding:0 8px; }
+.c3row:nth-child(even) .c3m { background:#DBE2F0; }
+.rdf-w .c3r { background:rgba(43,200,154,.06); }
+.sql-w .c3l { background:rgba(51,65,85,.07); }
+.pg-w  .c3r { background:rgba(249,97,103,.04); }
+.ic-sm svg { width:18px; height:18px; stroke-width:1.75; }
+
+/* ── Pills ── */
+.pill { padding:10px 28px; border-radius:32px; font-size:20px; font-weight:700; color:#fff; display:inline-block; white-space:nowrap; }
+.p-rel { background:#334155; } .p-pg { background:var(--coral); } .p-ts { background:#0d9488; }
+.pill-s { padding:10px 22px; border-radius:32px; font-size:20px; font-weight:600; display:inline-block; white-space:nowrap; border:2px solid; }
+.ps-pg  { color:var(--coral); border-color:var(--coral); background:rgba(249,97,103,.07); }
+
+/* ── Comparison header labels ── */
+.col-labels-c1 { position:absolute; right:18px; top:50%; transform:translateY(-50%); display:flex; gap:12px; align-items:center; }
+.col-labels-c2 { position:absolute; left:84px; top:0; bottom:0; right:18px; display:flex; align-items:center; }
+.col-labels-c3 { position:absolute; right:18px; top:50%; transform:translateY(-50%); display:flex; gap:10px; align-items:center; }
+.cl { padding:7px 20px; border-radius:20px; font-size:16px; font-weight:700; color:#fff; }
+.cl-sql { background:#334155; } .cl-rdf { background:#0d9488; }
+.cl-rdf2 { flex:1; font-size:20px; font-weight:700; color:var(--teal); }
+.cl-mid  { width:224px; text-align:center; font-size:16px; color:rgba(255,255,255,.22); }
+.cl-pg   { flex:1; text-align:right; font-size:20px; font-weight:700; color:var(--coral); }
+.lp { padding:6px 18px; border-radius:20px; font-size:16px; font-weight:700; color:#fff; }
+.lp-rel { background:#334155; } .lp-pg { background:var(--coral); } .lp-ts { background:#0d9488; }
+.req { width:292px; flex-shrink:0; font-size:18px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--navy); }
+.arr { font-size:18px; color:var(--muted); margin-right:22px; flex-shrink:0; }
+.pills { display:flex; gap:12px; align-items:center; }
+.req-icon { width:40px; height:40px; border-radius:10px; flex-shrink:0; display:flex; align-items:center; justify-content:center; color:var(--navy); background:#E5EAF5; margin-right:14px; }
+.req-icon svg { width:22px; height:22px; stroke-width:1.75; }
+</style>
+</head>
+<body>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     TITLE SLIDE
+═══════════════════════════════════════════════════════ -->
+<div class="slide" style="background:var(--navy);">
+  <div class="lbar" style="background:rgba(0,0,0,.25);"></div>
+  <div style="position:absolute;right:40px;top:40px;opacity:.15;">
+    <svg width="380" height="380" viewBox="0 0 380 380">
+      <circle cx="190" cy="80" r="32" fill="#F96167"/>
+      <circle cx="80"  cy="240" r="26" fill="#2BC89A"/>
+      <circle cx="300" cy="240" r="26" fill="#2BC89A"/>
+      <circle cx="140" cy="340" r="22" fill="#F9C946"/>
+      <circle cx="260" cy="340" r="22" fill="#F9C946"/>
+      <line x1="190" y1="112" x2="92"  y2="222" stroke="#fff" stroke-width="2.5"/>
+      <line x1="190" y1="112" x2="288" y2="222" stroke="#fff" stroke-width="2.5"/>
+      <line x1="92"  y1="260" x2="148" y2="322" stroke="#fff" stroke-width="2.5"/>
+      <line x1="288" y1="260" x2="252" y2="322" stroke="#fff" stroke-width="2.5"/>
+      <line x1="162" y1="345" x2="238" y2="345" stroke="#fff" stroke-width="2.5"/>
+      <text x="190" y="84" text-anchor="middle" fill="white" font-size="12" font-family="Segoe UI" font-weight="700">RDF</text>
+      <text x="80"  y="244" text-anchor="middle" fill="white" font-size="10" font-family="Segoe UI">SPARQL</text>
+      <text x="300" y="244" text-anchor="middle" fill="white" font-size="10" font-family="Segoe UI">OWL</text>
+      <text x="140" y="344" text-anchor="middle" fill="white" font-size="10" font-family="Segoe UI">RDFS</text>
+      <text x="260" y="344" text-anchor="middle" fill="white" font-size="10" font-family="Segoe UI">URI</text>
+    </svg>
+  </div>
+  <div style="position:absolute;left:60px;top:130px;right:440px;">
+    <div style="font-size:11px;font-weight:700;color:var(--gold);letter-spacing:4px;text-transform:uppercase;margin-bottom:28px;">Advanced Data Models · SS 2026 · Gruppe 2</div>
+    <div style="font-size:54px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.15;margin-bottom:22px;">Semantic<br>Triple Stores</div>
+    <div style="font-size:22px;color:rgba(255,255,255,.55);margin-bottom:40px;">RDF · SPARQL · Inference · Knowledge Graphs</div>
+    <div style="width:60px;height:3px;background:var(--gold);margin-bottom:28px;"></div>
+    <div style="font-size:20px;color:rgba(255,255,255,.4);">Roman Lahm &amp; Vinzent Lahm</div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     AGENDA
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num" style="background:var(--navy);border-bottom:2px solid var(--gold);">
+      <i data-lucide="list" style="width:22px;height:22px;stroke-width:2;color:var(--gold);"></i>
+    </div>
+    <div class="tag">Übersicht</div>
+    <div class="title">Agenda</div>
+  </div>
+  <div class="body-nofooter" style="padding:20px 32px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;height:100%;">
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:16px;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--coral);">
+          <div style="width:40px;height:40px;background:var(--coral);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;font-weight:700;color:#fff;">1</div>
+          <div><div class="ct">Motivation</div><div class="cs">Warum Triple Stores? SQL-Grenzen · RDF-Grundidee · AI</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--teal);">
+          <div style="width:40px;height:40px;background:var(--teal);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;font-weight:700;color:#fff;">2</div>
+          <div><div class="ct">Conceptual Model</div><div class="cs">Triple · URIs · RDFS/OWL · Inferenz · Named Graphs</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--navy);">
+          <div style="width:40px;height:40px;background:var(--navy);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;font-weight:700;color:#fff;">3</div>
+          <div><div class="ct">Data Structure</div><div class="cs">Triple Table · Dictionary · Index-Permutationen · URIs</div></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:16px;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid #7C3AED;">
+          <div style="width:40px;height:40px;background:#7C3AED;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;font-weight:700;color:#fff;">4</div>
+          <div><div class="ct">Query Model</div><div class="cs">SPARQL · Pattern Matching · Inferenz-Aha-Moment</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid #0891B2;">
+          <div style="width:40px;height:40px;background:#0891B2;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;font-weight:700;color:#fff;">5</div>
+          <div><div class="ct">Architecture</div><div class="cs">Storage · Deployment · Skalierung · Tools</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--gold);">
+          <div style="width:40px;height:40px;background:var(--gold);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;font-weight:700;color:var(--navy);">6</div>
+          <div><div class="ct">Comparison</div><div class="cs">vs. SQL · vs. Property Graph · Use-Case-Matrix</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     MOTIVATION 01 — Das Problem: Starre Schemata
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">01</div>
+    <div class="tag">Motivation</div>
+    <div class="title">Das Problem: Starre Schemata</div>
+  </div>
+  <div class="body">
+    <div class="split">
+      <div class="sp-l">
+        <div class="lbl lbl-coral" style="margin-bottom:4px;">SQL — Das NULL-Problem</div>
+        <!-- Table visual -->
+        <div style="background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(30,39,97,.07);font-size:16px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;background:var(--navy);color:#fff;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.5px;">
+            <div style="padding:8px 12px;">Name</div><div style="padding:8px 12px;">Universität</div><div style="padding:8px 12px;">Stadt</div><div style="padding:8px 12px;">Gegründet</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;border-bottom:1px solid #EEF1FA;">
+            <div style="padding:8px 12px;color:var(--text);">Alice</div><div style="padding:8px 12px;color:var(--text);">KIT</div><div style="padding:8px 12px;color:var(--text);">Karlsruhe</div><div style="padding:8px 12px;color:var(--no);font-weight:600;">NULL</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;background:#EEF1FA;border-bottom:1px solid #DDE3F0;">
+            <div style="padding:8px 12px;color:var(--text);">Bob</div><div style="padding:8px 12px;color:var(--text);">TU München</div><div style="padding:8px 12px;color:var(--no);font-weight:600;">NULL</div><div style="padding:8px 12px;color:var(--no);font-weight:600;">NULL</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;">
+            <div style="padding:8px 12px;color:var(--text);">Carol</div><div style="padding:8px 12px;color:var(--no);font-weight:600;">NULL</div><div style="padding:8px 12px;color:var(--text);">Stuttgart</div><div style="padding:8px 12px;color:var(--no);font-weight:600;">NULL</div>
+          </div>
+        </div>
+        <div class="code" style="margin-top:10px;font-size:14px;">
+<span class="cm">-- Neues Attribut? Schema muss geändert werden:</span><br>
+<span class="kw">ALTER TABLE</span> Personen<br>
+<span class="kw">ADD COLUMN</span> geb_datum <span class="str">DATE</span>;<br>
+<span class="cm">-- → alle bestehenden Zeilen: NULL</span>
+        </div>
+      </div>
+      <div class="sp-r">
+        <div class="lbl lbl-teal" style="margin-bottom:10px;">RDF — Nur existierende Fakten</div>
+        <!-- RDF triples visual -->
+        <svg width="480" height="270" viewBox="0 0 480 270" style="display:block;">
+          <!-- Nodes -->
+          <ellipse cx="80" cy="60" rx="60" ry="28" fill="var(--navy)" rx="60"/>
+          <text x="80" y="64" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="600">Alice</text>
+          <ellipse cx="280" cy="60" rx="60" ry="28" fill="var(--teal)"/>
+          <text x="280" y="64" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="600">KIT</text>
+          <ellipse cx="80" cy="180" rx="70" ry="28" fill="var(--navy)"/>
+          <text x="80" y="184" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="600">Karlsruhe</text>
+          <ellipse cx="280" cy="180" rx="70" ry="28" fill="var(--teal)"/>
+          <text x="280" y="184" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="600">"Karlsruhe"</text>
+          <!-- Arrows -->
+          <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><polygon points="0 0,8 4,0 8" fill="var(--muted)"/></marker></defs>
+          <line x1="140" y1="60" x2="218" y2="60" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr)"/>
+          <line x1="80" y1="88" x2="80" y2="152" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr)"/>
+          <line x1="140" y1="180" x2="208" y2="180" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr)"/>
+          <!-- Labels -->
+          <text x="179" y="52" text-anchor="middle" fill="var(--coral)" font-size="12" font-family="Segoe UI" font-weight="700">studiesAt</text>
+          <text x="30" y="138" fill="var(--coral)" font-size="12" font-family="Segoe UI" font-weight="700">livesIn</text>
+          <text x="174" y="172" text-anchor="middle" fill="var(--coral)" font-size="12" font-family="Segoe UI" font-weight="700">rdfs:label</text>
+          <!-- No null note -->
+          <rect x="330" y="100" width="140" height="50" rx="8" fill="rgba(22,163,74,.1)" stroke="var(--ok)" stroke-width="1.5"/>
+          <text x="400" y="120" text-anchor="middle" fill="var(--ok)" font-size="13" font-family="Segoe UI" font-weight="700">Kein Fakt?</text>
+          <text x="400" y="140" text-anchor="middle" fill="var(--ok)" font-size="13" font-family="Segoe UI">→ kein Triple</text>
+        </svg>
+        <div class="txt18" style="margin-top:4px;">Neues Attribut = neues Triple — kein ALTER TABLE, kein NULL-Overhead.</div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>SQL <strong>zwingt zu vollständigen Zeilen</strong> — RDF speichert nur existierende Fakten, atomar und erweiterbar.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     MOTIVATION 02 — Keine Semantik & Join-Komplexität
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">02</div>
+    <div class="tag">Motivation</div>
+    <div class="title">Das Problem: Semantik &amp; Join-Komplexität</div>
+  </div>
+  <div class="body">
+    <div class="split">
+      <div class="sp-l">
+        <div class="lbl lbl-coral" style="margin-bottom:10px;">SQL kennt keine Bedeutung</div>
+        <div style="background:#fff;border-radius:10px;padding:14px 18px;box-shadow:0 2px 8px rgba(30,39,97,.07);margin-bottom:12px;">
+          <div style="font-size:16px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Employees</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;background:var(--navy);color:#fff;font-size:13px;font-weight:700;border-radius:6px 6px 0 0;">
+            <div style="padding:6px 12px;">name</div><div style="padding:6px 12px;">company</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;background:#EEF1FA;">
+            <div style="padding:6px 12px;font-size:16px;">Alice</div><div style="padding:6px 12px;font-size:16px;">SAP</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;align-items:center;gap:8px;"><div class="badge b-no" style="width:24px;height:24px;font-size:12px;">✗</div><div class="txt18">DB weiß nicht: Alice ist eine <em style="color:var(--navy);font-style:normal;font-weight:700;">Person</em></div></div>
+          <div style="display:flex;align-items:center;gap:8px;"><div class="badge b-no" style="width:24px;height:24px;font-size:12px;">✗</div><div class="txt18">DB weiß nicht: SAP ist eine <em style="color:var(--navy);font-style:normal;font-weight:700;">Firma</em></div></div>
+          <div style="display:flex;align-items:center;gap:8px;"><div class="badge b-no" style="width:24px;height:24px;font-size:12px;">✗</div><div class="txt18">Bedeutung liegt <em style="color:var(--navy);font-style:normal;font-weight:700;">im Anwendungscode</em></div></div>
+        </div>
+      </div>
+      <div class="sp-r">
+        <div class="lbl lbl-coral" style="margin-bottom:10px;">SQL braucht viele Joins</div>
+        <!-- Join chain SVG -->
+        <svg width="470" height="130" viewBox="0 0 470 130" style="display:block;margin-bottom:10px;">
+          <rect x="5"   y="40" width="90"  height="50" rx="8" fill="#334155"/>
+          <rect x="125" y="40" width="90"  height="50" rx="8" fill="#334155"/>
+          <rect x="245" y="40" width="90"  height="50" rx="8" fill="#334155"/>
+          <rect x="365" y="40" width="90"  height="50" rx="8" fill="#334155"/>
+          <text x="50"  y="70" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="600">Person</text>
+          <text x="170" y="70" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="600">Job</text>
+          <text x="290" y="70" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="600">Company</text>
+          <text x="410" y="70" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="600">Location</text>
+          <line x1="95" y1="65" x2="125" y2="65" stroke="var(--coral)" stroke-width="2.5" marker-end="url(#arr)"/>
+          <line x1="215" y1="65" x2="245" y2="65" stroke="var(--coral)" stroke-width="2.5" marker-end="url(#arr)"/>
+          <line x1="335" y1="65" x2="365" y2="65" stroke="var(--coral)" stroke-width="2.5" marker-end="url(#arr)"/>
+          <text x="110" y="56" text-anchor="middle" fill="var(--muted)" font-size="11" font-family="Segoe UI">JOIN</text>
+          <text x="230" y="56" text-anchor="middle" fill="var(--muted)" font-size="11" font-family="Segoe UI">JOIN</text>
+          <text x="350" y="56" text-anchor="middle" fill="var(--muted)" font-size="11" font-family="Segoe UI">JOIN</text>
+        </svg>
+        <div class="lbl lbl-teal" style="margin-bottom:8px;">RDF: geteilte Variablen = implizite Joins</div>
+        <div class="code" style="font-size:14px;">
+<span class="var">?person</span> <span class="iri">worksAt</span> <span class="var">?company</span> .<br>
+<span class="var">?company</span> <span class="iri">locatedIn</span> <span class="var">?city</span> .<br>
+<span class="cm">→ direkte Navigation im Graph, kein JOIN-Keyword</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span><strong>SQL = Daten strukturieren.</strong> RDF = <em>Wissen modellieren</em> — Semantik ist explizit, Beziehungen sind nativ.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     MOTIVATION 03 — Grundidee RDF
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">03</div>
+    <div class="tag">Motivation</div>
+    <div class="title">Grundidee RDF: Von Daten zu Wissen</div>
+  </div>
+  <div class="body">
+    <!-- Central tagline + 4 cards -->
+    <div style="position:absolute;left:0;right:0;top:0;height:56px;display:flex;align-items:center;justify-content:center;background:rgba(43,200,154,.08);border-bottom:1px solid rgba(43,200,154,.2);">
+      <div style="font-size:24px;font-weight:700;color:var(--navy);font-family:Georgia,serif;letter-spacing:.5px;">
+        Subjekt <span style="color:var(--coral);">→</span> Prädikat <span style="color:var(--coral);">→</span> Objekt
+      </div>
+    </div>
+    <div class="grid22" style="top:56px;position:absolute;left:0;right:0;bottom:0;padding:14px 28px;">
+      <div class="card card-teal">
+        <div class="ch"><div class="ci ic"><i data-lucide="shuffle"></i></div><div class="ct">Flexibilität</div></div>
+        <div class="cb">Kein festes Schema — neue Informationen als neue Triples</div>
+        <div class="cs">Kein ALTER TABLE, kein NULL-Overhead</div>
+      </div>
+      <div class="card card-navy">
+        <div class="ch"><div class="ci ic"><i data-lucide="share-2"></i></div><div class="ct">Beziehungen nativ</div></div>
+        <div class="cb">Kanten sind first-class citizens — keine JOIN-Tabellen nötig</div>
+        <div class="cs">Direkte Navigation im Graph</div>
+      </div>
+      <div class="card card-coral">
+        <div class="ch"><div class="ci ic"><i data-lucide="brain"></i></div><div class="ct">Semantik</div></div>
+        <div class="cb">Daten bekommen Bedeutung durch Ontologien und Klassen</div>
+        <div class="cs">Grundlage für Reasoning &amp; Inferenz</div>
+      </div>
+      <div class="card" style="border-left-color:#7C3AED;">
+        <div class="ch"><div class="ci ic" style="color:#7C3AED;"><i data-lucide="globe"></i></div><div class="ct" style="color:#7C3AED;">Globale Identität</div></div>
+        <div class="cb">URIs identifizieren Ressourcen weltweit eindeutig</div>
+        <div class="cs">Einfache Integration verteilter Datenquellen</div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>SQL speichert Daten — RDF <strong>modelliert Wissen.</strong> Struktur + Bedeutung + Beziehungen in einem Modell.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     MOTIVATION 04 — AI-Relevanz
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">04</div>
+    <div class="tag">Motivation</div>
+    <div class="title">Relevanz für AI: RAG &amp; Semantische Suche</div>
+  </div>
+  <div class="body">
+    <div class="grid2">
+      <div class="card card-coral" style="gap:12px;">
+        <div class="ch"><div class="ci ic ic-lg" style="width:44px;height:44px;"><i data-lucide="bot"></i></div><div class="ct">RAG-Pipelines</div></div>
+        <!-- Flow diagram -->
+        <svg width="400" height="90" viewBox="0 0 400 90" style="display:block;margin:4px 0;">
+          <rect x="0"   y="25" width="90"  height="40" rx="8" fill="var(--navy)"/>
+          <rect x="115" y="25" width="90"  height="40" rx="8" fill="#7C3AED"/>
+          <rect x="230" y="25" width="90"  height="40" rx="8" fill="var(--teal)"/>
+          <rect x="345" y="25" width="50"  height="40" rx="8" fill="var(--coral)"/>
+          <text x="45"  y="49" text-anchor="middle" fill="white" font-size="12" font-family="Segoe UI" font-weight="600">RDF Graph</text>
+          <text x="160" y="49" text-anchor="middle" fill="white" font-size="12" font-family="Segoe UI" font-weight="600">SPARQL</text>
+          <text x="275" y="49" text-anchor="middle" fill="white" font-size="12" font-family="Segoe UI" font-weight="600">Retrieval</text>
+          <text x="370" y="49" text-anchor="middle" fill="white" font-size="12" font-family="Segoe UI" font-weight="600">LLM</text>
+          <line x1="90"  y1="45" x2="113" y2="45" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr)"/>
+          <line x1="205" y1="45" x2="228" y2="45" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr)"/>
+          <line x1="320" y1="45" x2="343" y2="45" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr)"/>
+        </svg>
+        <div class="cb">Strukturierte, faktengenaue Wissensbasis statt reiner Embedding-Suche</div>
+        <div class="cs">Weniger Halluzinationen · nachvollziehbare Quellen · auditierbar</div>
+      </div>
+      <div class="card card-navy" style="gap:12px;">
+        <div class="ch"><div class="ci ic ic-lg" style="width:44px;height:44px;"><i data-lucide="search"></i></div><div class="ct">Semantische Suche</div></div>
+        <div style="background:var(--bg);border-radius:8px;padding:12px 16px;margin:4px 0;">
+          <div style="font-size:18px;color:var(--muted);margin-bottom:8px;">Anfrage:</div>
+          <div style="font-size:22px;font-weight:600;color:var(--navy);">"Professoren in Karlsruhe"</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="badge b-no" style="width:26px;height:26px;font-size:12px;flex-shrink:0;">✗</div>
+            <div class="txt18">Keyword-Suche: findet nur exaktes "Professoren" + "Karlsruhe"</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="badge b-ok" style="width:26px;height:26px;font-size:12px;flex-shrink:0;">✓</div>
+            <div class="txt18">RDF + Ontologie: Professor ⊆ Person · Karlsruhe = Stadt in BW</div>
+          </div>
+        </div>
+        <div class="cs">Einsatz: Suchmaschinen · Unternehmenssuche · Medizin · Empfehlungssysteme</div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>Triple Stores sind <strong>die natürliche Grundlage für KI-Systeme</strong>, die strukturiertes, erklärbares Wissen brauchen.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     CONCEPTUAL MODEL 01 — Das Triple
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">01</div>
+    <div class="tag">Conceptual Model</div>
+    <div class="title">Das Triple – Atomare Wissenseinheit</div>
+  </div>
+  <div class="body">
+    <div class="split">
+      <div class="sp-l" style="justify-content:center;">
+        <!-- S-P-O diagram -->
+        <svg width="440" height="340" viewBox="0 0 440 340" style="display:block;">
+          <defs><marker id="arr2" markerWidth="9" markerHeight="9" refX="9" refY="4.5" orient="auto"><polygon points="0 0,9 4.5,0 9" fill="var(--navy)"/></marker>
+          <marker id="arr3" markerWidth="9" markerHeight="9" refX="9" refY="4.5" orient="auto"><polygon points="0 0,9 4.5,0 9" fill="var(--teal)"/></marker></defs>
+          <!-- Nodes -->
+          <ellipse cx="90"  cy="80"  rx="72" ry="34" fill="var(--coral)"/>
+          <ellipse cx="90"  cy="230" rx="72" ry="34" fill="var(--navy)"/>
+          <ellipse cx="310" cy="80"  rx="72" ry="34" fill="var(--teal)"/>
+          <ellipse cx="310" cy="230" rx="90" ry="34" fill="var(--teal)"/>
+          <text x="90"  y="84"  text-anchor="middle" fill="white" font-size="15" font-family="Segoe UI" font-weight="700">Alice</text>
+          <text x="90"  y="234" text-anchor="middle" fill="white" font-size="15" font-family="Segoe UI" font-weight="700">Person</text>
+          <text x="310" y="84"  text-anchor="middle" fill="white" font-size="15" font-family="Segoe UI" font-weight="700">SAP</text>
+          <text x="310" y="234" text-anchor="middle" fill="white" font-size="14" font-family="Segoe UI" font-weight="700">"Alice Schmidt"</text>
+          <!-- Arrows -->
+          <line x1="162" y1="80"  x2="236" y2="80"  stroke="var(--navy)" stroke-width="2.5" marker-end="url(#arr2)"/>
+          <line x1="90"  y1="114" x2="90"  y2="196" stroke="var(--teal)" stroke-width="2.5" marker-end="url(#arr3)"/>
+          <line x1="162" y1="230" x2="218" y2="230" stroke="var(--teal)" stroke-width="2.5" marker-end="url(#arr3)"/>
+          <!-- Labels -->
+          <text x="199" y="68"  text-anchor="middle" fill="var(--navy)" font-size="13" font-family="Segoe UI" font-weight="700">worksAt</text>
+          <text x="40"  y="162" fill="var(--teal)" font-size="13" font-family="Segoe UI" font-weight="700">rdf:type</text>
+          <text x="190" y="220" text-anchor="middle" fill="var(--teal)" font-size="13" font-family="Segoe UI" font-weight="700">rdfs:label</text>
+          <!-- S-P-O annotations -->
+          <text x="90"  y="40"  text-anchor="middle" fill="var(--muted)" font-size="12" font-family="Segoe UI" letter-spacing="1">SUBJEKT</text>
+          <text x="310" y="40"  text-anchor="middle" fill="var(--muted)" font-size="12" font-family="Segoe UI" letter-spacing="1">OBJEKT</text>
+        </svg>
+      </div>
+      <div class="sp-r" style="justify-content:center;gap:16px;">
+        <div style="background:#fff;border-radius:12px;padding:18px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);">
+          <div class="lbl lbl-navy" style="margin-bottom:12px;">Drei Fakten als Triples</div>
+          <div style="display:flex;flex-direction:column;gap:8px;font-family:'Consolas',monospace;font-size:17px;">
+            <div><span style="color:var(--coral);font-weight:700;">Alice</span> <span style="color:var(--navy);">worksAt</span> <span style="color:var(--teal);font-weight:700;">SAP</span> <span style="color:var(--muted);">.</span></div>
+            <div><span style="color:var(--coral);font-weight:700;">Alice</span> <span style="color:var(--navy);">rdf:type</span> <span style="color:var(--teal);font-weight:700;">Person</span> <span style="color:var(--muted);">.</span></div>
+            <div><span style="color:var(--coral);font-weight:700;">Alice</span> <span style="color:var(--navy);">rdfs:label</span> <span style="color:var(--teal);font-weight:700;">"Alice Schmidt"</span> <span style="color:var(--muted);">.</span></div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;background:rgba(43,200,154,.08);border-radius:10px;padding:14px 16px;border-left:4px solid var(--teal);">
+          <div style="font-size:32px;font-weight:700;color:var(--coral);font-family:Georgia,serif;">S</div>
+          <div style="font-size:24px;color:var(--muted);">–</div>
+          <div style="font-size:32px;font-weight:700;color:var(--navy);font-family:Georgia,serif;">P</div>
+          <div style="font-size:24px;color:var(--muted);">–</div>
+          <div style="font-size:32px;font-weight:700;color:var(--teal);font-family:Georgia,serif;">O</div>
+          <div style="margin-left:8px;font-size:18px;color:var(--muted);">= gerichtete Kante im Graph</div>
+        </div>
+        <div class="txt18">Mehrere Triples über dasselbe Subjekt bilden automatisch einen <strong style="color:var(--navy);">gerichteten RDF-Graphen</strong>.</div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>Ein Triple ist die <strong>kleinste Wissenseinheit</strong> — viele Triples ergeben einen maschinenlesbaren Wissensgraphen.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     CONCEPTUAL MODEL 02 — RDF-Komponenten
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">02</div>
+    <div class="tag">Conceptual Model</div>
+    <div class="title">RDF-Komponenten: URI · Literal · Blank Node</div>
+  </div>
+  <div class="body">
+    <div class="grid3">
+      <div class="card card-coral">
+        <div class="ch"><div class="ci ic"><i data-lucide="link"></i></div><div class="ct">URI / IRI</div></div>
+        <div class="cb">Globale, eindeutige Identifikation jeder Ressource</div>
+        <div class="code" style="font-size:13px;margin-top:6px;"><span class="iri">&lt;http://dbpedia.org/<br>resource/Stuttgart&gt;</span><br><span class="cm">→ weltweit eindeutig</span></div>
+        <div class="cs" style="margin-top:4px;">Kann Subjekt <em style="font-style:normal;font-weight:700;">und</em> Objekt sein → ermöglicht Verknüpfung</div>
+      </div>
+      <div class="card card-teal">
+        <div class="ch"><div class="ci ic"><i data-lucide="type"></i></div><div class="ct">Literal</div></div>
+        <div class="cb">Rohe Datenwerte — immer nur als Objekt</div>
+        <div class="code" style="font-size:13px;margin-top:6px;"><span class="str">"Universität Stuttgart"</span><br><span class="str">"1829"^^xsd:integer</span><br><span class="str">"Stuttgart"@de</span></div>
+        <div class="cs" style="margin-top:4px;">Strings · Zahlen · Daten · Sprach-Tags</div>
+      </div>
+      <div class="card card-muted">
+        <div class="ch"><div class="ci ic"><i data-lucide="circle-dashed"></i></div><div class="ct">Blank Node</div></div>
+        <div class="cb">Anonyme Ressource ohne globale URI</div>
+        <div class="code" style="font-size:13px;margin-top:6px;"><span class="cm">_:b1 a uni:Address .<br>uni:Stuttgart<br>  uni:postalCode _:b1 .</span></div>
+        <div class="cs" style="margin-top:4px;">Nützlich für Zwischenknoten ohne eigene Identität</div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>Subjekt = URI oder Blank Node · Prädikat = URI · Objekt = URI, Literal <em>oder</em> Blank Node.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     CONCEPTUAL MODEL 03 — RDFS: Vokabular & Klassen
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">03</div>
+    <div class="tag">Conceptual Model</div>
+    <div class="title">RDFS – Vokabular &amp; Klassenhierarchien</div>
+  </div>
+  <div class="body">
+    <div class="split">
+      <div class="sp-l" style="justify-content:center;">
+        <!-- Class hierarchy SVG -->
+        <svg width="430" height="330" viewBox="0 0 430 330" style="display:block;">
+          <defs><marker id="arr4" markerWidth="9" markerHeight="9" refX="9" refY="4.5" orient="auto"><polygon points="0 0,9 4.5,0 9" fill="var(--teal)"/></marker></defs>
+          <!-- Person class -->
+          <rect x="150" y="20" width="130" height="44" rx="8" fill="var(--navy)"/>
+          <text x="215" y="46" text-anchor="middle" fill="white" font-size="15" font-family="Segoe UI" font-weight="700">uni:Person</text>
+          <!-- Student -->
+          <rect x="30"  y="120" width="130" height="44" rx="8" fill="var(--teal)"/>
+          <text x="95"  y="146" text-anchor="middle" fill="white" font-size="15" font-family="Segoe UI" font-weight="700">uni:Student</text>
+          <!-- Professor -->
+          <rect x="270" y="120" width="130" height="44" rx="8" fill="var(--teal)"/>
+          <text x="335" y="146" text-anchor="middle" fill="white" font-size="14" font-family="Segoe UI" font-weight="700">uni:Professor</text>
+          <!-- Alice instance -->
+          <ellipse cx="95"  cy="270" rx="70" ry="26" fill="rgba(249,97,103,.8)"/>
+          <text x="95"  y="274" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="700">:alice</text>
+          <!-- Bob instance -->
+          <ellipse cx="335" cy="270" rx="70" ry="26" fill="rgba(249,97,103,.8)"/>
+          <text x="335" cy="274" y="274" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="700">:bob</text>
+          <!-- Arrows subClassOf -->
+          <line x1="150" y1="142" x2="95"  y2="64"  stroke="var(--teal)" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arr4)"/>
+          <line x1="270" y1="142" x2="285" y2="64"  stroke="var(--teal)" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arr4)"/>
+          <!-- Arrows rdf:type -->
+          <line x1="95"  y1="244" x2="95"  y2="164" stroke="var(--coral)" stroke-width="2" marker-end="url(#arr4)"/>
+          <line x1="335" y1="244" x2="335" y2="164" stroke="var(--coral)" stroke-width="2" marker-end="url(#arr4)"/>
+          <!-- Labels -->
+          <text x="118" y="108" fill="var(--teal)" font-size="12" font-family="Segoe UI" font-weight="700">subClassOf</text>
+          <text x="266" y="108" fill="var(--teal)" font-size="12" font-family="Segoe UI" font-weight="700">subClassOf</text>
+          <text x="30"  y="212" fill="var(--coral)" font-size="12" font-family="Segoe UI" font-weight="700">rdf:type</text>
+          <text x="340" y="212" fill="var(--coral)" font-size="12" font-family="Segoe UI" font-weight="700">rdf:type</text>
+        </svg>
+      </div>
+      <div class="sp-r" style="gap:14px;justify-content:center;">
+        <div class="lbl lbl-teal" style="margin-bottom:4px;">Wichtigste RDFS-Konstrukte</div>
+        <div class="rows" style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(30,39,97,.07);">
+          <div class="row" style="padding:0 16px;"><div class="rl" style="width:170px;font-family:monospace;text-transform:none;font-size:16px;color:var(--coral);">rdfs:Class</div><div class="rv txt22" style="font-size:18px;">Definiert eine Klasse (Kategorie)</div></div>
+          <div class="row" style="padding:0 16px;"><div class="rl" style="width:170px;font-family:monospace;text-transform:none;font-size:16px;color:var(--coral);">rdfs:subClassOf</div><div class="rv txt22" style="font-size:18px;">Hierarchiebeziehung zwischen Klassen</div></div>
+          <div class="row" style="padding:0 16px;"><div class="rl" style="width:170px;font-family:monospace;text-transform:none;font-size:16px;color:var(--coral);">rdfs:domain</div><div class="rv txt22" style="font-size:18px;">Typ des Subjekts eines Prädikats</div></div>
+          <div class="row" style="padding:0 16px;"><div class="rl" style="width:170px;font-family:monospace;text-transform:none;font-size:16px;color:var(--coral);">rdfs:range</div><div class="rv txt22" style="font-size:18px;">Typ des Objekts eines Prädikats</div></div>
+          <div class="row" style="padding:0 16px;"><div class="rl" style="width:170px;font-family:monospace;text-transform:none;font-size:16px;color:var(--coral);">rdfs:label</div><div class="rv txt22" style="font-size:18px;">Menschenlesbare Bezeichnung</div></div>
+        </div>
+        <div class="txt18">Student <em style="font-style:normal;font-weight:700;color:var(--teal);">subClassOf</em> Person → <em style="font-style:normal;font-weight:700;">alle Studenten sind automatisch Personen</em></div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>RDFS gibt RDF-Daten <strong>kontrolliertes Vokabular</strong> — Basis für automatische Schlussfolgerungen.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     CONCEPTUAL MODEL 04 — OWL & Inferenz
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">04</div>
+    <div class="tag">Conceptual Model</div>
+    <div class="title">OWL &amp; Inferenz – Wissen ableiten</div>
+  </div>
+  <div class="body">
+    <div class="split">
+      <div class="sp-l" style="gap:14px;">
+        <div class="lbl lbl-navy" style="margin-bottom:4px;">Was wir explizit gespeichert haben</div>
+        <div class="code" style="font-size:14px;">
+<span class="iri">uni:Student</span> <span class="kw">rdfs:subClassOf</span> <span class="iri">uni:Person</span> .<br>
+<span class="iri">uni:Professor</span> <span class="kw">rdfs:subClassOf</span> <span class="iri">uni:Person</span> .<br>
+<br>
+<span class="iri">:alice</span> <span class="kw">a</span> <span class="iri">uni:Student</span> .<br>
+<span class="iri">:bob</span>   <span class="kw">a</span> <span class="iri">uni:Professor</span> .<br>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 0;">
+          <div style="flex:1;height:2px;background:var(--gold);"></div>
+          <div style="font-size:18px;font-weight:700;color:var(--gold);">Reasoner</div>
+          <div style="flex:1;height:2px;background:var(--gold);"></div>
+        </div>
+        <div class="lbl lbl-teal" style="margin-bottom:4px;">Was automatisch abgeleitet wird</div>
+        <div class="code" style="font-size:14px;">
+<span class="cm">-- Abgeleitet durch rdfs:subClassOf:</span><br>
+<span class="iri">:alice</span> <span class="kw">a</span> <span class="iri">uni:Person</span> . <span class="cm">← NEU</span><br>
+<span class="iri">:bob</span>   <span class="kw">a</span> <span class="iri">uni:Person</span> . <span class="cm">← NEU</span>
+        </div>
+      </div>
+      <div class="sp-r" style="gap:14px;">
+        <div class="lbl lbl-navy" style="margin-bottom:4px;">OWL — erweiterte Ontologie-Konstrukte</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:flex-start;gap:12px;background:#fff;border-radius:10px;padding:12px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);">
+            <div class="badge b-ok" style="width:28px;height:28px;font-size:12px;flex-shrink:0;margin-top:2px;">✓</div>
+            <div><div class="lbl lbl-navy" style="font-size:16px;margin-bottom:3px;">owl:equivalentClass</div><div class="txt18">Zwei Klassen bezeichnen dasselbe Konzept</div></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px;background:#fff;border-radius:10px;padding:12px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);">
+            <div class="badge b-ok" style="width:28px;height:28px;font-size:12px;flex-shrink:0;margin-top:2px;">✓</div>
+            <div><div class="lbl lbl-navy" style="font-size:16px;margin-bottom:3px;">owl:inverseOf</div><div class="txt18">teacherOf → studentOf automatisch umgekehrt</div></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px;background:#fff;border-radius:10px;padding:12px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);">
+            <div class="badge b-ok" style="width:28px;height:28px;font-size:12px;flex-shrink:0;margin-top:2px;">✓</div>
+            <div><div class="lbl lbl-navy" style="font-size:16px;margin-bottom:3px;">owl:sameAs</div><div class="txt18">Verknüpft lokale URIs mit globalen (z.B. DBpedia)</div></div>
+          </div>
+        </div>
+        <div style="background:rgba(249,201,70,.1);border-radius:10px;padding:12px 16px;border-left:4px solid var(--gold);">
+          <div class="lbl lbl-gold" style="font-size:16px;margin-bottom:4px;">Aha-Moment (kommt in Query Model)</div>
+          <div class="txt18">Ohne Inferenz: Anfrage nach <em style="font-style:normal;font-weight:700;">uni:Person</em> → <em style="font-style:normal;font-weight:700;color:var(--no);">0 Treffer</em><br>Mit Inferenz: dieselbe Anfrage → <em style="font-style:normal;font-weight:700;color:var(--ok);">7 Treffer</em></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>Inferenz leitet <strong>implizites Wissen</strong> ab — das unterscheidet Triple Stores fundamental von Property Graphs und SQL.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     CONCEPTUAL MODEL 05 — Named Graphs
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">05</div>
+    <div class="tag">Conceptual Model</div>
+    <div class="title">Named Graphs – Kontext &amp; Provenienz</div>
+  </div>
+  <div class="body">
+    <div class="split">
+      <div class="sp-l" style="justify-content:center;gap:14px;">
+        <!-- Dataset visual -->
+        <svg width="430" height="350" viewBox="0 0 430 350" style="display:block;">
+          <!-- Dataset border -->
+          <rect x="10" y="10" width="410" height="330" rx="12" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="6,4"/>
+          <text x="215" y="32" text-anchor="middle" fill="var(--muted)" font-size="13" font-family="Segoe UI" font-weight="700" letter-spacing="2">RDF DATASET</text>
+          <!-- Graph 1 -->
+          <rect x="30" y="45" width="175" height="130" rx="10" fill="rgba(249,97,103,.07)" stroke="var(--coral)" stroke-width="1.5"/>
+          <text x="118" y="65" text-anchor="middle" fill="var(--coral)" font-size="12" font-family="Segoe UI" font-weight="700">graph:DBpedia</text>
+          <ellipse cx="75"  cy="110" rx="45" ry="22" fill="var(--coral)" opacity=".7"/>
+          <text x="75"  y="114" text-anchor="middle" fill="white" font-size="11" font-family="Segoe UI">Stuttgart</text>
+          <ellipse cx="165" cy="110" rx="45" ry="22" fill="var(--coral)" opacity=".7"/>
+          <text x="165" y="114" text-anchor="middle" fill="white" font-size="11" font-family="Segoe UI">600.000 EW</text>
+          <line x1="120" y1="110" x2="120" y2="110" stroke="var(--muted)" stroke-width="1.5"/>
+          <line x1="120" y1="110" x2="148" y2="110" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#arr2)"/>
+          <text x="134" y="105" text-anchor="middle" fill="var(--muted)" font-size="10" font-family="Segoe UI">pop.</text>
+          <!-- Graph 2 -->
+          <rect x="220" y="45" width="185" height="130" rx="10" fill="rgba(43,200,154,.07)" stroke="var(--teal)" stroke-width="1.5"/>
+          <text x="313" y="65" text-anchor="middle" fill="var(--teal)" font-size="12" font-family="Segoe UI" font-weight="700">graph:UniDaten</text>
+          <ellipse cx="263" cy="110" rx="45" ry="22" fill="var(--teal)" opacity=".7"/>
+          <text x="263" y="114" text-anchor="middle" fill="white" font-size="11" font-family="Segoe UI">UniStuttgart</text>
+          <ellipse cx="365" cy="110" rx="45" ry="22" fill="var(--teal)" opacity=".7"/>
+          <text x="365" y="114" text-anchor="middle" fill="white" font-size="11" font-family="Segoe UI">Stuttgart</text>
+          <line x1="308" y1="110" x2="318" y2="110" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#arr2)"/>
+          <text x="313" y="105" text-anchor="middle" fill="var(--muted)" font-size="10" font-family="Segoe UI">locIn</text>
+          <!-- Default Graph -->
+          <rect x="30" y="195" width="375" height="105" rx="10" fill="rgba(30,39,97,.04)" stroke="var(--navy)" stroke-width="1.5"/>
+          <text x="218" y="215" text-anchor="middle" fill="var(--navy)" font-size="12" font-family="Segoe UI" font-weight="700">Default Graph (gemeinsame Triples)</text>
+          <text x="218" y="245" text-anchor="middle" fill="var(--text)" font-size="13" font-family="Segoe UI">uni:Stuttgart  owl:sameAs  dbr:Stuttgart .</text>
+          <text x="218" y="270" text-anchor="middle" fill="var(--muted)" font-size="12" font-family="Segoe UI">→ verknüpft Named Graphs über gemeinsame URIs</text>
+        </svg>
+      </div>
+      <div class="sp-r" style="justify-content:center;gap:14px;">
+        <div class="lbl lbl-navy" style="margin-bottom:4px;">Wofür Named Graphs?</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div class="card card-teal">
+            <div class="ch"><div class="ci ic"><i data-lucide="database"></i></div><div class="ct">Provenienz</div></div>
+            <div class="cb">Woher kommen diese Tripel? Welche Quelle, wann?</div>
+          </div>
+          <div class="card card-navy">
+            <div class="ch"><div class="ci ic"><i data-lucide="lock"></i></div><div class="ct">Zugriffssteuerung</div></div>
+            <div class="cb">Graphen können separat gesichert oder veröffentlicht werden</div>
+          </div>
+          <div class="card card-coral">
+            <div class="ch"><div class="ci ic"><i data-lucide="git-merge"></i></div><div class="ct">Datenintegration</div></div>
+            <div class="cb">Mehrere Quellen im selben Dataset, aber klar getrennt</div>
+          </div>
+        </div>
+        <div class="code" style="font-size:13px;">
+<span class="cm">-- SPARQL über Named Graph:</span><br>
+<span class="kw">GRAPH</span> <span class="iri">&lt;graph:UniDaten&gt;</span> {<br>
+&nbsp;&nbsp;<span class="var">?u</span> <span class="iri">a</span> <span class="iri">uni:University</span> .<br>
+}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>Named Graphs = <strong>Kontext für Triples</strong> — Provenienz, Versionierung und Isolation in einem RDF Dataset.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     CONCEPTUAL MODEL 06 — Zusammenfassung & Übergang
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">06</div>
+    <div class="tag">Conceptual Model</div>
+    <div class="title">Vom Konzept zur Speicherung</div>
+  </div>
+  <div class="body">
+    <!-- Stack diagram showing conceptual → physical layer -->
+    <div style="display:flex;align-items:center;height:100%;padding:18px 40px;gap:32px;">
+      <!-- Left: Conceptual stack -->
+      <div style="flex:1;display:flex;flex-direction:column;gap:10px;">
+        <div class="lbl lbl-navy" style="margin-bottom:8px;text-align:center;">Konzeptuelles Modell (dieser Slot)</div>
+        <div style="background:var(--navy);border-radius:10px;padding:12px 20px;text-align:center;color:#fff;font-size:20px;font-weight:700;">OWL · Ontologien · Inferenz</div>
+        <div style="text-align:center;color:var(--muted);font-size:20px;">↑</div>
+        <div style="background:var(--teal);border-radius:10px;padding:12px 20px;text-align:center;color:#fff;font-size:20px;font-weight:700;">RDFS · Klassen · Hierarchien</div>
+        <div style="text-align:center;color:var(--muted);font-size:20px;">↑</div>
+        <div style="background:var(--coral);border-radius:10px;padding:12px 20px;text-align:center;color:#fff;font-size:20px;font-weight:700;">Triple: Subjekt – Prädikat – Objekt</div>
+        <div style="text-align:center;color:var(--muted);font-size:20px;">↑</div>
+        <div style="background:#E5EAF5;border-radius:10px;padding:12px 20px;text-align:center;color:var(--navy);font-size:20px;font-weight:700;border:2px solid #CDD5EC;">URIs · Literale · Blank Nodes</div>
+      </div>
+      <!-- Arrow -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+        <svg width="60" height="80" viewBox="0 0 60 80"><line x1="30" y1="5" x2="30" y2="60" stroke="var(--gold)" stroke-width="3"/><polygon points="15,52 30,72 45,52" fill="var(--gold)"/></svg>
+        <div style="font-size:14px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:2px;writing-mode:vertical-lr;transform:rotate(180deg);margin-top:4px;">Nächster Slot</div>
+      </div>
+      <!-- Right: Physical layer -->
+      <div style="flex:1;display:flex;flex-direction:column;gap:10px;">
+        <div class="lbl lbl-navy" style="margin-bottom:8px;text-align:center;">Data Structure (nächster Slot)</div>
+        <div style="background:#334155;border-radius:10px;padding:12px 20px;text-align:center;color:#fff;font-size:20px;font-weight:700;">Triple Table + Dictionary-Encoding</div>
+        <div style="text-align:center;color:var(--muted);font-size:20px;">↑</div>
+        <div style="background:#334155;border-radius:10px;padding:12px 20px;text-align:center;color:#fff;font-size:20px;font-weight:700;">SPO · POS · OSP Index-Permutationen</div>
+        <div style="text-align:center;color:var(--muted);font-size:20px;">↑</div>
+        <div style="background:#334155;border-radius:10px;padding:12px 20px;text-align:center;color:#fff;font-size:20px;font-weight:700;">Schema-Flexibilität (kein ALTER TABLE)</div>
+        <div style="text-align:center;color:var(--muted);font-size:20px;">↑</div>
+        <div style="background:#334155;border-radius:10px;padding:12px 20px;text-align:center;color:#fff;font-size:20px;font-weight:700;">Datenintegration über URIs</div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>Das Konzeptuelle Modell <strong>definiert was</strong> ein Triple ist — Data Structure zeigt, <em>wie es effizient gespeichert wird</em>.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     DATA STRUCTURE 01 — Triple-basierte Speicherung
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">01</div>
+    <div class="tag">Data Structure</div>
+    <div class="title">Triple-basierte Speicherung – Weg von der Tabelle</div>
+  </div>
+  <div class="body">
+    <div class="split">
+      <div class="sp-l">
+        <div class="lbl lbl-coral" style="margin-bottom:8px;">SQL — Breite Tabelle mit NULLs</div>
+        <div style="background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(30,39,97,.07);font-size:15px;margin-bottom:10px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;background:var(--navy);color:#fff;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.4px;">
+            <div style="padding:7px 10px;">Name</div><div style="padding:7px 10px;">Uni</div><div style="padding:7px 10px;">Rektor</div><div style="padding:7px 10px;">Gründung</div><div style="padding:7px 10px;">Website</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;border-bottom:1px solid #EEF1FA;font-size:14px;">
+            <div style="padding:6px 10px;">Stuttgart</div><div style="padding:6px 10px;">UniS</div><div style="padding:6px 10px;">Müller</div><div style="padding:6px 10px;color:var(--no);font-weight:600;">NULL</div><div style="padding:6px 10px;">uni-s.de</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;background:#EEF1FA;font-size:14px;">
+            <div style="padding:6px 10px;">Karlsruhe</div><div style="padding:6px 10px;">KIT</div><div style="padding:6px 10px;color:var(--no);font-weight:600;">NULL</div><div style="padding:6px 10px;">1825</div><div style="padding:6px 10px;color:var(--no);font-weight:600;">NULL</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;background:rgba(220,38,38,.06);border-radius:8px;padding:10px 14px;">
+          <div class="badge b-no" style="width:26px;height:26px;font-size:12px;flex-shrink:0;">✗</div>
+          <div class="txt18">Jede NULL-Zelle = verschwendeter Speicher. Schema muss vollständig sein.</div>
+        </div>
+      </div>
+      <div class="sp-r">
+        <div class="lbl lbl-teal" style="margin-bottom:8px;">RDF — Nur existierende Fakten</div>
+        <div style="background:#fff;border-radius:10px;padding:14px 18px;box-shadow:0 2px 8px rgba(30,39,97,.07);margin-bottom:10px;">
+          <div style="display:grid;grid-template-columns:auto auto auto;gap:6px 12px;font-family:Consolas,monospace;font-size:14px;">
+            <div style="color:var(--coral);">:UniStuttgart</div><div style="color:var(--navy);">uni:rektor</div><div style="color:var(--teal);">"Prof. Müller"</div>
+            <div style="color:var(--coral);">:UniStuttgart</div><div style="color:var(--navy);">uni:website</div><div style="color:var(--teal);">"uni-s.de"</div>
+            <div style="color:var(--coral);">:KIT</div><div style="color:var(--navy);">uni:gründung</div><div style="color:var(--teal);">"1825"</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;background:rgba(22,163,74,.06);border-radius:8px;padding:10px 14px;margin-bottom:10px;">
+          <div class="badge b-ok" style="width:26px;height:26px;font-size:12px;flex-shrink:0;">✓</div>
+          <div class="txt18">Kein Fakt vorhanden? Kein Triple — kein Platz verschwendet.</div>
+        </div>
+        <div class="txt18">Neue Eigenschaft = einfach ein neues Triple anhängen. Kein Schema-Eingriff nötig.</div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>Atomar, sparse, erweiterbar — Triple Stores speichern <strong>nur was existiert</strong>, nicht was existieren könnte.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     DATA STRUCTURE 02 — Schema-Flexibilität
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">02</div>
+    <div class="tag">Data Structure</div>
+    <div class="title">Schema-Flexibilität – Dynamisches Wachstum</div>
+  </div>
+  <div class="body">
+    <div class="split">
+      <div class="sp-l" style="gap:14px;">
+        <div class="lbl lbl-coral" style="margin-bottom:4px;">SQL — Schema-Änderung nötig</div>
+        <div class="code" style="font-size:14px;">
+<span class="cm">-- AI-Agent findet neue Info:</span><br>
+<span class="cm">-- "Prof. Müller forscht an Quanten"</span><br><br>
+<span class="kw">ALTER TABLE</span> Professoren<br>
+<span class="kw">ADD COLUMN</span> forschung <span class="str">VARCHAR(255)</span>;<br><br>
+<span class="cm">-- → alle anderen Zeilen: NULL</span><br>
+<span class="cm">-- → bestehende Apps können brechen</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;background:rgba(220,38,38,.06);border-radius:8px;padding:10px 14px;">
+          <div class="badge b-no" style="width:26px;height:26px;font-size:12px;flex-shrink:0;">✗</div>
+          <div class="txt18">Starr · hoher Verwaltungsaufwand · Risiko für laufende Systeme</div>
+        </div>
+      </div>
+      <div class="sp-r" style="gap:14px;">
+        <div class="lbl lbl-teal" style="margin-bottom:4px;">RDF — Einfach ein Triple anhängen</div>
+        <div class="code" style="font-size:14px;">
+<span class="cm">-- AI-Agent findet neue Info:</span><br>
+<span class="cm">-- Einfach neues Triple einfügen:</span><br><br>
+<span class="iri">:ProfMüller</span>  <span class="kw">uni:forscht</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"Quantencomputing"</span> .<br><br>
+<span class="cm">-- Das war's. Kein Schema-Eingriff.</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;background:rgba(22,163,74,.06);border-radius:8px;padding:10px 14px;margin-bottom:8px;">
+          <div class="badge b-ok" style="width:26px;height:26px;font-size:12px;flex-shrink:0;">✓</div>
+          <div class="txt18">Schema-light · organisch erweiterbar · AI-Pipeline-freundlich</div>
+        </div>
+        <div style="background:#fff;border-radius:10px;padding:14px 18px;box-shadow:0 2px 8px rgba(30,39,97,.07);">
+          <div class="lbl lbl-navy" style="font-size:16px;margin-bottom:8px;">Ideal für heterogene AI-Workflows</div>
+          <div class="txt18">RAG-Systeme integrieren ständig neue Quellen — RDF bricht nicht, wenn unbekannte Prädikate auftauchen.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>RDF ist <strong>inhärent erweiterbar</strong> — das Wissen bestimmt die Struktur, nicht das Datenbankschema.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     DATA STRUCTURE 03 — Triple Table & Dictionary
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">03</div>
+    <div class="tag">Data Structure</div>
+    <div class="title">Physische Speicherung I – Dictionary-Encoding</div>
+  </div>
+  <div class="body">
+    <div class="split">
+      <div class="sp-l" style="gap:14px;justify-content:center;">
+        <div class="lbl lbl-navy" style="margin-bottom:4px;">Von URIs zu Integer-IDs</div>
+        <!-- Dictionary visual -->
+        <svg width="430" height="290" viewBox="0 0 430 290" style="display:block;">
+          <!-- Dictionary box -->
+          <rect x="10" y="10" width="200" height="270" rx="10" fill="#fff" stroke="#CDD5EC" stroke-width="1.5"/>
+          <rect x="10" y="10" width="200" height="36" rx="10" fill="var(--navy)"/>
+          <rect x="10" y="36" width="200" height="10" fill="var(--navy)"/>
+          <text x="110" y="33" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="700">Dictionary</text>
+          <text x="40"  y="72"  fill="var(--coral)" font-size="12" font-family="Consolas">101</text><text x="75"  y="72"  fill="var(--muted)" font-size="12" font-family="Segoe UI">→</text><text x="95"  y="72"  fill="var(--text)" font-size="12" font-family="Consolas">dbr:Stuttgart</text>
+          <text x="40"  y="100" fill="var(--coral)" font-size="12" font-family="Consolas">201</text><text x="75"  y="100" fill="var(--muted)" font-size="12" font-family="Segoe UI">→</text><text x="95"  y="100" fill="var(--text)" font-size="12" font-family="Consolas">uni:UniStuttgart</text>
+          <text x="40"  y="128" fill="var(--coral)" font-size="12" font-family="Consolas">301</text><text x="75"  y="128" fill="var(--muted)" font-size="12" font-family="Segoe UI">→</text><text x="95"  y="128" fill="var(--text)" font-size="12" font-family="Consolas">uni:locatedIn</text>
+          <text x="40"  y="156" fill="var(--coral)" font-size="12" font-family="Consolas">401</text><text x="75"  y="156" fill="var(--muted)" font-size="12" font-family="Segoe UI">→</text><text x="95"  y="156" fill="var(--text)" font-size="12" font-family="Consolas">uni:hasName</text>
+          <text x="40"  y="184" fill="var(--coral)" font-size="12" font-family="Consolas">501</text><text x="75"  y="184" fill="var(--muted)" font-size="12" font-family="Segoe UI">→</text><text x="95"  y="184" fill="var(--text)" font-size="12" font-family="Consolas">"Univ. Stuttgart"</text>
+          <!-- Triple Table box -->
+          <rect x="230" y="10" width="190" height="270" rx="10" fill="#fff" stroke="#CDD5EC" stroke-width="1.5"/>
+          <rect x="230" y="10" width="190" height="36" rx="10" fill="var(--teal)"/>
+          <rect x="230" y="36" width="190" height="10" fill="var(--teal)"/>
+          <text x="325" y="33" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="700">Triple Table</text>
+          <text x="250" y="62"  fill="var(--muted)" font-size="11" font-family="Segoe UI" font-weight="700">S</text><text x="290" y="62" fill="var(--muted)" font-size="11" font-family="Segoe UI" font-weight="700">P</text><text x="330" y="62" fill="var(--muted)" font-size="11" font-family="Segoe UI" font-weight="700">O</text>
+          <line x1="230" y1="68" x2="420" y2="68" stroke="#EEF1FA" stroke-width="1"/>
+          <text x="250" y="88"  fill="var(--coral)" font-size="13" font-family="Consolas" font-weight="700">201</text><text x="285" y="88" fill="var(--coral)" font-size="13" font-family="Consolas" font-weight="700">301</text><text x="322" y="88" fill="var(--coral)" font-size="13" font-family="Consolas" font-weight="700">101</text>
+          <text x="250" y="116" fill="var(--coral)" font-size="13" font-family="Consolas" font-weight="700">201</text><text x="285" y="116" fill="var(--coral)" font-size="13" font-family="Consolas" font-weight="700">401</text><text x="322" y="116" fill="var(--coral)" font-size="13" font-family="Consolas" font-weight="700">501</text>
+          <!-- Annotation -->
+          <text x="245" y="155" fill="var(--muted)" font-size="11" font-family="Segoe UI">statt:</text>
+          <text x="245" y="175" fill="var(--muted)" font-size="10" font-family="Consolas">uni:UniStuttgart</text>
+          <text x="245" y="192" fill="var(--muted)" font-size="10" font-family="Consolas">uni:locatedIn</text>
+          <text x="245" y="209" fill="var(--muted)" font-size="10" font-family="Consolas">dbr:Stuttgart</text>
+        </svg>
+      </div>
+      <div class="sp-r" style="gap:14px;justify-content:center;">
+        <div class="lbl lbl-navy" style="margin-bottom:4px;">Warum Dictionary-Encoding?</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div class="card card-teal">
+            <div class="ch"><div class="ci ic"><i data-lucide="zap"></i></div><div class="ct">Schnelle Vergleiche</div></div>
+            <div class="cb">Integer-Vergleich statt String-Vergleich — deutlich schneller bei Millionen Triples</div>
+          </div>
+          <div class="card card-navy">
+            <div class="ch"><div class="ci ic"><i data-lucide="hard-drive"></i></div><div class="ct">Kompakter Speicher</div></div>
+            <div class="cb">Lange URIs nur einmal im Dictionary — in der Triple Table nur IDs</div>
+          </div>
+          <div class="card card-coral">
+            <div class="ch"><div class="ci ic"><i data-lucide="alert-triangle"></i></div><div class="ct">Trade-off</div></div>
+            <div class="cb">Zusätzliche Dictionary-Verwaltung — bei Lookups ist immer ein Decode-Schritt nötig</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>Dictionary-Encoding: URIs → Integer-IDs. <strong>Schnellere Vergleiche, kompakterer Speicher</strong> auf Kosten eines Lookup-Layers.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     DATA STRUCTURE 04 — Index-Permutationen
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">04</div>
+    <div class="tag">Data Structure</div>
+    <div class="title">Physische Speicherung II – Index-Permutationen</div>
+  </div>
+  <div class="body">
+    <div style="padding:16px 28px;height:100%;display:flex;flex-direction:column;gap:14px;">
+      <div style="display:flex;gap:14px;align-items:stretch;">
+        <div style="flex:1;background:#fff;border-radius:12px;padding:14px 18px;box-shadow:0 2px 8px rgba(30,39,97,.07);">
+          <div class="lbl lbl-navy" style="margin-bottom:10px;">6 Index-Permutationen</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+            <div style="background:var(--navy);border-radius:8px;padding:8px 12px;text-align:center;color:#fff;font-family:Consolas;font-size:18px;font-weight:700;">SPO</div>
+            <div style="background:var(--navy);border-radius:8px;padding:8px 12px;text-align:center;color:#fff;font-family:Consolas;font-size:18px;font-weight:700;">SOP</div>
+            <div style="background:var(--teal);border-radius:8px;padding:8px 12px;text-align:center;color:#fff;font-family:Consolas;font-size:18px;font-weight:700;">PSO</div>
+            <div style="background:var(--teal);border-radius:8px;padding:8px 12px;text-align:center;color:#fff;font-family:Consolas;font-size:18px;font-weight:700;">POS</div>
+            <div style="background:#7C3AED;border-radius:8px;padding:8px 12px;text-align:center;color:#fff;font-family:Consolas;font-size:18px;font-weight:700;">OSP</div>
+            <div style="background:#7C3AED;border-radius:8px;padding:8px 12px;text-align:center;color:#fff;font-family:Consolas;font-size:18px;font-weight:700;">OPS</div>
+          </div>
+        </div>
+        <div style="flex:1;background:#fff;border-radius:12px;padding:14px 18px;box-shadow:0 2px 8px rgba(30,39,97,.07);">
+          <div class="lbl lbl-navy" style="margin-bottom:10px;">Trade-off</div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+            <div class="badge b-warn" style="flex-shrink:0;">⚡</div>
+            <div class="txt18">6× Speicherverbrauch für stabile Query-Performance</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="badge b-ok" style="flex-shrink:0;">✓</div>
+            <div class="txt18">Jede SPARQL-Anfrage findet passenden Index — kein Full Scan</div>
+          </div>
+        </div>
+      </div>
+      <!-- Query patterns table -->
+      <div style="flex:1;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(30,39,97,.07);">
+        <div style="display:grid;grid-template-columns:2fr 2fr 1fr;background:var(--navy);color:#fff;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;">
+          <div style="padding:8px 16px;">SPARQL-Pattern</div><div style="padding:8px 16px;">Beispiel</div><div style="padding:8px 16px;">Nutzt Index</div>
+        </div>
+        <div style="display:grid;grid-template-columns:2fr 2fr 1fr;border-bottom:1px solid #EEF1FA;font-size:16px;">
+          <div style="padding:8px 16px;font-family:Consolas;">dbr:UniS ?p ?o</div><div style="padding:8px 16px;color:var(--muted);">Alle Fakten über UniStuttgart</div><div style="padding:8px 16px;font-family:Consolas;font-weight:700;color:var(--navy);">SPO</div>
+        </div>
+        <div style="display:grid;grid-template-columns:2fr 2fr 1fr;background:#EEF1FA;border-bottom:1px solid #DDE3F0;font-size:16px;">
+          <div style="padding:8px 16px;font-family:Consolas;">?s uni:loc dbr:Stuttgart</div><div style="padding:8px 16px;color:var(--muted);">Was liegt in Stuttgart?</div><div style="padding:8px 16px;font-family:Consolas;font-weight:700;color:var(--teal);">POS</div>
+        </div>
+        <div style="display:grid;grid-template-columns:2fr 2fr 1fr;font-size:16px;">
+          <div style="padding:8px 16px;font-family:Consolas;">?s ?p dbr:Stuttgart</div><div style="padding:8px 16px;color:var(--muted);">Wer referenziert Stuttgart?</div><div style="padding:8px 16px;font-family:Consolas;font-weight:700;color:#7C3AED;">OSP</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>Ohne passenden Index = Full Scan. <strong>Mit Permutationsindizes</strong> findet jede Query-Form in O(log n) ihren Einstiegspunkt.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     DATA STRUCTURE 05 — Datenintegration über URIs
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">05</div>
+    <div class="tag">Data Structure</div>
+    <div class="title">Datenintegration über URIs</div>
+  </div>
+  <div class="body">
+    <div style="padding:16px 28px;height:100%;display:flex;flex-direction:column;gap:14px;">
+      <!-- URI uniqueness -->
+      <div style="display:flex;gap:14px;">
+        <div style="flex:1;background:#fff;border-radius:10px;padding:14px 18px;box-shadow:0 2px 8px rgba(30,39,97,.07);">
+          <div class="lbl lbl-coral" style="margin-bottom:6px;">Mehrdeutigkeit ohne URI</div>
+          <div class="txt22">"Stuttgart" — Stadt? Nachname? String?</div>
+        </div>
+        <div style="flex:1;background:#fff;border-radius:10px;padding:14px 18px;box-shadow:0 2px 8px rgba(30,39,97,.07);">
+          <div class="lbl lbl-teal" style="margin-bottom:6px;">Eindeutigkeit mit URI</div>
+          <div style="font-family:Consolas;font-size:16px;color:var(--teal);">http://dbpedia.org/resource/Stuttgart</div>
+        </div>
+      </div>
+      <!-- Integration visual -->
+      <div style="flex:1;display:flex;gap:14px;align-items:stretch;">
+        <div style="flex:1;background:rgba(249,97,103,.06);border-radius:10px;padding:14px 18px;border:1.5px solid var(--coral);">
+          <div class="lbl lbl-coral" style="margin-bottom:8px;">Interne Daten</div>
+          <div style="font-family:Consolas;font-size:14px;line-height:1.8;">
+            <span style="color:var(--coral);">:MeineUni</span> <span style="color:var(--navy);">uni:loc</span><br>
+            &nbsp;&nbsp;<span style="color:var(--muted);">dbr:Stuttgart</span> .<br>
+            <span style="color:var(--coral);">:MeineUni</span> <span style="color:var(--navy);">uni:name</span><br>
+            &nbsp;&nbsp;<span style="color:var(--teal);">"Meine Hochschule"</span> .
+          </div>
+        </div>
+        <!-- Arrow -->
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
+          <div style="font-size:28px;color:var(--gold);">⟵</div>
+          <div style="font-family:Consolas;font-size:14px;color:var(--muted);text-align:center;background:#fff;padding:8px 12px;border-radius:8px;border:1.5px solid var(--gold);">dbr:Stuttgart</div>
+          <div style="font-size:28px;color:var(--gold);">⟶</div>
+          <div style="font-size:14px;color:var(--muted);font-weight:700;text-align:center;">gemeinsame URI<br>= automatische<br>Verknüpfung</div>
+        </div>
+        <div style="flex:1;background:rgba(43,200,154,.06);border-radius:10px;padding:14px 18px;border:1.5px solid var(--teal);">
+          <div class="lbl lbl-teal" style="margin-bottom:8px;">DBpedia-Daten</div>
+          <div style="font-family:Consolas;font-size:14px;line-height:1.8;">
+            <span style="color:var(--teal);">dbr:Stuttgart</span><br>
+            &nbsp;&nbsp;<span style="color:var(--navy);">dbo:population</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--coral);">"634,000"</span> .<br>
+            <span style="color:var(--teal);">dbr:Stuttgart</span><br>
+            &nbsp;&nbsp;<span style="color:var(--navy);">dbo:country</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--coral);">dbr:Germany</span> .
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>Gleiche URI in zwei Quellen = <strong>automatische Verschmelzung</strong> — keine ETL-Pipeline, kein manuelles Mapping nötig.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     DATA STRUCTURE 06 — Zusammenfassung
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">06</div>
+    <div class="tag">Data Structure</div>
+    <div class="title">Von isolierten Fakten zur globalen Struktur</div>
+  </div>
+  <div class="body">
+    <div style="padding:20px 36px;height:100%;display:flex;flex-direction:column;justify-content:center;gap:18px;">
+      <!-- 3-step flow -->
+      <div style="display:flex;align-items:center;gap:0;">
+        <div style="flex:1;background:var(--coral);border-radius:12px;padding:18px 20px;text-align:center;color:#fff;">
+          <div style="font-size:40px;margin-bottom:8px;">⚛</div>
+          <div style="font-size:20px;font-weight:700;margin-bottom:6px;">1. Atomisierung</div>
+          <div style="font-size:18px;opacity:.85;">Daten in Triples zerlegen — einfach &amp; stabil</div>
+        </div>
+        <svg width="48" height="40" viewBox="0 0 48 40" style="flex-shrink:0;"><polygon points="0,10 30,10 30,0 48,20 30,40 30,30 0,30" fill="var(--gold)" opacity=".7"/></svg>
+        <div style="flex:1;background:var(--navy);border-radius:12px;padding:18px 20px;text-align:center;color:#fff;">
+          <div style="font-size:40px;margin-bottom:8px;">🔗</div>
+          <div style="font-size:20px;font-weight:700;margin-bottom:6px;">2. Identifizierung</div>
+          <div style="font-size:18px;opacity:.85;">Globale URIs nutzen — eindeutig &amp; verknüpfbar</div>
+        </div>
+        <svg width="48" height="40" viewBox="0 0 48 40" style="flex-shrink:0;"><polygon points="0,10 30,10 30,0 48,20 30,40 30,30 0,30" fill="var(--gold)" opacity=".7"/></svg>
+        <div style="flex:1;background:var(--teal);border-radius:12px;padding:18px 20px;text-align:center;color:#fff;">
+          <div style="font-size:40px;margin-bottom:8px;">🌐</div>
+          <div style="font-size:20px;font-weight:700;margin-bottom:6px;">3. Flexibilität</div>
+          <div style="font-size:18px;opacity:.85;">Wissen organisch wachsen lassen — keine starren Grenzen</div>
+        </div>
+      </div>
+      <div style="background:#fff;border-radius:12px;padding:16px 24px;box-shadow:0 2px 8px rgba(30,39,97,.07);display:flex;align-items:center;gap:16px;">
+        <div class="badge b-ok" style="width:44px;height:44px;font-size:22px;flex-shrink:0;">→</div>
+        <div style="font-size:22px;color:var(--text);line-height:1.35;">
+          Eine <strong>globale Wissensstruktur</strong>, die über Datenbankgrenzen hinweg maschinenlesbar und inferenzfähig bleibt.
+          <span style="color:var(--muted);font-size:18px;"> → Wie fragen wir das ab? SPARQL!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>Triples + URIs + Flexibilität = skalierbare Wissensstruktur. <strong>Nächster Schritt:</strong> SPARQL Query Model.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     QUERY MODEL 01 — SPARQL Grundidee
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">01</div>
+    <div class="tag">Query Model</div>
+    <div class="title">SPARQL – Pattern Matching statt Tabellen</div>
+  </div>
+  <div class="body">
+    <div class="split">
+      <div class="sp-l" style="gap:12px;">
+        <div class="lbl lbl-coral" style="margin-bottom:4px;">SQL — Tabellen &amp; explizite Joins</div>
+        <div class="code" style="font-size:13px;">
+<span class="kw">SELECT</span> u.name, c.name<br>
+<span class="kw">FROM</span> university u<br>
+<span class="kw">JOIN</span> city c <span class="kw">ON</span> u.location_id = c.id<br>
+<span class="kw">WHERE</span> c.state = <span class="str">'Baden-Württemberg'</span>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+          <div class="badge b-no" style="width:auto;padding:0 12px;border-radius:8px;font-size:14px;white-space:nowrap;">Tabellenschema nötig</div>
+          <div class="badge b-no" style="width:auto;padding:0 12px;border-radius:8px;font-size:14px;white-space:nowrap;">Explizite JOIN-Keys</div>
+          <div class="badge b-no" style="width:auto;padding:0 12px;border-radius:8px;font-size:14px;white-space:nowrap;">Keine Semantik</div>
+        </div>
+      </div>
+      <div class="sp-r" style="gap:12px;">
+        <div class="lbl lbl-teal" style="margin-bottom:4px;">SPARQL — Graph Pattern Matching</div>
+        <div class="code" style="font-size:13px;">
+<span class="kw">SELECT</span> <span class="var">?uniname</span> <span class="var">?stadtname</span><br>
+<span class="kw">WHERE</span> {<br>
+&nbsp;&nbsp;<span class="var">?u</span>  <span class="kw">a</span>            <span class="iri">uni:University</span> .<br>
+&nbsp;&nbsp;<span class="var">?u</span>  <span class="iri">rdfs:label</span>   <span class="var">?uniname</span> .<br>
+&nbsp;&nbsp;<span class="var">?u</span>  <span class="iri">uni:location</span> <span class="var">?stadt</span> .<br>
+&nbsp;&nbsp;<span class="var">?stadt</span> <span class="iri">uni:bundesland</span> <span class="str">"Baden-Wuerttemberg"</span> .<br>
+&nbsp;&nbsp;<span class="var">?stadt</span> <span class="iri">rdfs:label</span>   <span class="var">?stadtname</span> .<br>
+}
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+          <div class="badge b-ok" style="width:auto;padding:0 12px;border-radius:8px;font-size:14px;white-space:nowrap;">Kein JOIN-Keyword</div>
+          <div class="badge b-ok" style="width:auto;padding:0 12px;border-radius:8px;font-size:14px;white-space:nowrap;">Geteilte Variablen</div>
+          <div class="badge b-ok" style="width:auto;padding:0 12px;border-radius:8px;font-size:14px;white-space:nowrap;">W3C-Standard</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>SQL fragt Tabellen ab. SPARQL beschreibt <strong>Muster im Graphen</strong> — geteilte Variablen verbinden Patterns implizit.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     QUERY MODEL 02 — SELECT/WHERE & Triple Patterns
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">02</div>
+    <div class="tag">Query Model</div>
+    <div class="title">Triple Patterns &amp; SELECT / WHERE</div>
+  </div>
+  <div class="body">
+    <div class="split">
+      <div class="sp-l" style="gap:10px;">
+        <div class="lbl lbl-navy" style="margin-bottom:4px;">Anatomie einer SPARQL-Query</div>
+        <div class="code" style="font-size:13px;">
+<span class="kw">PREFIX</span> <span class="iri">uni:</span>  <span class="str">&lt;http://example.org/uni/&gt;</span><br>
+<span class="kw">PREFIX</span> <span class="iri">rdfs:</span> <span class="str">&lt;http://www.w3.org/2000/01/rdf-schema#&gt;</span><br><br>
+<span class="kw">SELECT</span> <span class="var">?u</span> <span class="var">?name</span>           <span class="cm">← Ausgabe-Variablen</span><br>
+<span class="kw">WHERE</span> {<br>
+&nbsp;&nbsp;<span class="var">?u</span> <span class="kw">a</span> <span class="iri">uni:University</span> .  <span class="cm">← Typ-Pattern</span><br>
+&nbsp;&nbsp;<span class="var">?u</span> <span class="iri">rdfs:label</span> <span class="var">?name</span> . <span class="cm">← Attribut-Pattern</span><br>
+}<br>
+<span class="kw">ORDER BY</span> <span class="var">?name</span>
+        </div>
+        <div style="background:rgba(43,200,154,.08);border-radius:8px;padding:10px 14px;border-left:3px solid var(--teal);">
+          <div class="txt18"><strong style="color:var(--navy);">?u</strong> ist dieselbe Variable in beiden Patterns — das verbindet sie wie ein JOIN, ohne JOIN-Keyword.</div>
+        </div>
+      </div>
+      <div class="sp-r" style="gap:12px;justify-content:center;">
+        <div class="lbl lbl-navy" style="margin-bottom:4px;">Schlüsselkonzepte</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div class="card card-teal">
+            <div class="ch"><div class="ci ic"><i data-lucide="variable"></i></div><div class="ct">Variablen mit ?</div></div>
+            <div class="cb">Platzhalter für beliebige Werte — Typ entsteht durch Patterns, nicht durch den Namen</div>
+          </div>
+          <div class="card card-navy">
+            <div class="ch"><div class="ci ic"><i data-lucide="link-2"></i></div><div class="ct">Präfixe</div></div>
+            <div class="cb">Kurzschreibweise für Namespace-URIs — nur syntaktischer Zucker, keine externe DB</div>
+          </div>
+          <div class="card card-coral">
+            <div class="ch"><div class="ci ic"><i data-lucide="git-branch"></i></div><div class="ct">Query-Typen</div></div>
+            <div class="cb"><strong>SELECT</strong> (Tabelle) · <strong>ASK</strong> (Boolean) · <strong>CONSTRUCT</strong> (neuer Graph) · <strong>DESCRIBE</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>Präfixe sind Kürzel — keine aktive Datenbank. Typisierung entsteht durch das Pattern <strong>?s a uni:University</strong>, nicht den Variablennamen.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     QUERY MODEL 03 — FILTER, OPTIONAL, UNION
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">03</div>
+    <div class="tag">Query Model</div>
+    <div class="title">FILTER · OPTIONAL · Property Paths</div>
+  </div>
+  <div class="body">
+    <div class="grid3">
+      <div style="display:flex;flex-direction:column;gap:10px;overflow:hidden;">
+        <div class="lbl lbl-coral">FILTER</div>
+        <div class="code" style="font-size:12px;flex:1;">
+<span class="kw">SELECT</span> <span class="var">?name</span> <span class="var">?sem</span><br>
+<span class="kw">WHERE</span> {<br>
+&nbsp;<span class="var">?s</span> <span class="kw">a</span> <span class="iri">uni:Student</span>;<br>
+&nbsp;&nbsp;&nbsp;<span class="iri">rdfs:label</span> <span class="var">?name</span>;<br>
+&nbsp;&nbsp;&nbsp;<span class="iri">uni:semester</span> <span class="var">?sem</span>.<br>
+&nbsp;<span class="kw">FILTER</span>(<span class="var">?sem</span> &gt;= <span class="str">5</span>)<br>
+}
+        </div>
+        <div class="card card-coral" style="padding:10px 14px;">
+          <div class="cb" style="font-size:18px;">Schränkt Bindungen ein — analog zu SQL WHERE</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;overflow:hidden;">
+        <div class="lbl lbl-teal">OPTIONAL</div>
+        <div class="code" style="font-size:12px;flex:1;">
+<span class="kw">SELECT</span> <span class="var">?name</span> <span class="var">?fach</span><br>
+<span class="kw">WHERE</span> {<br>
+&nbsp;<span class="var">?p</span> <span class="kw">a</span> <span class="iri">uni:Professor</span>;<br>
+&nbsp;&nbsp;&nbsp;<span class="iri">rdfs:label</span> <span class="var">?name</span>.<br>
+&nbsp;<span class="kw">OPTIONAL</span> {<br>
+&nbsp;&nbsp;<span class="var">?p</span> <span class="iri">uni:fach</span> <span class="var">?fach</span>.<br>
+&nbsp;}<br>
+}
+        </div>
+        <div class="card card-teal" style="padding:10px 14px;">
+          <div class="cb" style="font-size:18px;">= LEFT JOIN — fehlende Fakten bleiben erlaubt (Open-World)</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;overflow:hidden;">
+        <div class="lbl lbl-navy">Property Path</div>
+        <div class="code" style="font-size:12px;flex:1;">
+<span class="cm">-- Alternative Prädikate:</span><br>
+<span class="var">?person</span><br>
+&nbsp;(<span class="iri">uni:studiesAt</span><br>
+&nbsp; | <span class="iri">uni:worksAt</span>)<br>
+&nbsp;<span class="var">?u</span> .<br><br>
+<span class="cm">-- Transitive Traversal:</span><br>
+<span class="var">?typ</span><br>
+&nbsp;<span class="iri">rdfs:subClassOf*</span><br>
+&nbsp;<span class="iri">uni:Person</span> .
+        </div>
+        <div class="card card-navy" style="padding:10px 14px;">
+          <div class="cb" style="font-size:18px;"><strong>|</strong> Alternative · <strong>*</strong> 0+ Schritte · <strong>+</strong> 1+ Schritte · <strong>/</strong> Sequenz</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>OPTIONAL = LEFT JOIN · FILTER = WHERE-Bedingung · Property Paths = <strong>Graph-Traversal in einer Zeile</strong>.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     QUERY MODEL 04 — Aggregation
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">04</div>
+    <div class="tag">Query Model</div>
+    <div class="title">Aggregation – COUNT, GROUP BY, ORDER BY</div>
+  </div>
+  <div class="body">
+    <div class="split">
+      <div class="sp-l" style="gap:10px;">
+        <div class="lbl lbl-navy" style="margin-bottom:4px;">Personen pro Universität zählen</div>
+        <div class="code" style="font-size:12px;flex:1;">
+<span class="kw">SELECT</span> <span class="var">?uniname</span><br>
+&nbsp;&nbsp;(<span class="kw">COUNT</span>(<span class="var">?person</span>) <span class="kw">AS</span> <span class="var">?anzahl</span>)<br>
+<span class="kw">WHERE</span> {<br>
+&nbsp;&nbsp;<span class="var">?person</span> <span class="kw">a</span>        <span class="var">?typ</span> .<br>
+&nbsp;&nbsp;<span class="var">?typ</span>    <span class="iri">rdfs:subClassOf*</span> <span class="iri">uni:Person</span> .<br>
+&nbsp;&nbsp;<span class="var">?person</span> (<span class="iri">uni:studiesAt</span>|<span class="iri">uni:worksAt</span>) <span class="var">?u</span> .<br>
+&nbsp;&nbsp;<span class="var">?u</span>      <span class="iri">rdfs:label</span>  <span class="var">?uniname</span> .<br>
+}<br>
+<span class="kw">GROUP BY</span> <span class="var">?uniname</span><br>
+<span class="kw">ORDER BY</span> <span class="kw">DESC</span>(<span class="var">?anzahl</span>)
+        </div>
+      </div>
+      <div class="sp-r" style="gap:12px;justify-content:center;">
+        <div class="lbl lbl-navy" style="margin-bottom:4px;">Was steckt drin?</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div class="card card-teal">
+            <div class="ch"><div class="ci ic"><i data-lucide="calculator"></i></div><div class="ct">Aggregation</div></div>
+            <div class="cb">COUNT(?person) gruppiert nach Universität — wie SQL GROUP BY</div>
+          </div>
+          <div class="card card-navy">
+            <div class="ch"><div class="ci ic"><i data-lucide="layers"></i></div><div class="ct">rdfs:subClassOf*</div></div>
+            <div class="cb">Findet alle Klassen unterhalb uni:Person — braucht zusätzlich <strong>?person a ?typ</strong> für Instanzen</div>
+          </div>
+          <div class="card card-coral">
+            <div class="ch"><div class="ci ic"><i data-lucide="git-branch"></i></div><div class="ct">Property Path Union</div></div>
+            <div class="cb">(studiesAt | worksAt) — Personen egal ob Student oder Mitarbeiter</div>
+          </div>
+        </div>
+        <div style="background:rgba(249,201,70,.1);border-radius:8px;padding:10px 14px;border-left:3px solid var(--gold);">
+          <div class="txt18"><strong>Aggregation ≠ Inferenz.</strong> COUNT verdichtet Ergebnisse. rdfs:subClassOf* ist ein Pfadmuster — Inferenz leitet neue Tripel ab.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>COUNT/GROUP BY wie in SQL — aber die Treffermenge entsteht durch <strong>Graph-Pattern-Matching</strong>, nicht durch Tabellen-Scans.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     QUERY MODEL 05 — Der Aha-Moment: Inferenz
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">05</div>
+    <div class="tag">Query Model</div>
+    <div class="title">Der Aha-Moment: Inferenz in der Praxis</div>
+  </div>
+  <div class="body">
+    <div style="padding:14px 28px;height:100%;display:flex;flex-direction:column;gap:12px;">
+      <!-- Class hierarchy -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:20px;">
+        <svg width="500" height="90" viewBox="0 0 500 90">
+          <rect x="190" y="5" width="120" height="40" rx="8" fill="var(--navy)"/>
+          <text x="250" y="29" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="700">uni:Person</text>
+          <rect x="40"  y="60" width="120" height="28" rx="6" fill="var(--teal)"/>
+          <text x="100" y="78" text-anchor="middle" fill="white" font-size="12" font-family="Segoe UI" font-weight="700">uni:Student</text>
+          <rect x="180" y="60" width="120" height="28" rx="6" fill="var(--teal)"/>
+          <text x="240" y="78" text-anchor="middle" fill="white" font-size="12" font-family="Segoe UI" font-weight="700">uni:Professor</text>
+          <rect x="340" y="60" width="120" height="28" rx="6" fill="var(--teal)"/>
+          <text x="400" y="78" text-anchor="middle" fill="white" font-size="12" font-family="Segoe UI" font-weight="700">uni:Staff</text>
+          <line x1="190" y1="45" x2="135" y2="60" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="230" y1="45" x2="230" y2="60" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="270" y1="45" x2="370" y2="60" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <text x="100" y="53" fill="var(--muted)" font-size="10" font-family="Segoe UI">subClassOf</text>
+        </svg>
+      </div>
+      <!-- Query 4 vs 5 -->
+      <div style="display:flex;gap:14px;flex:1;align-items:stretch;">
+        <div style="flex:1;display:flex;flex-direction:column;gap:8px;">
+          <div style="background:rgba(220,38,38,.06);border-radius:10px;padding:12px 16px;border:2px solid var(--no);">
+            <div class="lbl lbl-coral" style="margin-bottom:8px;">Query 4 — ohne Inferenz</div>
+            <div class="code" style="font-size:13px;">
+<span class="kw">SELECT</span> <span class="var">?p</span><br>
+<span class="kw">WHERE</span> {<br>
+&nbsp;&nbsp;<span class="var">?p</span> <span class="kw">a</span> <span class="iri">uni:Person</span> .<br>
+}
+            </div>
+          </div>
+          <div style="background:var(--no);border-radius:10px;padding:16px 20px;text-align:center;color:#fff;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+            <div style="font-size:52px;font-weight:700;margin-bottom:4px;">0</div>
+            <div style="font-size:18px;font-weight:700;">Ergebnisse</div>
+            <div style="font-size:16px;opacity:.8;margin-top:4px;">Niemand ist explizit als uni:Person gespeichert</div>
+          </div>
+        </div>
+        <!-- Arrow -->
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
+          <svg width="50" height="60" viewBox="0 0 50 60"><line x1="25" y1="0" x2="25" y2="40" stroke="var(--gold)" stroke-width="3"/><polygon points="10,35 25,55 40,35" fill="var(--gold)"/></svg>
+          <div style="font-size:13px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px;text-align:center;">Reasoner<br>aktivieren</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:8px;">
+          <div style="background:rgba(22,163,74,.06);border-radius:10px;padding:12px 16px;border:2px solid var(--ok);">
+            <div class="lbl lbl-teal" style="margin-bottom:8px;">Query 5 — mit rdfs:subClassOf*</div>
+            <div class="code" style="font-size:13px;">
+<span class="kw">SELECT</span> <span class="var">?p</span><br>
+<span class="kw">WHERE</span> {<br>
+&nbsp;&nbsp;<span class="var">?p</span>  <span class="kw">a</span>  <span class="var">?typ</span> .<br>
+&nbsp;&nbsp;<span class="var">?typ</span> <span class="iri">rdfs:subClassOf*</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="iri">uni:Person</span> .<br>
+}
+            </div>
+          </div>
+          <div style="background:var(--ok);border-radius:10px;padding:16px 20px;text-align:center;color:#fff;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+            <div style="font-size:52px;font-weight:700;margin-bottom:4px;">7</div>
+            <div style="font-size:18px;font-weight:700;">Ergebnisse</div>
+            <div style="font-size:16px;opacity:.85;margin-top:4px;">Studenten + Professoren + Staff werden erkannt</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>Dasselbe Modell, dasselbe Wissen — nur <strong>Modelwissen über Klassenhierarchien genutzt</strong>. Das ist der Unterschied zu SQL und Property Graph.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     QUERY MODEL 06 — Federation & Query-Typen
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">06</div>
+    <div class="tag">Query Model</div>
+    <div class="title">Federated Queries &amp; Ausgabeformate</div>
+  </div>
+  <div class="body">
+    <div class="split">
+      <div class="sp-l" style="gap:10px;">
+        <div class="lbl lbl-navy" style="margin-bottom:4px;">SERVICE — Live-Anfrage gegen DBpedia</div>
+        <div class="code" style="font-size:11.5px;">
+<span class="kw">SELECT</span> <span class="var">?uniname</span> <span class="var">?description</span><br>
+<span class="kw">WHERE</span> {<br>
+&nbsp;&nbsp;<span class="cm">-- lokale Daten:</span><br>
+&nbsp;&nbsp;<span class="var">?u</span>  <span class="kw">a</span> <span class="iri">uni:University</span> .<br>
+&nbsp;&nbsp;<span class="var">?u</span>  <span class="iri">rdfs:label</span> <span class="var">?uniname</span> .<br>
+&nbsp;&nbsp;<span class="var">?u</span>  <span class="iri">owl:sameAs</span> <span class="var">?dbCity</span> .<br><br>
+&nbsp;&nbsp;<span class="cm">-- externe Quelle:</span><br>
+&nbsp;&nbsp;<span class="kw">SERVICE</span> <span class="iri">&lt;https://dbpedia.org/sparql&gt;</span> {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="var">?dbCity</span> <span class="iri">dbo:abstract</span> <span class="var">?description</span> .<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">FILTER</span> (<span class="iri">lang</span>(<span class="var">?description</span>) = <span class="str">"de"</span>)<br>
+&nbsp;&nbsp;}<br>
+}
+        </div>
+        <div class="txt18" style="color:var(--muted);">Verknüpft lokale Daten mit externen Endpoints via <strong style="color:var(--navy);">owl:sameAs</strong> — kein Datenkopie nötig.</div>
+      </div>
+      <div class="sp-r" style="gap:12px;justify-content:center;">
+        <div class="lbl lbl-navy" style="margin-bottom:4px;">Ausgabeformate &amp; Einsatz</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:12px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);">
+            <div style="background:var(--teal);color:#fff;font-weight:700;font-size:14px;padding:4px 12px;border-radius:8px;flex-shrink:0;">JSON</div>
+            <div class="txt18">APIs, Python-Pipelines, RAG-Systeme</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:12px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);">
+            <div style="background:var(--navy);color:#fff;font-weight:700;font-size:14px;padding:4px 12px;border-radius:8px;flex-shrink:0;">CSV</div>
+            <div class="txt18">Tabellenanalyse, Excel, schneller Export</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:12px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);">
+            <div style="background:var(--coral);color:#fff;font-weight:700;font-size:14px;padding:4px 12px;border-radius:8px;flex-shrink:0;">RDF/XML</div>
+            <div class="txt18">CONSTRUCT-Queries, Graph-Export</div>
+          </div>
+        </div>
+        <div style="background:rgba(249,201,70,.1);border-radius:8px;padding:12px 14px;border-left:3px solid var(--gold);">
+          <div class="lbl lbl-gold" style="font-size:15px;margin-bottom:4px;">Demo — Query 7</div>
+          <div class="txt18">Die Federation-Query läuft live gegen DBpedia. Internetabhängig — Screenshot-Fallback bereit.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>SERVICE verbindet lokale Daten mit dem <strong>Web of Data</strong> — Federated Queries sind SPARQL-nativer Linked-Data-Mechanismus.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     ARCHITECTURE 01 — Architektur-Überblick
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">01</div>
+    <div class="tag">Architecture</div>
+    <div class="title">Vom RDF-Modell zur produktiven Anwendung</div>
+  </div>
+  <div class="body">
+    <div style="padding:16px 36px;height:100%;display:flex;align-items:center;gap:28px;">
+      <!-- Stack diagram -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:0;flex-shrink:0;width:200px;">
+        <div style="background:var(--coral);border-radius:10px 10px 0 0;width:100%;padding:12px 0;text-align:center;color:#fff;font-size:18px;font-weight:700;">Anwendung / KI</div>
+        <div style="width:3px;height:16px;background:var(--gold);"></div>
+        <div style="background:#7C3AED;width:100%;padding:12px 0;text-align:center;color:#fff;font-size:18px;font-weight:700;">SPARQL Endpoint</div>
+        <div style="width:3px;height:16px;background:var(--gold);"></div>
+        <div style="background:var(--teal);width:100%;padding:12px 0;text-align:center;color:#fff;font-size:18px;font-weight:700;">Query Engine</div>
+        <div style="width:3px;height:16px;background:var(--gold);"></div>
+        <div style="background:var(--navy);width:100%;padding:12px 0;text-align:center;color:#fff;font-size:18px;font-weight:700;">Reasoner (opt.)</div>
+        <div style="width:3px;height:16px;background:var(--gold);"></div>
+        <div style="background:#0891B2;width:100%;padding:12px 0;text-align:center;color:#fff;font-size:18px;font-weight:700;">RDF Store + Indizes</div>
+        <div style="width:3px;height:16px;background:var(--gold);"></div>
+        <div style="background:#334155;border-radius:0 0 10px 10px;width:100%;padding:12px 0;text-align:center;color:#fff;font-size:18px;font-weight:700;">Datenquellen</div>
+      </div>
+      <!-- Use cases -->
+      <div style="flex:1;display:flex;flex-direction:column;gap:12px;">
+        <div class="lbl lbl-navy" style="margin-bottom:4px;">Typische Anwendungsfälle</div>
+        <div class="card card-coral">
+          <div class="ch"><div class="ci ic ic-lg" style="width:44px;height:44px;"><i data-lucide="search"></i></div><div class="ct">Semantische Unternehmenssuche</div></div>
+          <div class="cb">„Wer arbeitet an SAP-Projekten im Bereich Logistik?" — RDF verknüpft Mitarbeiter, Projekte, Fachbereiche</div>
+        </div>
+        <div class="card card-teal">
+          <div class="ch"><div class="ci ic ic-lg" style="width:44px;height:44px;"><i data-lucide="bot"></i></div><div class="ct">RAG-Systeme mit LLMs</div></div>
+          <div class="cb">SPARQL liefert strukturierten Kontext — LLM beantwortet Fragen mit nachvollziehbaren Quellen</div>
+        </div>
+        <div class="card card-navy">
+          <div class="ch"><div class="ci ic ic-lg" style="width:44px;height:44px;"><i data-lucide="globe"></i></div><div class="ct">Knowledge Graphs / Suchmaschinen</div></div>
+          <div class="cb">Verknüpfung von Personen, Orten, Ereignissen — Zusammenhänge statt isolierter Datensätze</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>Kernfrage für die Praxis: Triple Store <strong>selbst betreiben</strong> oder <em>Cloud-Dienst nutzen</em>?</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     ARCHITECTURE 02 — Storage-Architekturen
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">02</div>
+    <div class="tag">Architecture</div>
+    <div class="title">Storage-Architekturen: In-Memory · Native · Non-Native</div>
+  </div>
+  <div class="body">
+    <div class="grid3">
+      <div class="card card-teal" style="gap:12px;">
+        <div class="ch"><div class="ci ic ic-lg" style="width:44px;height:44px;"><i data-lucide="zap"></i></div><div class="ct">In-Memory</div></div>
+        <div class="cb">Daten im RAM — maximale Query-Geschwindigkeit</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;align-items:center;gap:6px;"><div class="badge b-ok" style="width:22px;height:22px;font-size:11px;flex-shrink:0;">✓</div><div class="txt18">Extrem schnell</div></div>
+          <div style="display:flex;align-items:center;gap:6px;"><div class="badge b-ok" style="width:22px;height:22px;font-size:11px;flex-shrink:0;">✓</div><div class="txt18">Ideal für kleine/mittlere Graphen</div></div>
+          <div style="display:flex;align-items:center;gap:6px;"><div class="badge b-no" style="width:22px;height:22px;font-size:11px;flex-shrink:0;">✗</div><div class="txt18">Keine Persistenz ohne Zusatz</div></div>
+          <div style="display:flex;align-items:center;gap:6px;"><div class="badge b-no" style="width:22px;height:22px;font-size:11px;flex-shrink:0;">✗</div><div class="txt18">RAM-Limit</div></div>
+        </div>
+        <div class="cs">Beispiele: Oxigraph, Hexastore, BitMat</div>
+      </div>
+      <div class="card card-navy" style="gap:12px;">
+        <div class="ch"><div class="ci ic ic-lg" style="width:44px;height:44px;"><i data-lucide="database"></i></div><div class="ct">Native Store</div></div>
+        <div class="cb">RDF-optimierte Disk-Speicherung mit SPO-Indizes &amp; B-Trees</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;align-items:center;gap:6px;"><div class="badge b-ok" style="width:22px;height:22px;font-size:11px;flex-shrink:0;">✓</div><div class="txt18">Persistent + ACID</div></div>
+          <div style="display:flex;align-items:center;gap:6px;"><div class="badge b-ok" style="width:22px;height:22px;font-size:11px;flex-shrink:0;">✓</div><div class="txt18">Speziell für RDF optimiert</div></div>
+          <div style="display:flex;align-items:center;gap:6px;"><div class="badge b-ok" style="width:22px;height:22px;font-size:11px;flex-shrink:0;">✓</div><div class="txt18">Skaliert auf Milliarden Triples</div></div>
+        </div>
+        <div class="cs">Beispiele: Jena TDB2, GraphDB, Stardog</div>
+      </div>
+      <div class="card card-muted" style="gap:12px;">
+        <div class="ch"><div class="ci ic ic-lg" style="width:44px;height:44px;"><i data-lucide="server"></i></div><div class="ct">Non-Native</div></div>
+        <div class="cb">RDF als Layer über relationaler DB (RDBMS-Backend)</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;align-items:center;gap:6px;"><div class="badge b-ok" style="width:22px;height:22px;font-size:11px;flex-shrink:0;">✓</div><div class="txt18">Nutzt bestehende RDBMS-Tools</div></div>
+          <div style="display:flex;align-items:center;gap:6px;"><div class="badge b-warn" style="width:22px;height:22px;font-size:11px;flex-shrink:0;">≈</div><div class="txt18">ACID geerbt vom RDBMS</div></div>
+          <div style="display:flex;align-items:center;gap:6px;"><div class="badge b-no" style="width:22px;height:22px;font-size:11px;flex-shrink:0;">✗</div><div class="txt18">Weniger RDF-optimiert</div></div>
+        </div>
+        <div class="cs">Beispiele: Virtuoso (Hybrid), Jena SDB</div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span><strong>Native Stores</strong> sind erste Wahl für RDF — speziell gebaut für SPO-Indizes, Dictionary-Encoding und Reasoning.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     ARCHITECTURE 03 — Single Node vs. Distributed
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">03</div>
+    <div class="tag">Architecture</div>
+    <div class="title">Single Node vs. Distributed Triple Store</div>
+  </div>
+  <div class="body">
+    <div class="split">
+      <div class="sp-l" style="gap:14px;align-items:center;">
+        <div class="lbl lbl-navy" style="margin-bottom:4px;align-self:flex-start;">Single Node</div>
+        <svg width="380" height="200" viewBox="0 0 380 200" style="display:block;">
+          <!-- Client -->
+          <rect x="140" y="10" width="100" height="36" rx="8" fill="var(--coral)"/>
+          <text x="190" y="33" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="700">Client</text>
+          <!-- Arrow down -->
+          <line x1="190" y1="46" x2="190" y2="80" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr2)"/>
+          <!-- Triple Store -->
+          <rect x="80" y="80" width="220" height="80" rx="12" fill="var(--navy)"/>
+          <text x="190" y="108" text-anchor="middle" fill="white" font-size="14" font-family="Segoe UI" font-weight="700">Triple Store</text>
+          <text x="190" y="130" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="12" font-family="Segoe UI">Indizes · Reasoner · SPARQL Engine</text>
+        </svg>
+        <div style="display:flex;flex-direction:column;gap:6px;width:100%;">
+          <div style="display:flex;align-items:center;gap:8px;"><div class="badge b-ok" style="width:24px;height:24px;font-size:12px;flex-shrink:0;">✓</div><div class="txt18">Einfacher Betrieb · gute Performance</div></div>
+          <div style="display:flex;align-items:center;gap:8px;"><div class="badge b-warn" style="width:24px;height:24px;font-size:12px;flex-shrink:0;">≈</div><div class="txt18">Vertikale Skalierung (CPU/RAM/SSD)</div></div>
+          <div style="display:flex;align-items:center;gap:8px;"><div class="badge b-no" style="width:24px;height:24px;font-size:12px;flex-shrink:0;">✗</div><div class="txt18">Skalierungsgrenze auf einer Maschine</div></div>
+        </div>
+        <div class="cs">Jena TDB2 · GraphDB Free · Oxigraph · Stardog Single</div>
+      </div>
+      <div class="sp-r" style="gap:14px;align-items:center;">
+        <div class="lbl lbl-navy" style="margin-bottom:4px;align-self:flex-start;">Distributed</div>
+        <svg width="380" height="200" viewBox="0 0 380 200" style="display:block;">
+          <!-- Client -->
+          <rect x="140" y="10" width="100" height="36" rx="8" fill="var(--coral)"/>
+          <text x="190" y="33" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="700">Client</text>
+          <!-- Load Balancer -->
+          <rect x="120" y="65" width="140" height="30" rx="6" fill="var(--gold)"/>
+          <text x="190" y="85" text-anchor="middle" fill="var(--navy)" font-size="12" font-family="Segoe UI" font-weight="700">Load Balancer</text>
+          <line x1="190" y1="46" x2="190" y2="65" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr2)"/>
+          <!-- Three nodes -->
+          <rect x="20"  y="120" width="90" height="50" rx="8" fill="var(--teal)"/>
+          <rect x="145" y="120" width="90" height="50" rx="8" fill="var(--teal)"/>
+          <rect x="270" y="120" width="90" height="50" rx="8" fill="var(--teal)"/>
+          <text x="65"  y="149" text-anchor="middle" fill="white" font-size="12" font-family="Segoe UI" font-weight="700">Node 1</text>
+          <text x="190" y="149" text-anchor="middle" fill="white" font-size="12" font-family="Segoe UI" font-weight="700">Node 2</text>
+          <text x="315" y="149" text-anchor="middle" fill="white" font-size="12" font-family="Segoe UI" font-weight="700">Node 3</text>
+          <line x1="155" y1="95" x2="65"  y2="120" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#arr2)"/>
+          <line x1="190" y1="95" x2="190" y2="120" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#arr2)"/>
+          <line x1="225" y1="95" x2="315" y2="120" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#arr2)"/>
+        </svg>
+        <div style="display:flex;flex-direction:column;gap:6px;width:100%;">
+          <div style="display:flex;align-items:center;gap:8px;"><div class="badge b-ok" style="width:24px;height:24px;font-size:12px;flex-shrink:0;">✓</div><div class="txt18">Horizontale Skalierung · hohe Verfügbarkeit</div></div>
+          <div style="display:flex;align-items:center;gap:8px;"><div class="badge b-no" style="width:24px;height:24px;font-size:12px;flex-shrink:0;">✗</div><div class="txt18">Höhere Komplexität · verteilte SPARQL-Joins</div></div>
+        </div>
+        <div class="cs">GraphDB Cluster · Amazon Neptune · Stardog Cluster</div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>Single Node = einfacher Betrieb. Distributed = horizontale Skalierung — <strong>aber Graph-Joins über Knoten sind das eigentliche Problem</strong>.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     ARCHITECTURE 04 — Verteilte SPARQL-Joins
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">04</div>
+    <div class="tag">Architecture</div>
+    <div class="title">Das RDF-Skalierungsproblem: Verteilte Graph-Joins</div>
+  </div>
+  <div class="body">
+    <div style="padding:16px 28px;height:100%;display:flex;gap:20px;align-items:stretch;">
+      <!-- Connected graph -->
+      <div style="flex:1;background:#fff;border-radius:12px;padding:16px;box-shadow:0 2px 8px rgba(30,39,97,.07);display:flex;flex-direction:column;gap:8px;">
+        <div class="lbl lbl-teal" style="margin-bottom:4px;">Zusammenhängender RDF-Graph</div>
+        <svg width="280" height="200" viewBox="0 0 280 200" style="display:block;flex:1;">
+          <ellipse cx="140" cy="40"  rx="70" ry="25" fill="var(--navy)"/>
+          <ellipse cx="80"  cy="130" rx="60" ry="25" fill="var(--teal)"/>
+          <ellipse cx="200" cy="130" rx="60" ry="25" fill="var(--teal)"/>
+          <text x="140" y="44"  text-anchor="middle" fill="white" font-size="12" font-family="Segoe UI" font-weight="700">UniStuttgart</text>
+          <text x="80"  y="134" text-anchor="middle" fill="white" font-size="12" font-family="Segoe UI" font-weight="700">Stuttgart</text>
+          <text x="200" y="134" text-anchor="middle" fill="white" font-size="12" font-family="Segoe UI" font-weight="700">Deutschland</text>
+          <line x1="100" y1="58" x2="90"  y2="108" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr2)"/>
+          <line x1="140" y1="58" x2="175" y2="108" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr2)"/>
+          <line x1="140" y1="130" x2="142" y2="130" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr2)"/>
+          <text x="82"  y="90" fill="var(--coral)" font-size="10" font-family="Segoe UI" font-weight="700">locatedIn</text>
+          <text x="162" y="90" fill="var(--coral)" font-size="10" font-family="Segoe UI" font-weight="700">locatedIn</text>
+        </svg>
+      </div>
+      <!-- Arrow -->
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;">
+        <div style="font-size:28px;color:var(--coral);">→</div>
+        <div style="font-size:13px;font-weight:700;color:var(--coral);text-transform:uppercase;letter-spacing:1px;text-align:center;margin-top:4px;">Partitionierung</div>
+      </div>
+      <!-- Split across nodes -->
+      <div style="flex:1;display:flex;flex-direction:column;gap:10px;">
+        <div class="lbl lbl-coral" style="margin-bottom:4px;">Daten auf verschiedenen Nodes</div>
+        <div style="background:rgba(43,200,154,.07);border:1.5px solid var(--teal);border-radius:10px;padding:12px 16px;">
+          <div class="lbl lbl-teal" style="font-size:14px;margin-bottom:6px;">Node A</div>
+          <div style="font-family:Consolas;font-size:14px;">UniStuttgart <span style="color:var(--navy);">locatedIn</span> Stuttgart</div>
+        </div>
+        <div style="background:rgba(249,97,103,.07);border:1.5px solid var(--coral);border-radius:10px;padding:12px 16px;">
+          <div class="lbl lbl-coral" style="font-size:14px;margin-bottom:6px;">Node B</div>
+          <div style="font-family:Consolas;font-size:14px;">Stuttgart <span style="color:var(--navy);">locatedIn</span> Deutschland</div>
+        </div>
+        <div style="background:rgba(249,201,70,.1);border-radius:10px;padding:12px 16px;border-left:4px solid var(--gold);">
+          <div class="lbl lbl-gold" style="font-size:14px;margin-bottom:4px;">Problem bei SPARQL-Join</div>
+          <div class="txt18">UniS → Stuttgart → Deutschland braucht Netzwerkkommunikation zwischen A und B</div>
+        </div>
+      </div>
+      <!-- Key message -->
+      <div style="flex:1;display:flex;flex-direction:column;gap:10px;justify-content:center;">
+        <div class="lbl lbl-navy" style="margin-bottom:4px;">Lösungsansätze</div>
+        <div class="card card-teal">
+          <div class="ch"><div class="ci ic"><i data-lucide="git-merge"></i></div><div class="ct">Subject-basiert</div></div>
+          <div class="cb">Alle Tripel eines Subjekts gemeinsam — minimiert Inter-Node-Joins</div>
+        </div>
+        <div class="card card-navy">
+          <div class="ch"><div class="ci ic"><i data-lucide="pie-chart"></i></div><div class="ct">Graph-Partitionierung</div></div>
+          <div class="cb">Zusammenhängende Teilgraphen gemeinsam halten</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>Das Skalierungsproblem bei RDF ist nicht die <em>Speicherung</em> — es sind die <strong>Graph-Joins über Knoten-Grenzen hinweg</strong>.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     ARCHITECTURE 05 — Self vs. Cloud & Tools
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">05</div>
+    <div class="tag">Architecture</div>
+    <div class="title">Selbst betreiben vs. Cloud-Dienst</div>
+  </div>
+  <div class="body">
+    <div style="padding:14px 28px;height:100%;display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;gap:14px;flex:1;">
+        <div style="flex:1;background:rgba(43,200,154,.06);border-radius:12px;padding:16px 18px;border:1.5px solid var(--teal);">
+          <div class="lbl lbl-teal" style="margin-bottom:10px;">🖥 Selbst betreiben</div>
+          <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;">
+            <div style="display:flex;align-items:center;gap:8px;"><div class="badge b-ok" style="width:22px;height:22px;font-size:11px;flex-shrink:0;">✓</div><div class="txt18">Volle Kontrolle · frei konfigurierbar</div></div>
+            <div style="display:flex;align-items:center;gap:8px;"><div class="badge b-ok" style="width:22px;height:22px;font-size:11px;flex-shrink:0;">✓</div><div class="txt18">Geringe laufende Kosten</div></div>
+            <div style="display:flex;align-items:center;gap:8px;"><div class="badge b-no" style="width:22px;height:22px;font-size:11px;flex-shrink:0;">✗</div><div class="txt18">Eigener Betriebsaufwand</div></div>
+          </div>
+          <div class="cs"><strong>Geeignet für:</strong> Lernen · Forschung · Prototypen · Demo</div>
+        </div>
+        <div style="flex:1;background:rgba(124,58,237,.06);border-radius:12px;padding:16px 18px;border:1.5px solid #7C3AED;">
+          <div class="lbl" style="color:#7C3AED;margin-bottom:10px;">☁ Cloud-Dienst</div>
+          <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;">
+            <div style="display:flex;align-items:center;gap:8px;"><div class="badge b-ok" style="width:22px;height:22px;font-size:11px;flex-shrink:0;">✓</div><div class="txt18">Kein Betriebsaufwand · automatische Backups</div></div>
+            <div style="display:flex;align-items:center;gap:8px;"><div class="badge b-ok" style="width:22px;height:22px;font-size:11px;flex-shrink:0;">✓</div><div class="txt18">Hohe Verfügbarkeit · einfache Skalierung</div></div>
+            <div style="display:flex;align-items:center;gap:8px;"><div class="badge b-no" style="width:22px;height:22px;font-size:11px;flex-shrink:0;">✗</div><div class="txt18">Laufende Kosten · Abhängigkeit vom Anbieter</div></div>
+          </div>
+          <div class="cs"><strong>Geeignet für:</strong> Produktivsysteme · große Datenmengen · Unternehmenseinsatz</div>
+        </div>
+      </div>
+      <!-- Tools table -->
+      <div style="background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(30,39,97,.07);">
+        <div style="display:grid;grid-template-columns:1.5fr 1fr 2fr 2fr;background:var(--navy);color:#fff;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;">
+          <div style="padding:7px 14px;">System</div><div style="padding:7px 14px;">Typ</div><div style="padding:7px 14px;">Stärke</div><div style="padding:7px 14px;">Einsatz</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1.5fr 1fr 2fr 2fr;font-size:14px;border-bottom:1px solid #EEF1FA;">
+          <div style="padding:6px 14px;font-weight:700;color:var(--teal);">Oxigraph</div><div style="padding:6px 14px;">Open Source</div><div style="padding:6px 14px;">Leichtgewichtig, Rust-basiert</div><div style="padding:6px 14px;color:var(--muted);">Demo, kleine Anwendungen</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1.5fr 1fr 2fr 2fr;background:#EEF1FA;font-size:14px;border-bottom:1px solid #DDE3F0;">
+          <div style="padding:6px 14px;font-weight:700;color:var(--navy);">Jena Fuseki</div><div style="padding:6px 14px;">Open Source</div><div style="padding:6px 14px;">Einfacher Einstieg, kostenlos</div><div style="padding:6px 14px;color:var(--muted);">Lehre, Forschung, Prototypen</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1.5fr 1fr 2fr 2fr;font-size:14px;border-bottom:1px solid #EEF1FA;">
+          <div style="padding:6px 14px;font-weight:700;color:var(--coral);">GraphDB</div><div style="padding:6px 14px;">Enterprise</div><div style="padding:6px 14px;">Reasoning, Verwaltung, Cluster</div><div style="padding:6px 14px;color:var(--muted);">Unternehmensprojekte</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1.5fr 1fr 2fr 2fr;background:#EEF1FA;font-size:14px;">
+          <div style="padding:6px 14px;font-weight:700;color:#7C3AED;">Amazon Neptune</div><div style="padding:6px 14px;">Cloud</div><div style="padding:6px 14px;">Auto-Skalierung, Hochverfügbarkeit</div><div style="padding:6px 14px;color:var(--muted);">Große Produktivsysteme</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>Für unsere Demo: <strong>Oxigraph</strong> — Rust-basiert, kein JVM, Port 7878, Docker-Setup in unter 30 Sekunden.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     ARCHITECTURE 06 — Inferenz: Forward vs. Backward Chaining
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">06</div>
+    <div class="tag">Architecture</div>
+    <div class="title">Reasoning-Architekturen: Forward vs. Backward Chaining</div>
+  </div>
+  <div class="body">
+    <div class="split">
+      <div class="sp-l" style="gap:14px;">
+        <div class="lbl lbl-navy" style="margin-bottom:4px;">Forward Chaining (Materialization)</div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 0;">
+          <div style="background:rgba(43,200,154,.08);border-radius:8px;padding:8px 14px;flex:1;text-align:center;font-size:16px;color:var(--navy);">Alle Regeln vorab</div>
+          <div style="font-size:20px;color:var(--gold);">→</div>
+          <div style="background:var(--teal);border-radius:8px;padding:8px 14px;flex:1;text-align:center;font-size:16px;color:#fff;font-weight:700;">Alle Fakten in Store</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;align-items:center;gap:8px;"><div class="badge b-ok" style="width:24px;height:24px;font-size:12px;flex-shrink:0;">✓</div><div class="txt18">Sehr schnelle Queries</div></div>
+          <div style="display:flex;align-items:center;gap:8px;"><div class="badge b-no" style="width:24px;height:24px;font-size:12px;flex-shrink:0;">✗</div><div class="txt18">+20–50% Speicherbedarf (GraphDB)</div></div>
+          <div style="display:flex;align-items:center;gap:8px;"><div class="badge b-no" style="width:24px;height:24px;font-size:12px;flex-shrink:0;">✗</div><div class="txt18">Lange Initialisierungszeit</div></div>
+        </div>
+        <div class="cs">Einsatz: GraphDB, Stardog — wenn Query-Speed kritisch ist</div>
+      </div>
+      <div class="sp-r" style="gap:14px;">
+        <div class="lbl lbl-navy" style="margin-bottom:4px;">Backward Chaining (Query-time)</div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 0;">
+          <div style="background:rgba(249,97,103,.08);border-radius:8px;padding:8px 14px;flex:1;text-align:center;font-size:16px;color:var(--navy);">Query kommt</div>
+          <div style="font-size:20px;color:var(--gold);">→</div>
+          <div style="background:var(--coral);border-radius:8px;padding:8px 14px;flex:1;text-align:center;font-size:16px;color:#fff;font-weight:700;">Regeln zur Laufzeit</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;align-items:center;gap:8px;"><div class="badge b-ok" style="width:24px;height:24px;font-size:12px;flex-shrink:0;">✓</div><div class="txt18">Spart Speicher</div></div>
+          <div style="display:flex;align-items:center;gap:8px;"><div class="badge b-ok" style="width:24px;height:24px;font-size:12px;flex-shrink:0;">✓</div><div class="txt18">Flexibel — keine Vorab-Materialisierung</div></div>
+          <div style="display:flex;align-items:center;gap:8px;"><div class="badge b-no" style="width:24px;height:24px;font-size:12px;flex-shrink:0;">✗</div><div class="txt18">Längere Query-Laufzeit bei komplexen Regeln</div></div>
+        </div>
+        <div class="cs">Einsatz: Oxigraph, Jena — wenn Speicher oder Flexibilität wichtiger</div>
+        <div style="background:rgba(249,201,70,.1);border-radius:8px;padding:10px 14px;border-left:3px solid var(--gold);">
+          <div class="txt18"><strong>Hybrid</strong>: häufig in OWL-RL-Reasonern — kombiniert beide Ansätze je nach Regelkomplexität.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>Forward = <strong>Query-Speed durch Vorab-Berechnung</strong>. Backward = <strong>Speicher durch Lazy Evaluation</strong>. Hybrid kombiniert beides.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     COMPARISON 01 — Triple Store vs. SQL
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">01</div>
+    <div class="tag">Comparison</div>
+    <div class="title">Triple Store vs. SQL</div>
+    <div class="col-labels-c1">
+      <div class="cl cl-sql">SQL (Relational)</div>
+      <div class="cl cl-rdf">Triple Store (RDF)</div>
+    </div>
+  </div>
+  <div class="body">
+    <div class="c3rows">
+      <div class="c3row rdf-w">
+        <div class="c3l"><div class="rv-m">Zeile in Tabelle</div><div class="badge b-warn">≈</div></div>
+        <div class="c3m"><div class="ic ic-sm"><i data-lucide="package"></i></div>Dateneinheit</div>
+        <div class="c3r"><div class="badge b-ok">✓</div>Subjekt – Prädikat – Objekt</div>
+      </div>
+      <div class="c3row rdf-w">
+        <div class="c3l"><div class="rv-m">starr, vordefiniert</div><div class="badge b-warn">≈</div></div>
+        <div class="c3m"><div class="ic ic-sm"><i data-lucide="table-2"></i></div>Schema</div>
+        <div class="c3r"><div class="badge b-ok">✓</div>flexibel, schema-light</div>
+      </div>
+      <div class="c3row rdf-w">
+        <div class="c3l"><div class="rv-m">Joins (teuer, komplex)</div><div class="badge b-no">✗</div></div>
+        <div class="c3m"><div class="ic ic-sm"><i data-lucide="share-2"></i></div>Beziehungen</div>
+        <div class="c3r"><div class="badge b-ok">✓</div>Kanten = native Struktur</div>
+      </div>
+      <div class="c3row rdf-w">
+        <div class="c3l"><div class="rv-m">SQL</div><div class="badge b-warn">≈</div></div>
+        <div class="c3m"><div class="ic ic-sm"><i data-lucide="search"></i></div>Abfragesprache</div>
+        <div class="c3r"><div class="badge b-ok">✓</div>SPARQL (Pattern Matching)</div>
+      </div>
+      <div class="c3row rdf-w">
+        <div class="c3l"><div class="rv-m">keine</div><div class="badge b-no">✗</div></div>
+        <div class="c3m"><div class="ic ic-sm"><i data-lucide="brain"></i></div>Semantik</div>
+        <div class="c3r"><div class="badge b-ok">✓</div>RDFS / OWL, inferenzfähig</div>
+      </div>
+      <div class="c3row rdf-w">
+        <div class="c3l"><div class="rv-m">schwierig (ETL)</div><div class="badge b-no">✗</div></div>
+        <div class="c3m"><div class="ic ic-sm"><i data-lucide="globe"></i></div>Datenintegration</div>
+        <div class="c3r"><div class="badge b-ok">✓</div>URIs → direkt verlinkbar</div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>SQL stark bei strukturierten, stabilen Daten — Triple Stores gewinnen, sobald <strong>Vernetzung und Semantik</strong> zählen.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     COMPARISON 02 — Triple Store vs. Property Graph
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">02</div>
+    <div class="tag">Comparison</div>
+    <div class="title">Triple Store vs. Property Graph</div>
+    <div class="col-labels-c2">
+      <div class="cl-rdf2">Triple Store (RDF)</div>
+      <div class="cl-mid">Kriterium</div>
+      <div class="cl-pg">Property Graph</div>
+    </div>
+  </div>
+  <div class="body">
+    <div class="c3rows">
+      <div class="c3row rdf-w">
+        <div class="c3r" style="justify-content:flex-end;"><div class="rv-m" style="text-align:right;">W3C-Standard · SPARQL, OWL</div><div class="badge b-ok">✓</div></div>
+        <div class="c3m"><div class="ic ic-sm"><i data-lucide="shield-check"></i></div>Standardisierung</div>
+        <div class="c3l" style="justify-content:flex-start;"><div class="badge b-no">✗</div><div class="rv-m">vendor-spezifisch (Cypher)</div></div>
+      </div>
+      <div class="c3row rdf-w">
+        <div class="c3r" style="justify-content:flex-end;"><div class="rv-m" style="text-align:right;">RDFS / OWL built-in</div><div class="badge b-ok">✓</div></div>
+        <div class="c3m"><div class="ic ic-sm"><i data-lucide="cpu"></i></div>Inferenz</div>
+        <div class="c3l" style="justify-content:flex-start;"><div class="badge b-no">✗</div><div class="rv-m">manuell implementieren</div></div>
+      </div>
+      <div class="c3row pg-w">
+        <div class="c3r" style="justify-content:flex-end;"><div class="rv-m" style="text-align:right;">nur via Reifikation</div><div class="badge b-no">✗</div></div>
+        <div class="c3m"><div class="ic ic-sm"><i data-lucide="tag"></i></div>Kanten-Properties</div>
+        <div class="c3l" style="justify-content:flex-start;"><div class="badge b-ok">✓</div><div class="rv-m">nativ an der Kante</div></div>
+      </div>
+      <div class="c3row pg-w">
+        <div class="c3r" style="justify-content:flex-end;"><div class="rv-m" style="text-align:right;">gut mit Index-Permutationen</div><div class="badge b-warn">≈</div></div>
+        <div class="c3m"><div class="ic ic-sm"><i data-lucide="zap"></i></div>Traversal-Performance</div>
+        <div class="c3l" style="justify-content:flex-start;"><div class="badge b-ok">✓</div><div class="rv-m">pointer-nativ, sehr schnell</div></div>
+      </div>
+      <div class="c3row rdf-w">
+        <div class="c3r" style="justify-content:flex-end;"><div class="rv-m" style="text-align:right;">URIs · Linked Data · Federation</div><div class="badge b-ok">✓</div></div>
+        <div class="c3m"><div class="ic ic-sm"><i data-lucide="globe"></i></div>Datenintegration</div>
+        <div class="c3l" style="justify-content:flex-start;"><div class="badge b-no">✗</div><div class="rv-m">Insellösung</div></div>
+      </div>
+      <div class="c3row">
+        <div class="c3r" style="justify-content:flex-end;"><div class="rv-m" style="text-align:right;">Knowledge Graphs · AI / RAG</div><div class="badge b-ok">✓</div></div>
+        <div class="c3m"><div class="ic ic-sm"><i data-lucide="briefcase"></i></div>Typischer Use Case</div>
+        <div class="c3l" style="justify-content:flex-start;"><div class="badge b-ok">✓</div><div class="rv-m">soziale Netze · Routing</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>RDF gewinnt bei Semantik, Standards &amp; Offenheit — <em>Property Graph gewinnt bei tiefer, performance-kritischer Traversal.</em></span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     COMPARISON 03 — Wann nimmt man was?
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">03</div>
+    <div class="tag">Comparison</div>
+    <div class="title">Wann nimmt man was?</div>
+    <div class="col-labels-c3">
+      <div class="lp lp-rel">Relational</div>
+      <div class="lp lp-pg">Property Graph</div>
+      <div class="lp lp-ts">Triple Store</div>
+    </div>
+  </div>
+  <div class="body">
+    <div class="rows">
+      <div class="row"><div class="req-icon"><i data-lucide="layers"></i></div><div class="req">Stabile Struktur</div><div class="arr">→</div><div class="pills"><div class="pill p-rel">Relational</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="network"></i></div><div class="req">Tiefe Graphnavigation</div><div class="arr">→</div><div class="pills"><div class="pill p-pg">Property Graph</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="brain"></i></div><div class="req">Semantik &amp; Inferenz</div><div class="arr">→</div><div class="pills"><div class="pill p-ts">Triple Store</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="globe"></i></div><div class="req">Offene Datenintegration</div><div class="arr">→</div><div class="pills"><div class="pill p-ts">Triple Store</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="wrench"></i></div><div class="req">Einstieg &amp; Tooling</div><div class="arr">→</div><div class="pills"><div class="pill p-rel">Relational</div><div class="pill-s ps-pg">Property Graph</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="bot"></i></div><div class="req">AI / RAG / Knowledge Graphs</div><div class="arr">→</div><div class="pills"><div class="pill p-ts">Triple Store</div></div></div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span><strong>Kein Modell gewinnt immer</strong> — Triple Store ist die Wahl, wenn Semantik, Standards und verteilte Datenintegration zählen.</span></div>
+</div>
+
+
+<script>
+lucide.createIcons();
+
+const allSlides = document.querySelectorAll('.slide');
+const contentSlides = Array.from(allSlides).filter(s => s.querySelector('.hdr'));
+const total = contentSlides.length;
+
+contentSlides.forEach((s, i) => {
+  const hdr = s.querySelector('.hdr');
+
+  // ── Restructure header into flex chrome format ──
+  const numEl    = hdr.querySelector('.num');
+  const tagEl    = hdr.querySelector('.tag');
+  const titleEl  = hdr.querySelector('.title');
+  // Extra children (col-labels etc.) that live beside num/tag/title
+  const extras   = Array.from(hdr.children).filter(c =>
+    !c.classList.contains('num') &&
+    !c.classList.contains('tag') &&
+    !c.classList.contains('title')
+  );
+
+  if (numEl && tagEl && titleEl) {
+    const meta = document.createElement('div');
+    meta.className = 'meta';
+    const sep = document.createElement('div');
+    sep.className = 'sep';
+    meta.appendChild(tagEl);   // moves tagEl into meta
+    meta.appendChild(sep);
+    meta.appendChild(titleEl); // moves titleEl into meta
+
+    // For slides with full-width col-labels-c2, hide the title text
+    // (col-labels serve as the visual title for that row)
+    if (hdr.querySelector('.col-labels-c2')) {
+      titleEl.style.display = 'none';
+    }
+
+    hdr.innerHTML = '';        // removes numEl and extras too
+    hdr.appendChild(numEl);
+    hdr.appendChild(meta);
+    extras.forEach(e => hdr.appendChild(e));
+  }
+
+  // ── Update body-nofooter → body ──
+  const bodyNF = s.querySelector('.body-nofooter');
+  if (bodyNF) bodyNF.className = 'body';
+
+  // ── Remove old insight bars ──
+  s.querySelectorAll('.insight').forEach(el => el.remove());
+
+  // ── Inject slim footer ──
+  const footer = document.createElement('div');
+  footer.className = 'footer';
+  footer.innerHTML =
+    '<div class="footer-center">Roman Lahm · Vinzent Lahm · Semantic Triple Stores</div>' +
+    '<div class="footer-right">' + (i + 1) + ' / ' + total + '</div>';
+  s.appendChild(footer);
+});
+</script>
+</body>
+</html>
+

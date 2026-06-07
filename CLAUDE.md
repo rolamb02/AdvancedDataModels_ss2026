@@ -10,6 +10,7 @@ Und sonst eben die Dateien auf oberste Ebene wie `README.md` und `report.md`
 ## Relevanter Bereich: Gruppe 2 – Triple Stores
 
 **Pfad:** `groups/group2-triple-stores/`
+`report.md` enthält die Vorgaben des Professors, wie unsere Präsentation zu sein hat und wie sie bewertet wird. Dies ist natürlich ebenfalls sehr wichtig.
 
 ---
 
