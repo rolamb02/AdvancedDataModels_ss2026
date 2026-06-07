@@ -1,0 +1,319 @@
+# Folie 1 – Von RDF zur praktischen Umsetzung
+
+## Titel
+
+Vom RDF-Modell zur produktiven Anwendung
+
+### Bekannte Anwendungsfälle
+
+#### Semantische Unternehmenssuche
+
+Mitarbeiter sucht:
+„Wer arbeitet an SAP-Projekten im Bereich Logistik?“
+
+➡ RDF verknüpft Mitarbeiter, Projekte und Fachbereiche
+
+---
+
+#### RAG-Systeme mit LLMs
+
+LLM beantwortet Fragen auf Basis eines Wissensgraphen
+
+➡ Beziehungen und Kontext können gezielt abgefragt werden
+
+---
+
+#### Knowledge Graphs / Suchmaschinen
+
+Verknüpfung von Personen, Orten, Organisationen und Ereignissen
+
+➡ Zusammenhänge statt isolierter Datensätze
+
+---
+
+### Technischer Aufbau
+
+Datenquellen
+↓
+RDF / Ontologie
+↓
+Triple Store
+↓
+SPARQL
+↓
+Anwendung / KI / Suche
+
+---
+Wichitigste Entscheidung: Triple store selbst betreiben und aufbauen
+oder Cloud dienst verwenden
+
+---
+### Übergangsfrage an das Publikum
+
+Angenommen ihr müsstet morgen einen RDF-basierten Knowledge Graph entwickeln:
+
+Wann ürdet ihr ...
+
+🖥️ den Triple Store selbst betreiben?
+
+oder
+
+☁️ einen Cloud-Dienst verwenden?
+
+Welche Vorteile erwartet ihr jeweils?
+
+
+# Folie 2 – Triple Stores und Cloud-Lösungen in der Praxis
+
+## Titel
+## Entscheidungsregel
+
+### Selbst betreiben
+
+Vorteile:
+
+* Volle Kontrolle
+* Geringe Kosten
+* Frei konfigurierbar
+
+Geeignet für:
+
+* Lernen
+* Forschung
+* Prototypen
+* Kleine bis mittlere Projekte
+
+---
+
+### Cloud-Lösung
+
+Vorteile:
+
+* Kein Betriebsaufwand
+* Automatische Backups
+* Hohe Verfügbarkeit
+* Einfache Skalierung
+
+Geeignet für:
+
+* Produktivsysteme
+* Große Datenmengen
+* Unternehmensanwendungen
+
+---
+Welche Lösung für welchen Anwendungsfall?
+
+| Lösung             | Typ                       | Hauptvorteil                               | Typischer Einsatz                |
+| ------------------ | ------------------------- | ------------------------------------------ | -------------------------------- |
+| Apache Jena Fuseki | Open Source               | Einfacher Einstieg, kostenlos              | Lehre, Forschung, Prototypen     |
+| Oxigraph           | Open Source               | Leichtgewichtig, performant                | Kleine Anwendungen               |
+| GraphDB            | Enterprise Triple Store   | Reasoning, Verwaltung, Skalierung          | Unternehmensprojekte             |
+| Amazon Neptune     | Managed Cloud             | Automatische Skalierung, Hochverfügbarkeit | Große produktive Systeme         |
+| Stardog Cloud      | Knowledge-Graph-Plattform | Datenintegration, Ontologien               | Unternehmensweite Wissensgraphen |
+
+
+
+## Folie 3 – Single Node vs. Distributed Triple Store
+
+### Single Node
+
+* Einfacher Betrieb
+* Gute Performance
+* Begrenzte Skalierung
+* Vertikale Skalierung (CPU, RAM, SSD)
+
+### Distributed
+
+* Mehrere Knoten im Cluster
+* Horizontale Skalierung
+* Höhere Verfügbarkeit
+* Höhere Komplexität
+
+### Beispiele
+
+**Single Node**
+
+* Apache Jena TDB/TDB2
+* RDF4J Native Store
+* GraphDB Free
+* Stardog (Single Server)
+
+**Distributed**
+
+* GraphDB Cluster
+* Amazon Neptune
+* Stardog Cluster
+
+### Illustration
+
+```text
+Single Node
+
+Client
+  |
+Triple Store
+```
+
+```text
+Distributed
+
+          Client
+             |
+     +-------+-------+
+     |       |       |
+   Node1   Node2   Node3
+```
+
+### Merksatz
+
+> Single Node = einfacher Betrieb
+> Distributed = höhere Skalierbarkeit
+
+---
+
+## Folie 4 – Skalierung im Cluster
+
+### Replication
+
+* Gleiche Daten mehrfach speichern
+* Ausfallsicherheit
+* Höhere Verfügbarkeit
+* Lastverteilung bei Lesezugriffen
+
+### Partitionierung (Sharding)
+
+* Daten werden auf mehrere Knoten verteilt
+* Mehr Gesamtspeicher
+* Parallele Verarbeitung
+
+### Illustration
+
+#### Replication
+
+```text
+Node A
+  ↓
+Node B
+  ↓
+Node C
+```
+
+#### Partitionierung
+
+```text
+Node A
+Universitäten
+
+Node B
+Professoren
+
+Node C
+Projekte
+```
+
+### Merksatz
+
+> Replication = gleiche Daten mehrfach
+> Partitionierung = Daten aufteilen
+
+---
+
+## Folie 5 – RDF-spezifisches Problem: Verteilte SPARQL-Joins
+
+### RDF-Graph
+
+```text
+Uni Stuttgart
+      |
+ locatedIn
+      |
+ Stuttgart
+      |
+ locatedIn
+      |
+Deutschland
+```
+
+### Nach Partitionierung
+
+#### Node A
+
+```text
+Uni Stuttgart
+locatedIn Stuttgart
+```
+
+#### Node B
+
+```text
+Stuttgart
+locatedIn Deutschland
+```
+
+### Problem
+
+```sparql
+Uni_Stuttgart
+ → Stuttgart
+ → Deutschland
+```
+
+### Kernaussage
+
+* RDF besteht aus stark vernetzten Knoten
+* Verbindungen können über mehrere Server verteilt sein
+* SPARQL-Joins benötigen Netzwerkkommunikation
+
+### Merksatz
+
+> Das eigentliche Skalierungsproblem bei RDF ist nicht die Speicherung, sondern die verteilte Ausführung von Graph-Abfragen.
+
+---
+
+## Folie 6 – Partitionierungsstrategien
+
+### Subject-basiert
+
+```text
+Uni Stuttgart
+ ├ name
+ ├ location
+ └ ranking
+```
+
+* Alle Tripel eines Subjects gemeinsam speichern
+* Einfach umzusetzen
+
+---
+
+### Predicate-basiert
+
+```text
+locatedIn
+worksAt
+memberOf
+```
+
+* Aufteilung nach Prädikaten
+* Geeignet für spezielle Analyse-Workloads
+
+---
+
+### Graph Partitioning
+
+```text
+[Uni]
+  |
+[Professor]
+  |
+[Projekt]
+```
+
+* Zusammenhängende Teilgraphen gemeinsam speichern
+* Ziel: weniger Netzwerkzugriffe
+
+### Ziel
+
+> Möglichst wenige knotenübergreifende Joins
+
+---
