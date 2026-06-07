@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+
+@page { size: 1200px 675px; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:  #1E2761;
+  --coral: #F96167;
+  --gold:  #F9C946;
+  --teal:  #2BC89A;
+  --bg:    #F4F6FB;
+  --text:  #1A1F3A;
+  --muted: #7B82A8;
+  --ok:    #16a34a;
+  --no:    #dc2626;
+  --warn:  #d97706;
+}
+
+body {
+  background: #3a3a3a;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 32px; padding: 32px;
+}
+
+.slide {
+  width: 1200px; height: 675px;
+  position: relative; overflow: hidden;
+  page-break-after: always; flex-shrink: 0;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+}
+
+/* ── Unified chrome (Slide-3 style for all slides) ─────── */
+.lbar  { position:absolute; left:0; top:0; width:22px; height:675px; background:var(--navy); }
+.hdr   { position:absolute; left:22px; top:0; right:0; height:148px; background:var(--navy); border-left:6px solid var(--gold); }
+.num   { position:absolute; left:22px; top:0; width:72px; height:44px; background:var(--coral); color:#fff; font-size:14px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+.tag   { position:absolute; left:106px; top:11px; font-size:11px; font-weight:700; color:var(--gold); letter-spacing:3px; text-transform:uppercase; }
+.title { position:absolute; left:46px; bottom:22px; right:40px; color:#fff; font-size:36px; font-weight:700; font-family:'Georgia',serif; }
+
+/* ── Insight strip ────────────────────────────────────── */
+.insight {
+  position:absolute; left:22px; right:0; bottom:0; height:70px;
+  background:var(--navy); border-top:3px solid var(--gold);
+  display:flex; align-items:center; padding:0 32px;
+  font-size:20px; color:#fff; font-weight:400; line-height:1.35;
+}
+.insight strong { color:var(--gold); font-weight:700; }
+.insight em     { color:var(--teal); font-style:normal; font-weight:600; }
+.insight-arrow  { font-size:22px; color:var(--gold); flex-shrink:0; margin-right:12px; }
+
+/* ── Status badges ────────────────────────────────────── */
+.badge {
+  width:36px; height:36px; border-radius:50%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; font-weight:700; color:#fff;
+}
+.b-ok   { background: var(--ok); }
+.b-no   { background: var(--no); }
+.b-warn { background: var(--warn); }
+
+/* ── Lucide icon sizing ───────────────────────────────── */
+.ic { display:flex; align-items:center; justify-content:center; }
+.ic svg { width:20px; height:20px; stroke-width:1.75; display:block; }
+.req-icon svg { width:22px; height:22px; stroke-width:1.75; display:block; }
+
+
+/* ══════════════════════════════════════════════════════════
+   SLIDE 1 — Triple Store vs. SQL
+   3-column: SQL (left) | Criteria (center) | Triple Store (right)
+   ══════════════════════════════════════════════════════════ */
+
+.c1 .title { right:370px; }
+
+.c1 .col-labels {
+  position:absolute; right:40px; bottom:26px;
+  display:flex; gap:12px; align-items:center;
+}
+.c1 .cl { padding:7px 20px; border-radius:20px; font-size:16px; font-weight:700; color:#fff; }
+.c1 .cl-sql { background:#334155; }
+.c1 .cl-rdf { background:#0d9488; }
+
+.c1 .rows { position:absolute; left:22px; right:0; top:148px; bottom:70px; display:flex; flex-direction:column; }
+.c1 .row  { display:flex; align-items:stretch; flex:1; border-bottom:1px solid #DDE3F0; }
+.c1 .row:last-child { border-bottom:none; }
+
+.c1 .r-sql {
+  flex:1; display:flex; align-items:center;
+  justify-content:flex-end; gap:14px;
+  padding:0 16px 0 20px; background:rgba(51,65,85,0.025);
+}
+.c1 .r-crit {
+  width:234px; flex-shrink:0; align-self:stretch;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:6px; padding:0 10px; text-align:center;
+  font-size:16px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;
+  color:var(--navy); background:#E5EAF5;
+  border-left:1px solid #CDD5EC; border-right:1px solid #CDD5EC;
+}
+.c1 .row:nth-child(even) .r-crit { background:#DBE2F0; }
+
+.c1 .r-rdf {
+  flex:1; display:flex; align-items:center;
+  gap:14px; padding:0 20px 0 16px;
+}
+
+.c1 .rdf-w .r-rdf { background:rgba(43,200,154,0.06); }
+.c1 .sql-w .r-sql { background:rgba(51,65,85,0.07); }
+
+.c1 .val { font-size:20px; line-height:1.25; }
+.c1 .r-sql .val { color:#64748B; text-align:right; }
+.c1 .r-rdf .val { color:var(--text); font-weight:500; }
+
+
+/* ══════════════════════════════════════════════════════════
+   SLIDE 2 — Triple Store vs. Property Graph
+   ══════════════════════════════════════════════════════════ */
+
+.c2 .title { bottom:50px; }
+
+.c2 .col-labels {
+  position:absolute; left:46px; bottom:16px; right:40px;
+  display:flex; align-items:center;
+}
+.c2 .cl-rdf { flex:1; font-size:20px; font-weight:700; color:var(--teal); }
+.c2 .cl-mid { width:224px; text-align:center; font-size:16px; color:rgba(255,255,255,0.22); }
+.c2 .cl-pg  { flex:1; text-align:right; font-size:20px; font-weight:700; color:var(--coral); }
+
+.c2 .rows { position:absolute; left:22px; right:0; top:148px; bottom:70px; display:flex; flex-direction:column; }
+.c2 .row  { display:flex; align-items:stretch; flex:1; border-bottom:1px solid #DDE3F0; }
+.c2 .row:last-child { border-bottom:none; }
+
+.c2 .r-rdf {
+  flex:1; display:flex; align-items:center;
+  justify-content:flex-end; gap:14px;
+  padding:0 16px 0 20px;
+}
+.c2 .r-dim {
+  width:224px; flex-shrink:0; align-self:stretch;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:6px; padding:0 10px; text-align:center;
+  font-size:16px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;
+  color:var(--navy); background:#E5EAF5;
+  border-left:1px solid #CDD5EC; border-right:1px solid #CDD5EC;
+}
+.c2 .row:nth-child(even) .r-dim { background:#DBE2F0; }
+
+.c2 .r-pg {
+  flex:1; display:flex; align-items:center;
+  gap:14px; padding:0 20px 0 16px;
+}
+
+.c2 .val { font-size:20px; line-height:1.25; }
+.c2 .r-rdf .val { color:var(--text); font-weight:500; text-align:right; }
+.c2 .r-pg  .val { color:#64748B; }
+
+.c2 .rdf-w .r-rdf { background:rgba(43,200,154,0.05); }
+.c2 .pg-w  .r-pg  { background:rgba(249,97,103,0.04); }
+
+
+/* ══════════════════════════════════════════════════════════
+   SLIDE 3 — Wann nimmt man was?
+   ══════════════════════════════════════════════════════════ */
+
+.c3 .title { right:370px; }
+
+.c3 .legend {
+  position:absolute; right:40px; bottom:28px;
+  display:flex; gap:10px; align-items:center;
+}
+.c3 .lp { padding:6px 18px; border-radius:20px; font-size:16px; font-weight:700; color:#fff; }
+.c3 .lp-rel { background:#334155; }
+.c3 .lp-pg  { background:var(--coral); }
+.c3 .lp-ts  { background:#0d9488; }
+
+.c3 .rows { position:absolute; left:22px; right:0; top:148px; bottom:70px; display:flex; flex-direction:column; }
+.c3 .row  {
+  display:flex; align-items:center; flex:1;
+  border-bottom:1px solid #DDE3F0;
+  padding:0 44px 0 26px;
+}
+.c3 .row:last-child { border-bottom:none; }
+.c3 .row:nth-child(even) { background:#EEF1FA; }
+
+.c3 .req-icon {
+  width:40px; height:40px; border-radius:10px; flex-shrink:0; margin-right:14px;
+  display:flex; align-items:center; justify-content:center;
+  color:var(--navy); background:#E5EAF5;
+}
+
+.c3 .req {
+  width:292px; flex-shrink:0;
+  font-size:18px; font-weight:700; text-transform:uppercase;
+  letter-spacing:0.5px; color:var(--navy);
+}
+.c3 .arr { font-size:18px; color:var(--muted); margin-right:22px; flex-shrink:0; }
+.c3 .pills { display:flex; gap:12px; align-items:center; }
+
+.pill {
+  padding:10px 28px; border-radius:32px;
+  font-size:20px; font-weight:700; color:#fff;
+  display:inline-block; white-space:nowrap;
+}
+.p-rel { background:#334155; }
+.p-pg  { background:var(--coral); }
+.p-ts  { background:#0d9488; }
+
+.pill-sec {
+  padding:10px 24px; border-radius:32px;
+  font-size:20px; font-weight:600;
+  display:inline-block; white-space:nowrap; border:2px solid;
+}
+.ps-pg  { color:var(--coral); border-color:var(--coral); background:rgba(249,97,103,0.07); }
+
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 1 — Triple Store vs. SQL
+     ══════════════════════════════════════════════════════════ -->
+<div class="slide c1">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">01</div>
+    <div class="tag">Comparison</div>
+    <div class="title">Triple Store vs. SQL</div>
+    <div class="col-labels">
+      <div class="cl cl-sql">SQL (Relational)</div>
+      <div class="cl cl-rdf">Triple Store (RDF)</div>
+    </div>
+  </div>
+
+  <div class="rows">
+
+    <div class="row rdf-w">
+      <div class="r-sql">
+        <div class="val">Zeile in Tabelle</div>
+        <div class="badge b-warn">≈</div>
+      </div>
+      <div class="r-crit"><div class="ic"><i data-lucide="package"></i></div>Dateneinheit</div>
+      <div class="r-rdf">
+        <div class="badge b-ok">✓</div>
+        <div class="val">Subjekt – Prädikat – Objekt</div>
+      </div>
+    </div>
+
+    <div class="row rdf-w">
+      <div class="r-sql">
+        <div class="val">starr, vordefiniert</div>
+        <div class="badge b-warn">≈</div>
+      </div>
+      <div class="r-crit"><div class="ic"><i data-lucide="table-2"></i></div>Schema</div>
+      <div class="r-rdf">
+        <div class="badge b-ok">✓</div>
+        <div class="val">flexibel, schema-light</div>
+      </div>
+    </div>
+
+    <div class="row rdf-w">
+      <div class="r-sql">
+        <div class="val">Joins (teuer, komplex)</div>
+        <div class="badge b-no">✗</div>
+      </div>
+      <div class="r-crit"><div class="ic"><i data-lucide="share-2"></i></div>Beziehungen</div>
+      <div class="r-rdf">
+        <div class="badge b-ok">✓</div>
+        <div class="val">Kanten = native Struktur</div>
+      </div>
+    </div>
+
+    <div class="row rdf-w">
+      <div class="r-sql">
+        <div class="val">SQL</div>
+        <div class="badge b-warn">≈</div>
+      </div>
+      <div class="r-crit"><div class="ic"><i data-lucide="search"></i></div>Abfragesprache</div>
+      <div class="r-rdf">
+        <div class="badge b-ok">✓</div>
+        <div class="val">SPARQL (Pattern Matching)</div>
+      </div>
+    </div>
+
+    <div class="row rdf-w">
+      <div class="r-sql">
+        <div class="val">keine</div>
+        <div class="badge b-no">✗</div>
+      </div>
+      <div class="r-crit"><div class="ic"><i data-lucide="brain"></i></div>Semantik</div>
+      <div class="r-rdf">
+        <div class="badge b-ok">✓</div>
+        <div class="val">RDFS / OWL, inferenzfähig</div>
+      </div>
+    </div>
+
+    <div class="row rdf-w">
+      <div class="r-sql">
+        <div class="val">schwierig (ETL)</div>
+        <div class="badge b-no">✗</div>
+      </div>
+      <div class="r-crit"><div class="ic"><i data-lucide="globe"></i></div>Datenintegration</div>
+      <div class="r-rdf">
+        <div class="badge b-ok">✓</div>
+        <div class="val">URIs → direkt verlinkbar</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="insight">
+    <span class="insight-arrow">→</span>
+    <span>SQL stark bei strukturierten, stabilen Daten — Triple Stores gewinnen, sobald <strong>Vernetzung und Semantik</strong> zählen.</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 2 — Triple Store vs. Property Graph
+     ══════════════════════════════════════════════════════════ -->
+<div class="slide c2">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">02</div>
+    <div class="tag">Comparison</div>
+    <div class="title">Triple Store vs. Property Graph</div>
+    <div class="col-labels">
+      <div class="cl-rdf">Triple Store (RDF)</div>
+      <div class="cl-mid">Kriterium</div>
+      <div class="cl-pg">Property Graph</div>
+    </div>
+  </div>
+
+  <div class="rows">
+
+    <div class="row rdf-w">
+      <div class="r-rdf">
+        <div class="val">W3C-Standard · SPARQL, OWL</div>
+        <div class="badge b-ok">✓</div>
+      </div>
+      <div class="r-dim"><div class="ic"><i data-lucide="shield-check"></i></div>Standardisierung</div>
+      <div class="r-pg">
+        <div class="badge b-no">✗</div>
+        <div class="val">vendor-spezifisch (Cypher)</div>
+      </div>
+    </div>
+
+    <div class="row rdf-w">
+      <div class="r-rdf">
+        <div class="val">RDFS / OWL built-in</div>
+        <div class="badge b-ok">✓</div>
+      </div>
+      <div class="r-dim"><div class="ic"><i data-lucide="cpu"></i></div>Inferenz</div>
+      <div class="r-pg">
+        <div class="badge b-no">✗</div>
+        <div class="val">manuell implementieren</div>
+      </div>
+    </div>
+
+    <div class="row pg-w">
+      <div class="r-rdf">
+        <div class="val">nur via Reifikation</div>
+        <div class="badge b-no">✗</div>
+      </div>
+      <div class="r-dim"><div class="ic"><i data-lucide="tag"></i></div>Kanten-Properties</div>
+      <div class="r-pg">
+        <div class="badge b-ok">✓</div>
+        <div class="val">nativ an der Kante</div>
+      </div>
+    </div>
+
+    <div class="row pg-w">
+      <div class="r-rdf">
+        <div class="val">gut mit Index-Permutationen</div>
+        <div class="badge b-warn">≈</div>
+      </div>
+      <div class="r-dim"><div class="ic"><i data-lucide="zap"></i></div>Traversal-Performance</div>
+      <div class="r-pg">
+        <div class="badge b-ok">✓</div>
+        <div class="val">pointer-nativ, sehr schnell</div>
+      </div>
+    </div>
+
+    <div class="row rdf-w">
+      <div class="r-rdf">
+        <div class="val">URIs · Linked Data · Federation</div>
+        <div class="badge b-ok">✓</div>
+      </div>
+      <div class="r-dim"><div class="ic"><i data-lucide="globe"></i></div>Datenintegration</div>
+      <div class="r-pg">
+        <div class="badge b-no">✗</div>
+        <div class="val">Insellösung</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="r-rdf">
+        <div class="val">Knowledge Graphs · AI / RAG</div>
+        <div class="badge b-ok">✓</div>
+      </div>
+      <div class="r-dim"><div class="ic"><i data-lucide="briefcase"></i></div>Typischer Use Case</div>
+      <div class="r-pg">
+        <div class="badge b-ok">✓</div>
+        <div class="val">soziale Netze · Routenplanung</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="insight">
+    <span class="insight-arrow">→</span>
+    <span>RDF gewinnt bei Semantik, Standards &amp; Offenheit — <em>Property Graph gewinnt bei tiefer, performance-kritischer Traversal.</em></span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 3 — Wann nimmt man was?
+     ══════════════════════════════════════════════════════════ -->
+<div class="slide c3">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">03</div>
+    <div class="tag">Comparison</div>
+    <div class="title">Wann nimmt man was?</div>
+    <div class="legend">
+      <div class="lp lp-rel">Relational</div>
+      <div class="lp lp-pg">Property Graph</div>
+      <div class="lp lp-ts">Triple Store</div>
+    </div>
+  </div>
+
+  <div class="rows">
+
+    <div class="row">
+      <div class="req-icon"><i data-lucide="layers"></i></div>
+      <div class="req">Stabile Struktur</div>
+      <div class="arr">→</div>
+      <div class="pills">
+        <div class="pill p-rel">Relational</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="req-icon"><i data-lucide="network"></i></div>
+      <div class="req">Tiefe Graphnavigation</div>
+      <div class="arr">→</div>
+      <div class="pills">
+        <div class="pill p-pg">Property Graph</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="req-icon"><i data-lucide="brain"></i></div>
+      <div class="req">Semantik &amp; Inferenz</div>
+      <div class="arr">→</div>
+      <div class="pills">
+        <div class="pill p-ts">Triple Store</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="req-icon"><i data-lucide="globe"></i></div>
+      <div class="req">Offene Datenintegration</div>
+      <div class="arr">→</div>
+      <div class="pills">
+        <div class="pill p-ts">Triple Store</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="req-icon"><i data-lucide="wrench"></i></div>
+      <div class="req">Einstieg &amp; Tooling</div>
+      <div class="arr">→</div>
+      <div class="pills">
+        <div class="pill p-rel">Relational</div>
+        <div class="pill-sec ps-pg">Property Graph</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="req-icon"><i data-lucide="bot"></i></div>
+      <div class="req">AI / RAG / Knowledge Graphs</div>
+      <div class="arr">→</div>
+      <div class="pills">
+        <div class="pill p-ts">Triple Store</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="insight">
+    <span class="insight-arrow">→</span>
+    <span><strong>Kein Modell gewinnt immer</strong> — Triple Store ist die Wahl, wenn Semantik, Standards und verteilte Datenintegration zählen.</span>
+  </div>
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>
