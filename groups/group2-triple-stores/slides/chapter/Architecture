@@ -359,86 +359,6 @@ RDF‑3X zeigt dabei 10–100× Speedups gegenüber einfacheren Stores.
 
 **Folienstruktur**
 
-folie 1: single node vs verteilte systeme +  
-Eigenschaften:
-
-Daten liegen lokal (RAM oder Festplatte)
-
-Keine automatische Verteilung über mehrere Server
-
-Einfach zu installieren und zu betreiben
-
-Gute Performance für kleine bis mittlere Datenmengen
-
-Vertikale Skalierung (mehr RAM, schnellere SSD, mehr CPU)
-
-### Typische Einsatzfälle:
-
-Forschungsprojekte
-
-Prototypen
-
-Kleine Wissensgraphen
-
-Lokale Reasoning‑Workloads
-
-### Beispiele:
-
-Apache Jena TDB / TDB2
-
-RDF4J Native Store
-
-GraphDB Free / Standard
-
-Stardog (Single‑Server‑Modus)
-
-
-folie 2: partitionierung vs repelication, erklärung was, was und welche vorteile.partitionierung herausforderung: 
-
-erklärung knoten und cluster, 
-
-join problem erklären. 
-
-Partitionierungsstrategien
-
-Subject-based
-
-Predicate-based
-
-Graph Partitioning
-
-mit kleinem Beispiel 
-3. Partitionierungsstrategien
-a) Hash‑basiertes Sharding
-Tripel werden anhand eines Hashwerts verteilt
-
-Gleichmäßige Lastverteilung
-
-Gut für große Graphen ohne klare Struktur
-
-b) Range‑basiertes Sharding
-Aufteilung nach Wertebereichen (z. B. Zeit, IDs)
-
-Gut für zeitliche Daten oder IoT‑Daten
-
-c) Predicate‑basiertes Sharding
-Alle Tripel eines Prädikats liegen auf einem Knoten
-
-Gut für analytische Workloads
-
-
-Folie 3: 
-
-Besondere Herausforderungen von RDF
-
-
-
-Reasoning über mehrere Knoten
-
-Named Graphs / Datasets
-
-Warum deshalb viele Triple Stores lieber scale-up als aggressiv scale-out
-
 # Folie 1 – Von RDF zur praktischen Umsetzung
 
 ## Titel
@@ -503,11 +423,6 @@ oder
 
 Welche Vorteile erwartet ihr jeweils?
 
-## Was du dazu sagen kannst
-„Bisher haben wir RDF vor allem aus Sicht der Modellierung betrachtet.“
-„In der Praxis braucht man aber auch eine technische Infrastruktur.“
-„Die zentrale Komponente ist dabei der Triple Store.“
-„Nun stellt sich die Frage: Welche Systeme gibt es und wann verwendet man welches?“
 
 # Folie 2 – Triple Stores und Cloud-Lösungen in der Praxis
 
@@ -556,6 +471,388 @@ Welche Lösung für welchen Anwendungsfall?
 | GraphDB            | Enterprise Triple Store   | Reasoning, Verwaltung, Skalierung          | Unternehmensprojekte             |
 | Amazon Neptune     | Managed Cloud             | Automatische Skalierung, Hochverfügbarkeit | Große produktive Systeme         |
 | Stardog Cloud      | Knowledge-Graph-Plattform | Datenintegration, Ontologien               | Unternehmensweite Wissensgraphen |
+
+
+
+## Folie 3 – Single Node vs. Distributed Triple Store
+
+### Single Node
+
+* Einfacher Betrieb
+* Gute Performance
+* Begrenzte Skalierung
+* Vertikale Skalierung (CPU, RAM, SSD)
+
+### Distributed
+
+* Mehrere Knoten im Cluster
+* Horizontale Skalierung
+* Höhere Verfügbarkeit
+* Höhere Komplexität
+
+### Beispiele
+
+**Single Node**
+
+* Apache Jena TDB/TDB2
+* RDF4J Native Store
+* GraphDB Free
+* Stardog (Single Server)
+
+**Distributed**
+
+* GraphDB Cluster
+* Amazon Neptune
+* Stardog Cluster
+
+### Illustration
+
+```text
+Single Node
+
+Client
+  |
+Triple Store
+```
+
+```text
+Distributed
+
+          Client
+             |
+     +-------+-------+
+     |       |       |
+   Node1   Node2   Node3
+```
+
+### Merksatz
+
+> Single Node = einfacher Betrieb
+> Distributed = höhere Skalierbarkeit
+
+---
+
+## Folie 4 – Skalierung im Cluster
+
+### Replication
+
+* Gleiche Daten mehrfach speichern
+* Ausfallsicherheit
+* Höhere Verfügbarkeit
+* Lastverteilung bei Lesezugriffen
+
+### Partitionierung (Sharding)
+
+* Daten werden auf mehrere Knoten verteilt
+* Mehr Gesamtspeicher
+* Parallele Verarbeitung
+
+### Illustration
+
+#### Replication
+
+```text
+Node A
+  ↓
+Node B
+  ↓
+Node C
+```
+
+#### Partitionierung
+
+```text
+Node A
+Universitäten
+
+Node B
+Professoren
+
+Node C
+Projekte
+```
+
+### Merksatz
+
+> Replication = gleiche Daten mehrfach
+> Partitionierung = Daten aufteilen
+
+---
+
+## Folie 5 – RDF-spezifisches Problem: Verteilte SPARQL-Joins
+
+### RDF-Graph
+
+```text
+Uni Stuttgart
+      |
+ locatedIn
+      |
+ Stuttgart
+      |
+ locatedIn
+      |
+Deutschland
+```
+
+### Nach Partitionierung
+
+#### Node A
+
+```text
+Uni Stuttgart
+locatedIn Stuttgart
+```
+
+#### Node B
+
+```text
+Stuttgart
+locatedIn Deutschland
+```
+
+### Problem
+
+```sparql
+Uni_Stuttgart
+ → Stuttgart
+ → Deutschland
+```
+
+### Kernaussage
+
+* RDF besteht aus stark vernetzten Knoten
+* Verbindungen können über mehrere Server verteilt sein
+* SPARQL-Joins benötigen Netzwerkkommunikation
+
+### Merksatz
+
+> Das eigentliche Skalierungsproblem bei RDF ist nicht die Speicherung, sondern die verteilte Ausführung von Graph-Abfragen.
+
+---
+
+## Folie 6 – Partitionierungsstrategien
+
+### Subject-basiert
+
+```text
+Uni Stuttgart
+ ├ name
+ ├ location
+ └ ranking
+```
+
+* Alle Tripel eines Subjects gemeinsam speichern
+* Einfach umzusetzen
+
+---
+
+### Predicate-basiert
+
+```text
+locatedIn
+worksAt
+memberOf
+```
+
+* Aufteilung nach Prädikaten
+* Geeignet für spezielle Analyse-Workloads
+
+---
+
+### Graph Partitioning
+
+```text
+[Uni]
+  |
+[Professor]
+  |
+[Projekt]
+```
+
+* Zusammenhängende Teilgraphen gemeinsam speichern
+* Ziel: weniger Netzwerkzugriffe
+
+### Ziel
+
+> Möglichst wenige knotenübergreifende Joins
+
+---
+
+## Folie 7 – Besondere RDF-Herausforderungen
+
+### Reasoning im Cluster
+
+```text
+Professor
+ ⊑ Mitarbeiter
+
+Max : Professor
+```
+
+↓
+
+```text
+Max : Mitarbeiter
+```
+
+* Neue Tripel entstehen automatisch
+* Verteilung und Synchronisation werden komplexer
+
+---
+
+### Named Graphs
+
+```text
+Graph A
+Graph B
+Graph C
+```
+
+* Kontext- und Quelleninformationen
+* Zusätzliche Dimension bei Speicherung und Verteilung
+
+---
+
+### Beobachtung
+
+> Viele Triple Stores setzen zunächst auf Scale-Up und erst später auf Scale-Out.
+
+---
+
+# Sprechtext
+
+## Folie 1 – Single Node vs. Distributed Triple Store
+
+* Bisher haben wir betrachtet, wie RDF-Daten intern gespeichert werden.
+* Nun betrachten wir die Systemebene: Auf wie vielen Rechnern läuft der Triple Store?
+
+### Single Node
+
+* Gesamte RDF-Datenbank auf einem Rechner.
+* Daten liegen lokal im Speicher oder auf der Festplatte.
+* Einfach zu installieren und administrieren.
+* Gute Performance für kleine und mittlere Wissensgraphen.
+* Skalierung nur über stärkere Hardware möglich (Scale-Up).
+
+### Distributed
+
+* Mehrere Rechner bilden gemeinsam einen Cluster.
+* Daten und Anfragen werden auf mehrere Knoten verteilt.
+* Ermöglicht horizontale Skalierung.
+* Dafür steigt die Komplexität deutlich.
+
+### Beispiele
+
+* Jena TDB oder RDF4J meist Single Node.
+* Neptune oder GraphDB Enterprise unterstützen Clusterbetrieb.
+
+---
+
+## Folie 2 – Skalierung im Cluster
+
+### Replication
+
+* Dieselben Daten werden mehrfach gespeichert.
+* Ziel ist Ausfallsicherheit.
+* Fällt ein Knoten aus, können andere übernehmen.
+* Kein RDF-spezifisches Konzept, sondern allgemeine Datenbanktechnik.
+
+### Partitionierung
+
+* Daten werden auf mehrere Knoten verteilt.
+* Dadurch können größere Wissensgraphen gespeichert werden.
+* Anfragen können parallel verarbeitet werden.
+
+### Übergang
+
+* Partitionierung löst Speicherprobleme.
+* Gleichzeitig entsteht ein neues Problem für RDF-Graphen.
+
+---
+
+## Folie 3 – RDF-spezifisches Problem: Verteilte SPARQL-Joins
+
+### Was ist ein Knoten?
+
+* Ressourcen wie Universitäten, Städte oder Personen.
+* Diese Knoten sind über Prädikate miteinander verbunden.
+
+### Problem
+
+* RDF-Daten bilden einen stark vernetzten Graphen.
+* Beim Partitionieren werden zusammenhängende Informationen auf verschiedene Server verteilt.
+
+### Beispiel
+
+* Uni Stuttgart liegt auf Node A.
+* Stuttgart und Deutschland liegen auf Node B.
+
+### Folge
+
+* Eine SPARQL-Anfrage benötigt Daten von mehreren Servern.
+* Die Anfrage muss Netzwerkkommunikation durchführen.
+* Netzwerkzugriffe sind deutlich langsamer als lokale Zugriffe.
+
+### Kernaussage
+
+* Partitionierung ist bei RDF schwieriger als bei klassischen Tabellen.
+* Ziel ist daher, zusammengehörige Teile des Graphen möglichst gemeinsam abzulegen.
+
+---
+
+## Folie 4 – Partitionierungsstrategien
+
+### Subject-basierte Partitionierung
+
+* Alle Tripel eines Subjects werden gemeinsam gespeichert.
+* Einfach umzusetzen.
+* Viele SPARQL-Anfragen profitieren davon.
+
+### Predicate-basierte Partitionierung
+
+* Aufteilung nach Prädikaten.
+* Beispiel: alle `locatedIn`-Tripel auf einem Server.
+* Sinnvoll für bestimmte analytische Auswertungen.
+
+### Graph Partitioning
+
+* Versucht zusammenhängende Bereiche des Graphen zu erkennen.
+* Diese Bereiche werden gemeinsam gespeichert.
+* Ziel ist die Minimierung von Netzwerkkommunikation.
+
+### Fazit
+
+* Je weniger Verbindungen zwischen Partitionen verlaufen, desto effizienter können SPARQL-Anfragen ausgeführt werden.
+https://www.google.com/search?sca_esv=913a1257e17d24b3&sxsrf=ANbL-n7b95z53RZDVyxhKT_DaLI9mhs2Jg%3A1780826081985&q=best+partitioning+RDF+graph&sa=X&ved=2ahUKEwiI1ZeQ7vSUAxV-g_0HHVprGIUQ7xYoAHoECA8QAQ&biw=1528&bih=698&dpr=1.25
+
+---
+
+## Folie 5 – Besondere RDF-Herausforderungen
+
+### Reasoning
+
+* Neue Tripel entstehen automatisch durch Inferenz.
+* Beispiel: Aus „Professor“ wird zusätzlich „Mitarbeiter“ abgeleitet.
+* In einem Cluster stellt sich die Frage, auf welchem Knoten diese neuen Informationen gespeichert werden.
+
+### Named Graphs
+
+* RDF speichert häufig nicht nur Tripel, sondern ganze Datensätze mit Quellenkontext.
+* Diese Named Graphs müssen ebenfalls verteilt und verwaltet werden.
+
+### Abschluss
+
+* Verteilte RDF-Systeme müssen nicht nur Daten speichern.
+* Sie müssen Graph-Strukturen, SPARQL-Joins, Inferenz und Kontextinformationen effizient verwalten.
+* Deshalb ist die Skalierung von Triple Stores deutlich anspruchsvoller als bei vielen klassischen Datenbanksystemen.
+
+## Folie 1 Was du dazu sagen kannst
+„Bisher haben wir RDF vor allem aus Sicht der Modellierung betrachtet.“
+„In der Praxis braucht man aber auch eine technische Infrastruktur.“
+„Die zentrale Komponente ist dabei der Triple Store.“
+„Nun stellt sich die Frage: Welche Systeme gibt es und wann verwendet man welches?“
+
 
 
 ## Was ich dazu sagen würde (5–8 Minuten)
