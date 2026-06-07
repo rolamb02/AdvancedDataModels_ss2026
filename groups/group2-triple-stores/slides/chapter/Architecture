@@ -1,4 +1,4 @@
-**Prio 1:**
+**Prio 1:**  how the system is deployed (single node vs. distributed, replication, partitioning)
 - Aufbau eines Triple Stores:
   - RDF-Datenhaltung
 - Indexierung = Physische Organisation:  Indizes (SPO, POS, …)?   -- 2 Kapitel Grokipedia
@@ -7,10 +7,17 @@
   - Single vs. verteilte Systeme - grokipedia (archi kapitel)
 - Storage-Architekturen:
   - In-Memory / Native / Non-Native  - in mandatory kurz, googlen
+  Replication vs Partinionierung
 - Reasoning / Inferenz
 - Systeme: - erwähnt in dataversity
   - Apache Jena Fuseki
-  - GraphDB
+  - GraphDB (oxigraph)
+  Wie würde starten aussehen, was wären die ersten Schritte grob mit Apache anzufangen
+  welchen Use-Case generell um mit apache oder alternativen anzufangen, bisschen rein versetzen, wann welches Tool 
+  welchen Vorteil hat Apache in Vgl zu andern 
+
+Was ergänzend zur Datenstruktur
+
 
 **Details**
 - **Aufbau eines Triple Stores**
@@ -49,6 +56,12 @@ findest du zu den folgenden themen infos/Erklärungen auf der webseite?
 Kurzfassung vorweg:
 Ja – für alle deine Themen findest du auf deinen geöffneten Tabs passende Infos.  
 Unten bekommst du eine strukturierte Übersicht pro Thema + wo genau es steht (mit Quellenangabe auf deine Tabs).
+
+**Folienstruktur:** 
+
+- Systeme:
+  - will selbst Triple Store/ RDF Graph aufsetzen: 
+
 
 🔍 Übersicht: Welche deiner Themen werden auf welchen Tabs erklärt?
 1. RDF‑Datenhaltung
@@ -342,3 +355,240 @@ LUBM → synthetische Uni‑Daten, testet Reasoning & Joins
 BSBM → E‑Commerce‑Workload, testet Updates & Query‑Mix 
 
 RDF‑3X zeigt dabei 10–100× Speedups gegenüber einfacheren Stores. 
+
+
+**Folienstruktur**
+
+folie 1: single node vs verteilte systeme +  
+Eigenschaften:
+
+Daten liegen lokal (RAM oder Festplatte)
+
+Keine automatische Verteilung über mehrere Server
+
+Einfach zu installieren und zu betreiben
+
+Gute Performance für kleine bis mittlere Datenmengen
+
+Vertikale Skalierung (mehr RAM, schnellere SSD, mehr CPU)
+
+### Typische Einsatzfälle:
+
+Forschungsprojekte
+
+Prototypen
+
+Kleine Wissensgraphen
+
+Lokale Reasoning‑Workloads
+
+### Beispiele:
+
+Apache Jena TDB / TDB2
+
+RDF4J Native Store
+
+GraphDB Free / Standard
+
+Stardog (Single‑Server‑Modus)
+
+
+folie 2: partitionierung vs repelication, erklärung was, was und welche vorteile.partitionierung herausforderung: 
+
+erklärung knoten und cluster, 
+
+join problem erklären. 
+
+Partitionierungsstrategien
+
+Subject-based
+
+Predicate-based
+
+Graph Partitioning
+
+mit kleinem Beispiel 
+3. Partitionierungsstrategien
+a) Hash‑basiertes Sharding
+Tripel werden anhand eines Hashwerts verteilt
+
+Gleichmäßige Lastverteilung
+
+Gut für große Graphen ohne klare Struktur
+
+b) Range‑basiertes Sharding
+Aufteilung nach Wertebereichen (z. B. Zeit, IDs)
+
+Gut für zeitliche Daten oder IoT‑Daten
+
+c) Predicate‑basiertes Sharding
+Alle Tripel eines Prädikats liegen auf einem Knoten
+
+Gut für analytische Workloads
+
+
+Folie 3: 
+
+Besondere Herausforderungen von RDF
+
+
+
+Reasoning über mehrere Knoten
+
+Named Graphs / Datasets
+
+Warum deshalb viele Triple Stores lieber scale-up als aggressiv scale-out
+
+# Folie 1 – Von RDF zur praktischen Umsetzung
+
+## Titel
+
+Vom RDF-Modell zur produktiven Anwendung
+
+### Bekannte Anwendungsfälle
+
+#### Semantische Unternehmenssuche
+
+Mitarbeiter sucht:
+„Wer arbeitet an SAP-Projekten im Bereich Logistik?“
+
+➡ RDF verknüpft Mitarbeiter, Projekte und Fachbereiche
+
+---
+
+#### RAG-Systeme mit LLMs
+
+LLM beantwortet Fragen auf Basis eines Wissensgraphen
+
+➡ Beziehungen und Kontext können gezielt abgefragt werden
+
+---
+
+#### Knowledge Graphs / Suchmaschinen
+
+Verknüpfung von Personen, Orten, Organisationen und Ereignissen
+
+➡ Zusammenhänge statt isolierter Datensätze
+
+---
+
+### Technischer Aufbau
+
+Datenquellen
+↓
+RDF / Ontologie
+↓
+Triple Store
+↓
+SPARQL
+↓
+Anwendung / KI / Suche
+
+---
+Wichitigste Entscheidung: Triple store selbst betreiben und aufbauen
+oder Cloud dienst verwenden
+
+---
+### Übergangsfrage an das Publikum
+
+Angenommen ihr müsstet morgen einen RDF-basierten Knowledge Graph entwickeln:
+
+Wann ürdet ihr ...
+
+🖥️ den Triple Store selbst betreiben?
+
+oder
+
+☁️ einen Cloud-Dienst verwenden?
+
+Welche Vorteile erwartet ihr jeweils?
+
+## Was du dazu sagen kannst
+„Bisher haben wir RDF vor allem aus Sicht der Modellierung betrachtet.“
+„In der Praxis braucht man aber auch eine technische Infrastruktur.“
+„Die zentrale Komponente ist dabei der Triple Store.“
+„Nun stellt sich die Frage: Welche Systeme gibt es und wann verwendet man welches?“
+
+# Folie 2 – Triple Stores und Cloud-Lösungen in der Praxis
+
+## Titel
+## Entscheidungsregel
+
+### Selbst betreiben
+
+Vorteile:
+
+* Volle Kontrolle
+* Geringe Kosten
+* Frei konfigurierbar
+
+Geeignet für:
+
+* Lernen
+* Forschung
+* Prototypen
+* Kleine bis mittlere Projekte
+
+---
+
+### Cloud-Lösung
+
+Vorteile:
+
+* Kein Betriebsaufwand
+* Automatische Backups
+* Hohe Verfügbarkeit
+* Einfache Skalierung
+
+Geeignet für:
+
+* Produktivsysteme
+* Große Datenmengen
+* Unternehmensanwendungen
+
+---
+Welche Lösung für welchen Anwendungsfall?
+
+| Lösung             | Typ                       | Hauptvorteil                               | Typischer Einsatz                |
+| ------------------ | ------------------------- | ------------------------------------------ | -------------------------------- |
+| Apache Jena Fuseki | Open Source               | Einfacher Einstieg, kostenlos              | Lehre, Forschung, Prototypen     |
+| Oxigraph           | Open Source               | Leichtgewichtig, performant                | Kleine Anwendungen               |
+| GraphDB            | Enterprise Triple Store   | Reasoning, Verwaltung, Skalierung          | Unternehmensprojekte             |
+| Amazon Neptune     | Managed Cloud             | Automatische Skalierung, Hochverfügbarkeit | Große produktive Systeme         |
+| Stardog Cloud      | Knowledge-Graph-Plattform | Datenintegration, Ontologien               | Unternehmensweite Wissensgraphen |
+
+
+## Was ich dazu sagen würde (5–8 Minuten)
+
+### Teil 1: Antwort auf die Publikumsfrage (ca. 2 Minuten)
+
+"Bei kleinen Projekten oder zum Lernen würde man häufig selbst betreiben. Man hat volle Kontrolle, die Kosten sind gering und die Infrastruktur bleibt überschaubar.
+
+Bei produktiven Unternehmensanwendungen verschiebt sich der Fokus. Dort werden Themen wie Ausfallsicherheit, Backups und Skalierung wichtiger. Deshalb kommen häufig Cloud-Lösungen zum Einsatz."
+
+### Teil 2: Die konkreten Systeme (ca. 4–5 Minuten)
+
+Fuseki
+
+Wenn ich RDF lernen oder einen Prototypen entwickeln möchte, reicht Fuseki oft völlig aus. Es ist kostenlos und schnell einsatzbereit.
+
+Oxigraph
+
+Ähnlich wie Fuseki, aber moderner und sehr ressourcenschonend. Gut für kleinere Anwendungen.
+
+GraphDB
+
+Sobald ein Wissensgraph größer wird und mehrere Teams damit arbeiten, werden Funktionen wie Reasoning, Monitoring oder Benutzerverwaltung interessant.
+
+Amazon Neptune
+
+Hier möchte man sich nicht mehr um Server kümmern. AWS übernimmt Betrieb, Backups und Skalierung. Deshalb findet man Neptune häufig in großen produktiven Systemen.
+
+Stardog Cloud
+
+Besonders interessant, wenn Daten aus vielen verschiedenen Unternehmenssystemen zusammengeführt werden sollen. Der Fokus liegt auf Knowledge Graphs und semantischer Integration.
+
+Lernbotschaft der beiden Folien
+
+RDF definiert, wie Wissen modelliert wird.
+Die Wahl des Triple Stores hängt dagegen von den Anforderungen an Betrieb, Skalierung und Einsatzszenario ab.
