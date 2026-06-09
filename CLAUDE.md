@@ -25,11 +25,13 @@ Und sonst eben die Dateien auf oberste Ebene wie `README.md` und `report.md`
 Unter `slides/chapter/` liegen ausformulierte Sprechtexte als Präsentationsgrundlage:
 | Datei | Inhalt |
 |---|---|
+| `slides/chapter/Sprechtext_Data_Structure.md` | **Sprechtext Kapitel Data Structure** (6 Folien, fertig ausgearbeitet) |
+| `slides/chapter/Sprechtext_Query_Model.md` | **Sprechtext Kapitel Query Model** (5 Folien, fertig ausgearbeitet) |
+| `slides/chapter/Sprechtext_Architecture.md` | Sprechtext Kapitel Architecture |
 | `slides/chapter/Comparison` | Sprechtext Kapitel Comparison (alle 3 Folien, inkl. Fragen-Antworten) |
 | `slides/chapter/Fragen Comparission` | Rohfragen zu Folie Comparison (Ausgangsbasis für Sprechtext) |
 | `slides/chapter/Fragen Query Model` | Rohfragen zu Folie Query Model |
 | `slides/chapter/Motivation` | Notizen/Entwurf Motivation |
-| `slides/chapter/Query Model` | Notizen/Entwurf Query Model |
 
 ### Strukturdateien (Archiv/Referenz)
 Unter `slides/structure/` liegen ältere Gliederungsversionen und Hilfsdokumente:
@@ -147,7 +149,8 @@ bash run_demo.sh
 - Demo-Setup ist fertig (Oxigraph + 7 Queries + Datensatz)
 - Inhaltliche Grundlage steht (`final strucutre`)
 - Prio-Liste pro Kapitel liegt vor (`Priorisierte Gliederung Vinz`)
-- Nächster Schritt: Inhalte mit NotebookLM ausarbeiten — Start mit **Data Structure** und **Query Model**
+- Sprechtexte fertig: **Data Structure** (`Sprechtext_Data_Structure.md`) · **Query Model** (`Sprechtext_Query_Model.md`) · **Architecture** (`Sprechtext_Architecture.md`)
+- Nächster Schritt: Sprechtexte für Motivation, Conceptual Model, Comparison ausarbeiten
 
 ---
 
