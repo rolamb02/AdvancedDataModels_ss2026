@@ -36,39 +36,53 @@
   - RDF: standardisiert, interoperabel, formal
   - Property Graph: flexibler, aber weniger standardisiert
 
+
+Erklärung Click interaktion: erst nur ein teil der folie sichtbar, dann nächste folie ein weiterer Teil der folie sichtbar. 
+bsp: erst linke hälfte sichtbar, dann linke und rechte hälfte sichtbar. 
+umsetzung durch zwei folien 
+
 insgesamt nur keywords auf folien und viel grafisch darstellen
   Folie 1: 
-  - Triple, 
-  - Graph, wenn mehrere Triple kombiniert werden
+  - Triple links dargestellt mit SPO und Beispiel "Alice works at SAP"
+  - Graph, wenn mehrere Triple kombiniert werden, rechts dargestellt, Beispiel links wird erweitert um fakten: alice = person & SAP = ... Mitarbeiter & = Unternehmen
+  - erste nur links sichtbar und dann gesamte folie sichtbar Klick interaktion
   Folie 2: 
+  Ressource: 
   - Problem: Marke Apple vs Frucht Apple, Hintergrund Sematisches Web
   - Lösung: Ressourcen mit URI --> Eindeutigkeit
+  Click interaktion: 
+  Literal
   - 2 Bspsätze mit Literalen
   - Feststellung: nicht alles muss eindeutig identifizierbare Ressource sein
   - Lösung: Literale 
-  - weitere Einsatzgebiete zeigen durch Beispiele und technisch erklären: https://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#section-Graph-Literal 
-  (Folie 3: )
+  - weitere Einsatzgebiete zeigen durch Beispiele und Key eigenschaften 
+  Folie 3:
   - Blank Node wie folgt vorstellen: 
-  - 2-3 use cases zeigen anhand von einfachen Bspen zeiegn
-  - Blank node als umsetzung für use cases
+  - 2 use cases zeigen anhand von einfachen Bspen zeigen
+  - grafisch zeigen --> Blank node als umsetzung/Lsg für use cases
   - kurze stichworte von wichtigsten eigenschaften von blank notes 
   Folie 4: 
-  - Regeln & Begriffe: Vocabulary & RDFS  mit beispielen und warum mans braucht in stichworten 
+  - Vocabulary & RDFS mit beispielen und warum mans braucht in stichworten 
   Professor rdfs:subClassOf Person
-worksAt rdfs:domain Person
-worksAt rdfs:range Company
+  worksAt rdfs:domain Person
+  worksAt rdfs:range Company
   Folie 5: 
   - Ontology grafisch dargestellt & OWL 
+  - unterer Teil der Folie als nach Click interaktion: 
   Analogie: Ontologie, RDFS (RDF Schema), OWL (Web Ontology Language): Der Bauplan für ein Haus. , Der einfache Rohbau (Wände und Türen)., Der detaillierte Innenausbau mit Elektronik und Logikschaltungen.
-  - Interferenz/ Reasoning mit Beispielen erklären
+  - Interferenz/ Reasoning mit Beispielen erklären: was gespeichert -> was daraus abgeleitet werden kann
   Folie 6: 
-  - named graph: erst problem erklären: mehrere Graphen zusammenführen (nur grafisch darstellen. mit zwei mini graphen als beispiel )
+  - named graph: erst problem erklären: mehrere Graphen zusammenführen (nur grafisch darstellen. mit zwei mini graphen als beispiel), 
   - lösung vorstellen: named graph: erst idee, dann wie es konkret aussieht (einfaches beispiel)
   - interaktive frage: vorstellen für was es noch einsetzbar ist? 
-  - nach klick interaktion: antwort (zugriffsrechte,...)
+  - nach click interaktion: antwort (zugriffsrechte,...)
 
-verstehen: literal & typed literals
-blank note: einzige unterschied zu literal, dass unterkategorien, wie Ordner? 
-3.5 Replacing Blank Nodes with IRIs in w3 quelle zusammenfassen
-wie konkret umsetzen, dass zugriffsrechte mit named graph
+
+  Sprechtext: 
+  - literal: https://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#section-Graph-Literal 
+  - introduction, dass mit RDFS Semantik beginnt
+  - nach Folie 5: Zurückkehren, warum man das alles braucht um Bsp von Motivation zu machen, evtl FOlie einfügen
+
+
+
 
