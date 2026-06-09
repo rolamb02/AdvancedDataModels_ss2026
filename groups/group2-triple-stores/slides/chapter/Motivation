@@ -8,8 +8,9 @@
 - Grundidee von RDF und warum es überlegen ist
 - Relevanz für AI Use Cases:
   - Nutzung in RAG-Pipelines
+  KUrz RAG wdh
+  Welchen vorteil hat verwendung von RDF bei RAG
   - Semantische Suche
-
 
 
 
@@ -230,3 +231,39 @@
 
 → ideal für Knowledge Graphs und moderne AI-Anwendungen
 
+Knowledge GRaph: https://www.google.com/search?q=knowledge+graph+rdf+oder+property+graph+&sca_esv=30f24b025f9b43ca&sxsrf=ANbL-n61bQbD7Vlqh0DhEKvp5MInrb8zYw%3A1780838106749&ei=2m4laqWvK_G79u8P19K02QY&iflsig=AFdpzrgAAAAAaiV86oQW0oQmxlwmFv6xVsyAjy12N0yD&uact=5&sclient=gws-wiz&udm=50&fbs=ADc_l-YGrpJMQtvjQ6h14rj-dfIrbPkd_Upq68wJVnEIgo2Pwxu679PACFfTKv4n_1_FsyWcmsJ_9bzoaht0GJmpTAK6EUhXKyXhB5BaMxx7N7PXnjT6vetkPdmJCHpPkOvZ-28oQ58--U1IOS8BFzW_Bar3fApOnlzuOI_bzr8pFbD32ZIfD0Rdg4B4GNAP-tMHdDrDvR42&aep=10&ntc=1&mstk=AUtExfBML_yF9jokmo_AbkY0S6tGOwD-JhBPt8ZhlM2wfkDxIDc7lsOh53W5GEloYCD3biMOqRWOOvAqSdIR1kk9edrEAwbHM-lLeLo1hbtnv62BKoBIwRjeOxoseVX7-lOnqEEX4HAN5nCeb7uIdNuzJB0lkj9rfS5GpEzH9lJk0cSy4Kuc-4cyA3amJ9b9CU127muwIqRNu5iZwvHDJawHlD94wfuMtGM-FbPFd3Ru6KjelRz_4z8Clb9sBb2Uql1CZvH1tqlDIKSCTp84vAe26xBcSQ29NllLLWxbTGmzUC-zsziSdV1mxqjrD8qr_ODYA8wm8RYtbw-0wMz2qDyVRYsxG3A-vmvdDjzlVAkttmMwz62i8e9MPIZhPCYvufV-hYmVhB3ieCvRPyJdehXs04-UQRsQ6JD4eA&aioh=3&csuir=1&cs=1&mtid=Bm8laqjQA82M9u8Pt5GC8A0
+https://www.google.com/search?q=knowledge+graph+google+AI+&sca_esv=d2b5db79e1641e91&sxsrf=ANbL-n7Z26VXdtp46_HfQSh6EnDaQ0GJLw%3A1780837880114&ei=-G0lavvcBKDHi-gPl7rx2Qc&iflsig=AFdpzrgAAAAAaiV8CDagEALma0MJwQYrnuDhyIjkJN4J&uact=5&sclient=gws-wiz&udm=50&fbs=ADc_l-YGrpJMQtvjQ6h14rj-dfIrbPkd_Upq68wJVnEIgo2Pwxu679PACFfTKv4n_1_FsyXys4KaQdMTexM2jUr2SY6Q0n9b44VW5UyffW_MxI4tdPShY22bJ4WO1xwt8TBS-a-NAKF-Yob8PrfKjBFZo03a5mTSkPoYT7SFX9oPzTtn4WU_JucIfAu5lszYzE3_WUQakPfU&aep=10&ntc=1&mstk=AUtExfAa6xTQsqOejvXFXCcbnpZ08VpWBVfOwRQi7h7NiqBfPmFR40XKmeBzPlTgyFurltHEqJnU7MeUGOUznjVhM0OJ8CvuJ8zbTe9U7RI2gGunWf50Xh2AvrTbFYgWzprAYymdPvrdCauFH_NKIr7zGT_N17v3YHqCAgTyZbOFyCPZp7qAozEhJHuv2Rh0yZw8EUQucRIAN8s70YUDllbLSNWZ_tUIzYlrwwREvji_t8KvG3pINVF86hA3aAT1VO8-8db-CzKwsHbzKe3j_VQ4ybEtyeaviF-hgf2Jm9ZNotJE0rTZ2QuyVGI6-c_wfzWcLzfrI2gtgF0KJzg3GIB0u-YI_siI_gJHoVlxH_AHhysnmyCc3Sk_CjBMZDJR1x3BmEQ4N5LvQ37hMsDGaikZCwxc9ehtD9Z46w&aioh=3&csuir=1&cs=1&mtid=Lm4las6DHeyii-gPyf21kQ4
+
+
+
+RAG mit RDF: 
+Was ist RAG?
+Retrieval‑Augmented Generation (RAG) kombiniert zwei Schritte:
+
+Retrieval: Ein Suchmodul holt relevante Informationen aus externen Quellen (z. B. Datenbanken, Dokumenten, Wissensgraphen).
+
+Generation: Ein Large Language Model (LLM) nutzt diese Informationen, um eine fundierte Antwort zu formulieren.
+
+👉 Ziel: Antworten sind präziser, aktueller und nachvollziehbarer, weil das Modell nicht nur „halluziniert“, sondern auf echte Daten zugreift.
+
+🔗 RDF‑RAG – RAG mit RDF
+Das Paper schlägt vor, RAG mit RDF (Resource Description Framework) zu verbinden.
+RDF dient hier als strukturierte Wissensrepräsentation, um Daten aus verschiedenen Quellen (Text, Bilder, Tabellen, Wissensgraphen) semantisch zu verknüpfen.
+
+So funktioniert’s laut Paper:
+Data Fusion: Informationen aus verschiedenen Modalitäten werden in eine gemeinsame RDF‑Struktur überführt.
+
+Knowledge Representation: RDF kodiert Wissen als Tripel (Subjekt–Prädikat–Objekt), wodurch Beziehungen explizit werden.
+
+Hybrid Indexing & Reasoning: Das System kann effizient suchen und logisch schlussfolgern, bevor das LLM antwortet.
+
+🚀 Vorteile von RDF bei RAG
+Laut den Autoren bringt RDF drei zentrale Vorteile:
+
+Semantische Struktur: Beziehungen zwischen Daten sind explizit – das verbessert das Verständnis des LLM.
+
+Weniger Redundanz & Noise: RDF‑basierte Fusionsschicht filtert doppelte oder irrelevante Daten heraus.
+
+Bessere Genauigkeit: Durch die Kombination von logischem RDF‑Wissen und generativer Sprachkompetenz entstehen relevantere und präzisere Antworten.
+
+Bsp RAG: https://www.youtube.com/watch?v=yRvw18VOz0w
