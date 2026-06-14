@@ -1,0 +1,101 @@
+## Allgemeine Verbesserungen  
+- zu Beginn jedes Kapitels: - Kapitelvorstellung:  linke spalte welches kapitel jetzt kommt (also alle kapitel von Miotivation bis Comprison sichtbar und das farbig markiert, welches jetzt kommt), rechts stichpunkte zum inhalt grob des kapitels
+- Abschlussfolie pro kapitel mit den wichtigsten Erkenntnissen vom Kapitel in stichworten 
+
+## Motivation Verbesserungen
+**Folie 2:**
+- Zunächst nur Tim Berners-Lee mit Bildunterschrift mit name, lebenszeit, Nation sichtbar auf rechter seite 
+- 	Nach Klick: 
+- 2 Kästchen mit jahreszahlen usw. unverändert. 
+- 	Mit Abstand darunter: Web verbindet Dokumente … kästchen (wie bisher)
+- 	Ein Bild von dem web wie es früher ausgesehen hat (also das erste web) (unter bild von Tim), ebenfalls Bildunterschrift
+**Folie 3:** 
+-  Jahreszahlenkästchen so aufgebaut wie vorherige seite,  idee sematik web jahr und gründung 98 semantik web geburtsstunde und damit rdf /triple store 
+- 	Rechte hälfte weg 
+- 	links: jeweils bild/grafik zu sql, xml und excel  , sodass mehr platz einnimmt 
+- 	Rechte Hälfte: Besseres Bsp:zu SQL — breite Tabelle und RDF — nur Fakten
+**Folie 4:**
+- 	Scentific American, Mai 2001: „The Semantic Web" — Berners-Lee, Hendler, Lassilan kästchen im Gleichen stil wie auf ersten Motivationsfolie, mit Jahreszahl groß links,…
+- Bsp Pete & Lucy: anders aufbereiten (übersichtlich):
+1. Szenario: Pete & Lucy suchen Physiotherapeuten für Mutter 
+2. 	Klassische: Alle verfügbaren Therapeuten in der Umgebung aussuchen & mit Terminkalender der Mutter vergleichen 
+3. Mit Sematic Web: Agenten holen automatisch: Behandlungsdaten · Versicherungsstatus · Therapeutenbewertungen · freie Termine · Kalender
+**Idee: motivationskapitel (nur für kontext, dass der rote faden erkennbar wird, nicht für übernahme in folien):** 
+-	Herleitung von Triple Store/RDF über entstehungsgeschichte: Semnatik web:
+-  erste Folie einstieg mit erfinder und WWW. 
+-	2 . Folie: 98: Vorstellung Semantic web: Idee: Daten & Bedeutung – problem datensilos -> lösung RDF
+-	3 .Folie: was ist semantik? Und wie wird datenbedeutung realisiert? 2001: Vorstellung semantik und verdeutlichung am bsp pete und lucy
+-	Dieser rote faden mit jahreszahlen und daran erklärend RDF, wäre cool, wenn er grafisch erkennbar ist auf den folien 
+
+## Conceptional Kapitel: 
+-   Folie 1: 
+  - Triple links dargestellt mit SPO und Beispiel "Alice works at SAP"
+  - Graph, wenn mehrere Triple kombiniert werden, rechts dargestellt, Beispiel links wird erweitert um fakten: alice = person & SAP = ... Mitarbeiter & = Unternehmen
+  - erste nur links sichtbar und dann gesamte folie sichtbar Klick interaktion
+  Folie 2: 
+  Ressource: 
+  - Problem: Marke Apple vs Frucht Apple, Hintergrund Sematisches Web
+  - Lösung: Ressourcen mit URI --> Eindeutigkeit
+  Click interaktion: 
+  Literal
+  - 2 Bspsätze mit Literalen
+  - Feststellung: nicht alles muss eindeutig identifizierbare Ressource sein
+  - Lösung: Literale 
+  - weitere Einsatzgebiete zeigen durch Beispiele und Key eigenschaften 
+  Folie 3:
+  - Blank Node wie folgt vorstellen: 
+  - 2 use cases zeigen anhand von einfachen Bspen zeigen
+  - grafisch zeigen --> Blank node als umsetzung/Lsg für use cases
+  - kurze stichworte von wichtigsten eigenschaften von blank notes 
+  Folie 4: 
+  - Vocabulary & RDFS mit beispielen und warum mans braucht in stichworten 
+  Professor rdfs:subClassOf Person
+  worksAt rdfs:domain Person
+  worksAt rdfs:range Company
+  Folie 5: 
+  - Ontology grafisch dargestellt & OWL 
+  - unterer Teil der Folie als nach Click interaktion: 
+  Analogie: Ontologie, RDFS (RDF Schema), OWL (Web Ontology Language): Der Bauplan für ein Haus. , Der einfache Rohbau (Wände und Türen)., Der detaillierte Innenausbau mit Elektronik und Logikschaltungen.
+  - Interferenz/ Reasoning mit Beispielen erklären: was gespeichert -> was daraus abgeleitet werden kann
+  Folie 6: 
+  - named graph: erst problem erklären: mehrere Graphen zusammenführen (nur grafisch darstellen. mit zwei mini graphen als beispiel), 
+  - lösung vorstellen: named graph: erst idee, dann wie es konkret aussieht (einfaches beispiel)
+  - interaktive frage: vorstellen für was es noch einsetzbar ist? 
+  - nach click interaktion: antwort (zugriffsrechte,...)
+  Folie 7: zusammenfassung: 
+  - key erkenntnisse. 
+  - analogie von OWL/RDFS/Ontologie nochmal zeigen 
+
+## Architektur Kapitel
+**Allgemein**: Kästchengröße verhältnismäßig zu textlänge  darin 
+-**Folie 23** rechts, linke hälfte tauschen 
+**Folie 24**
+-	Zu beginn: erst nur frage auf folie sichtbar: wann selbst betreiben, wann cloud anbieter? Welche vor-Nachteile? (schöner formuliert)
+-	Nach klicken wird frage ersetzt durch folieninhalt: 
+-	Kästchen selbst betreiben und cloud dienst  kleiner
+-	Darstellung von anbietern mit eigenschaften als kästchen. Fett anbieter darunter eigenschaften, darunter einsatz
+-	Kästen 2x2 angeordnet, obere reihe Open source als überschrift
+-	Zweite reihe: cloud anbieter
+-	25: 
+-	Single node: Gute Performance weg, statt einfacher Betrieb: einfache Einrichtung und Betrieb, keine Konsistenzprobleme
+-	Pfeile sollen Kästchen nicht berügren 
+**Folie 26**
+-	Grafik größer und sodass pfeile nicht kästchen berühren
+-	Text unter Grafiken mit in Vor und nachteile einordnen ✓ Ausfallsicherheit✓ Lastverteilung (Lesezugriffe) ✓ Mehr Gesamtspeicher✓ Parallele Verarbeitung
+-	Vor nachteilen zeilenumbruch, also dass vor und nachteil nicht in zeile steht, sondern, dass die jeweils sauber getrenne´t sind
+-	CAP Theorem-Merksatz über beide Spalten unten hin
+-	Aktueller merksatz weg
+**Folie 27:**
+-	Bsp: stuttgart in deutschland: der Pfeil muss von stuttgart nach Deutschland und nicht von Uni nach Deutschland
+-	Grafik auseinanderziehen, sodass  Pfeile nicht die Kreise berühren und die schrift locatedIn soll nicht den Pfeil berühren
+-	Kästchen unter Daten auf verschiedene Nodes: 
+1. Nach node B kästchen: Pfeil zu Kästchen mit Problem bei Sparql join
+2. Node A Kästchen in gleicher Farbe wie UniStuttgart kreis in Grafik links daneben
+3. Node B kästchen gleiche Farbe wie stuttgart kreis und Grafik links daneben
+4. Problem-Kästchen: gleicher Randdicke wie die anderen beiden Kästchen und Farbe Rot wegen Problem
+
+- Rechte spalte: raus oder ändern
+**Folie 28:**
+-	Schrift  in beispiellkästchen nodes größer und die Kästchen generell größer
+-	Graph Partitioning: Bsp in Nodes anders: Node A: Uiversitäten + Professoren, Node B: Unternehmen + Mitarbeiter
+-	Jeweiliger Einsatzgebiet darunter mit kleiner Grafik 
