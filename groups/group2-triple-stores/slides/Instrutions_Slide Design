@@ -105,3 +105,5 @@ PDF-Export (Chrome Headless)
   --headless --print-to-pdf="$env:USERPROFILE\Desktop\triple-stores.pdf" `
   --print-to-pdf-no-header `
   "C:\...\slides\presentation.html"
+
+  Gerne viel Symbole, Visualisierung, ... wenig text! Besser didaktisch veranschaulicht als mit langen Textblöcken. Fokus auf Klarheit, nicht auf Detaillierung.

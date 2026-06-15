@@ -3,6 +3,8 @@
 **Abgrenzung vorab:** Conceptual Model hat erklärt, *was* ein Triple ist.
 Data Structure erklärt, *wie* Triples gespeichert werden — und warum diese Speicherform flexibler und performanter ist als Tabellen.
 
+"Data structure (15 min) – Show how data are stored physically and logically. Discuss schema flexibility or constraints."
+
 ---
 
 ## Folie 1: Triple-basierte Speicherung – Weg von der Tabelle

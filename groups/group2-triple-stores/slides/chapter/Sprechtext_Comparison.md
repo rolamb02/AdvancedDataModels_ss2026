@@ -28,6 +28,9 @@ Konkret: Wenn ich in Neo4j `(Romi)-[:KENNT]->(Marten)` abspeichere, liegt im Spe
 
 **Datenintegration:** In SQL ist das aufwändig – man braucht ETL-Prozesse (Extract, Transform, Load), also manuelle Pipelines, die Daten aus externen Quellen bereinigen und ins eigene Schema überführen. Im Triple Store nutzen wir URIs als globale Identifier. Eine URI wie `http://dbpedia.org/resource/Stuttgart` meint weltweit dasselbe, egal ob meine Datenbank oder DBpedia sie benutzt. Über `SERVICE` in SPARQL kann ich dann live gegen externe SPARQL-Endpunkte abfragen – das ist Federation. URI + SERVICE = Datenintegration ohne ETL-Pipeline.
 
+**Interaktion**: Wer weiß für was ETL noch stand
+Lückentext
+
 **Sobald Vernetzung und Semantik wichtig werden – was genau heißt das?**
 *Vernetzung:* Wenn Entities nicht isoliert existieren, sondern in Beziehung zueinander stehen – und diese Beziehungen selbst abgefragt, navigiert oder erweitert werden müssen. Beispiel: "Welche Professoren forschen an Themen, die mit dem Fachgebiet einer Kooperationsuni zusammenhängen?" – das sind mehrere verknüpfte Entitäten. SQL braucht dafür komplexe mehrstufige JOINs. Triple Stores navigieren das nativ.
 *Semantik:* Sobald das System selbst verstehen soll, was Begriffe bedeuten, wie Klassen zusammenhängen, und was implizit gilt – also Inferenz gefragt ist.
@@ -45,10 +48,6 @@ Vergleichstabelle zwischen RDF Triple Stores und Property Graphs (z.B. Neo4j). B
 
 ### Sprechtext
 
-Das ist ehrlich gesagt der interessanteste Vergleich, weil es auch die häufigste Verwechslung in der Praxis ist. Gruppe 1 hat Property Graphs vorgestellt – also nochmal scharf: Was ist wirklich anders?
-
-**Kanten-Eigenschaften – ein fundamentaler Unterschied**
-Im Property Graph kann eine Kante direkt eigene Properties haben. Beispiel: `Romi –[KENNT seit: 2020]→ Marten`. Das `seit: 2020` ist eine Property *an der Kante selbst*. Im Triple Store ist das nicht nativ möglich – eine Kante ist immer nur `Subjekt → Prädikat → Objekt`, ohne eigene Attribute. Will man zusätzliche Metadaten an einer Beziehung ausdrücken, muss man die Beziehung selbst zur Ressource machen und mit weiteren Triples beschreiben (Reifikation) – das funktioniert, ist aber deutlich umständlicher als native Kanten-Properties im Property Graph. Das ist ein echter Nachteil des Triple-Store-Modells für Anwendungsfälle, wo Kanten-Metadaten zentral sind.
 
 **Standardisierung – was genau ist gemeint?**
 Es geht um zwei Ebenen. Erstens: Cypher (Neo4j) definiert zwar Abfragesyntax – aber das ist ein herstellerspezifischer Standard, kein W3C-Standard. Verschiedene Property-Graph-Systeme sprechen verschiedene Dialekte. SPARQL hingegen ist W3C-standardisiert: jeder konforme Triple Store versteht dieselbe Abfragesprache. Zweitens – und das ist entscheidend: Es gibt standardisierte *Vokabulare*. RDFS, OWL, Dublin Core, Schema.org – das sind gemeinsam vereinbarte Bedeutungen für Prädikate und Klassen. `rdfs:subClassOf`, `owl:sameAs`, `dbo:birthPlace` – diese URIs haben weltweit eine definierte Bedeutung. Das ermöglicht semantische Interoperabilität zwischen verschiedenen Systemen, die dieselben Vokabulare nutzen. Property Graphs haben das nicht.
@@ -60,6 +59,31 @@ Das ist ein häufiges Missverständnis, daher klar trennen:
 - **Inferenz** = der Store *leitet neue Fakten ab*, die nicht explizit gespeichert wurden. Wenn definiert ist `Professor rdfs:subClassOf Person` und im Store liegt `Prof_Müller rdf:type Professor`, dann *inferiert* der Store: `Prof_Müller rdf:type Person` – auch wenn dieses Triple nie eingetragen wurde. Das sind *neue, abgeleitete Triples*, die zur Laufzeit oder vorab materialisiert werden.
 
 Traversal fragt: "Was existiert schon?" – Inferenz sagt: "Was gilt logisch außerdem, auch wenn es nicht steht?" Property Graphs können beides nicht automatisch – das muss man manuell in die Applikation bauen.
+
+
+**Traversal-Performance – warum genau ist Property Graph technisch schneller? (mit Beispiel)**
+Das lässt sich gut anhand eines konkreten Szenarios erklären. Stell dir vor, wir suchen in einem sozialen Netzwerk alle Personen, die über maximal 4 Hops mit Romi verbunden sind. Also: Romis Freunde, deren Freunde, deren Freunde, deren Freunde.
+
+Im **Property Graph (Neo4j)**:
+Neo4j speichert jeden Knoten als festen Datensatz auf der Festplatte. Jeder Knoten enthält einen Pointer (eine direkte Speicheradresse) auf seine erste ausgehende Kante. Jede Kante enthält wiederum Pointer auf den nächsten Knoten *und* auf die nächste Kante desselben Knotens. Das ist eine verkettete Liste direkt im Speicher.
+
+Wenn ich von "Romi" einen Hop mache:
+1. Gehe zu Romis Knoteneintrag → lese Pointer auf erste Kante → O(1), ein Speicherzugriff.
+2. Gehe zur Kante → lese Pointer auf Zielknoten → O(1), ein Speicherzugriff.
+3. Nächste Kante von Romi: Kante enthält Pointer auf nächste Kante → O(1).
+
+Jeder Hop ist also buchstäblich ein oder zwei Pointer-Sprünge im Speicher. Bei 4 Hops mit je 10 Freunden: 10 + 100 + 1000 + 10000 = ~11.110 Pointer-Sprünge. Kein Index-Lookup, kein Suchen.
+
+Im **Triple Store (Oxigraph/Jena)**:
+Es gibt keine physischen Pointer zwischen Triples. Stattdessen liegt eine Index-Tabelle vor (z.B. SPO-Index). Wenn ich von Romi einen Hop mache, muss der Store im Index nachschlagen: "Gib mir alle Triples, wo Subjekt = uni:Romi und Prädikat = uni:kennt." Das ist ein B-Tree- oder Hash-Index-Lookup – schnell, aber nicht O(1) wie ein Pointer, sondern O(log n) oder O(1) mit Hash, plus der Overhead des Index-Traversals. Für jeden einzelnen Knoten auf jeder Ebene wird ein neuer Index-Lookup ausgeführt.
+
+Bei 4 Hops mit je 10 Freunden: dieselbe Anzahl an Lookups, aber jeder einzelne Lookup ist langsamer als ein Pointer-Sprung, weil Indizes im Vergleich zu direkten Speicheradressen teurer sind – besonders wenn der Graph größer wird und nicht mehr vollständig im RAM liegt.
+
+**Fazit:** Property Graph ist bei tiefer Traversal in *einer* Datenbank schneller, weil die Graphstruktur direkt in der Speicherorganisation abgebildet ist – Pointer statt Index-Lookup. Triple Store ist dafür stärker bei semantischer Reichweite und externer Datenintegration, wo kein Property Graph mithalten kann.
+
+**Kanten-Eigenschaften – ein fundamentaler Unterschied**
+Im Property Graph kann eine Kante direkt eigene Properties haben. Beispiel: `Romi –[KENNT seit: 2020]→ Marten`. Das `seit: 2020` ist eine Property *an der Kante selbst*. Im Triple Store ist das nicht nativ möglich – eine Kante ist immer nur `Subjekt → Prädikat → Objekt`, ohne eigene Attribute. Will man zusätzliche Metadaten an einer Beziehung ausdrücken, muss man die Beziehung selbst zur Ressource machen und mit weiteren Triples beschreiben (Reifikation) – das funktioniert, ist aber deutlich umständlicher als native Kanten-Properties im Property Graph. Das ist ein echter Nachteil des Triple-Store-Modells für Anwendungsfälle, wo Kanten-Metadaten zentral sind.
+
 
 **URIs, Linked Data, Federation – drei verschiedene Dinge:**
 - **URIs** = das Konzept globaler, eindeutiger Identifier für Ressourcen. `http://dbpedia.org/resource/Stuttgart` ist weltweit eindeutig, kein String-Vergleich.
@@ -82,25 +106,6 @@ Wenn wir dagegen wollen, dass `uni:Stuttgart` mit *echten Daten aus DBpedia* ang
 
 Kurz: **Prädikate sind nur Label/Namen – die kommen immer aus dem lokalen TTL-Präfix-Block. Objekte/Ressourcen können echte externe Datenobjekte sein, die nur auf fremden Servern liegen – dafür braucht man SERVICE.**
 
-**Traversal-Performance – warum genau ist Property Graph technisch schneller? (mit Beispiel)**
-Das lässt sich gut anhand eines konkreten Szenarios erklären. Stell dir vor, wir suchen in einem sozialen Netzwerk alle Personen, die über maximal 4 Hops mit Romi verbunden sind. Also: Romis Freunde, deren Freunde, deren Freunde, deren Freunde.
-
-Im **Property Graph (Neo4j)**:
-Neo4j speichert jeden Knoten als festen Datensatz auf der Festplatte. Jeder Knoten enthält einen Pointer (eine direkte Speicheradresse) auf seine erste ausgehende Kante. Jede Kante enthält wiederum Pointer auf den nächsten Knoten *und* auf die nächste Kante desselben Knotens. Das ist eine verkettete Liste direkt im Speicher.
-
-Wenn ich von "Romi" einen Hop mache:
-1. Gehe zu Romis Knoteneintrag → lese Pointer auf erste Kante → O(1), ein Speicherzugriff.
-2. Gehe zur Kante → lese Pointer auf Zielknoten → O(1), ein Speicherzugriff.
-3. Nächste Kante von Romi: Kante enthält Pointer auf nächste Kante → O(1).
-
-Jeder Hop ist also buchstäblich ein oder zwei Pointer-Sprünge im Speicher. Bei 4 Hops mit je 10 Freunden: 10 + 100 + 1000 + 10000 = ~11.110 Pointer-Sprünge. Kein Index-Lookup, kein Suchen.
-
-Im **Triple Store (Oxigraph/Jena)**:
-Es gibt keine physischen Pointer zwischen Triples. Stattdessen liegt eine Index-Tabelle vor (z.B. SPO-Index). Wenn ich von Romi einen Hop mache, muss der Store im Index nachschlagen: "Gib mir alle Triples, wo Subjekt = uni:Romi und Prädikat = uni:kennt." Das ist ein B-Tree- oder Hash-Index-Lookup – schnell, aber nicht O(1) wie ein Pointer, sondern O(log n) oder O(1) mit Hash, plus der Overhead des Index-Traversals. Für jeden einzelnen Knoten auf jeder Ebene wird ein neuer Index-Lookup ausgeführt.
-
-Bei 4 Hops mit je 10 Freunden: dieselbe Anzahl an Lookups, aber jeder einzelne Lookup ist langsamer als ein Pointer-Sprung, weil Indizes im Vergleich zu direkten Speicheradressen teurer sind – besonders wenn der Graph größer wird und nicht mehr vollständig im RAM liegt.
-
-**Fazit:** Property Graph ist bei tiefer Traversal in *einer* Datenbank schneller, weil die Graphstruktur direkt in der Speicherorganisation abgebildet ist – Pointer statt Index-Lookup. Triple Store ist dafür stärker bei semantischer Reichweite und externer Datenintegration, wo kein Property Graph mithalten kann.
 
 ---
 
@@ -115,36 +120,46 @@ Eine Entscheidungsmatrix: 6 Anforderungsdimensionen gegen die drei Modelle (Rela
 
 Diese Matrix ist als schnelle Orientierungshilfe gedacht. Kein Modell gewinnt immer.
 
-**Stabile, strukturierte Daten → SQL ✅:** Bestelldatenbanken, ERP, Finanzbuchhaltung – viele gleichartige Datensätze mit festem Schema. SQL ist hier klar führend. Property Graph und Triple Store können zwar, sind aber überdimensioniert und unintuitiver für diesen Anwendungsfall.
+**Stabile, strukturierte Daten → SQL ✅:** Bestelldatenbanken, ERP, Finanzbuchhaltung – viele gleichartige Datensätze mit festem Schema. Property Graph und Triple Store können zwar, aber überdimensioniert und unintuitiver
 
 **Tiefe Graphnavigation → Property Graph ✅:** Wie erklärt: pointer-native Traversal, nativ für Graphnavigation gebaut. Triple Store ist ⚠️ – geht, aber langsamer. SQL ist ❌ – rekursive Abfragen in SQL (WITH RECURSIVE) sind umständlich und nicht für Graphnavigation optimiert.
+- eBay: Neo4j für Recommendation Engine
+- PayPal: Neo4j für Fraud Detection
+- ICIJ: Neo4j zur Analyse der Panama Papers
 
-**Semantik & Inferenz → Triple Store ✅:** Nur RDF-basierte Triple Stores haben das nativ. SQL ❌, Property Graph ❌ – kein automatisches Schlussfolgern.
+**Semantik & Inferenz → Triple Store ✅:** 
+- UniProt: SPARQL-Endpoint mit 190 Mrd. Triples für Proteinforschung
+- NHS/Medizin: SNOMED CT & ICD-10 als OWL-Ontologien mit automatischer Inferenz
+- Open PHACTS (EU): RDF-Integration von DrugBank, ChEMBL, UniProt für Wirkstoffforschung
 
-**Offene Datenintegration → Triple Store ✅:** URIs + Linked Data + Federation. Die anderen sind Insellösungen ohne native Mechanismen für externe Datenverknüpfung.
+
+**Offene Datenintegration → Triple Store ✅:** 
+- BBC: RDF-Verlinkung von Nachrichtenartikeln mit Archivmaterial via DBpedia
+- New York Times: Publikation von Personen/Orten/Organisationen als Linked Open Data
+- Open PHACTS: Federated SPARQL über mehrere Pharmadatenbanken ohne ETL-Pipeline
+
 
 **Einfacher Einstieg / Tooling:**
 - SQL ✅: längste Geschichte, breiteste Entwickler-Community, beste Tool-Unterstützung.
 - Property Graph ✅: Neo4j hat gutes Tooling, Cypher ist intuitiver als SPARQL, gute Visualisierung.
 - Triple Store ⚠️: Tooling existiert (GraphDB, Oxigraph, Jena Fuseki), aber die Einstiegshürde ist höher – RDF-Denken, URI-Handling, Präfixe, SPARQL-Syntax. Das ist ehrlich und kein Nachteil, den man verstecken sollte.
+- MySQL/PostgreSQL: Standard in nahezu jeder Web-App (Django, Rails, etc.)
+- Neo4j Browser/Bloom: Visuelles Tooling für Graphexploration
+- SQLite: Embedded in Python, iOS, Android — kein Setup nötig
 
 **Knowledge Graphs → Triple Store ✅:**
-Warum ist der Triple Store hier klar besser als Property Graph – obwohl beide Graphmodelle sind?
+- Google Knowledge Graph: 500 Mrd. Fakten, 5 Mrd. Entitäten
+- Wikidata/DBpedia: Offene RDF-Knowledge-Graphs über Wikipedia-Daten
+- Siemens: RDF/OWL Knowledge Graph in Produktion mit Dutzenden Mrd. Triples
 
-Der entscheidende Unterschied liegt in drei Punkten:
 
-Erstens: **Die großen Knowledge Graphs der Welt sind RDF-basiert.** Wikidata – die strukturierte Wissensbasis hinter Wikipedia und Teilen von Google – speichert seine Daten als RDF-Triples und stellt einen SPARQL-Endpunkt bereit, gegen den man live abfragen kann. DBpedia macht dasselbe: es extrahiert strukturierte Fakten aus Wikipedia und veröffentlicht sie als Linked Data unter standardisierten URIs. Google's Knowledge Graph ist intern ebenfalls auf RDF-ähnlichen Strukturen aufgebaut. Ein Property Graph kann auf diese Daten nicht nativ zugreifen – er hat weder URIs als globale Identifier noch einen Federation-Mechanismus wie `SERVICE`.
+**Die großen Knowledge Graphs der Welt sind RDF-basiert.** Google's Knowledge Graph ist intern ebenfalls auf RDF-ähnlichen Strukturen aufgebaut. Ein Property Graph kann auf diese Daten nicht nativ zugreifen – er hat weder URIs als globale Identifier noch einen Federation-Mechanismus wie `SERVICE`.
 
-Zweitens: **Inferenz macht den Unterschied.** In einem Knowledge Graph will man oft nicht nur das abfragen, was explizit eingetragen wurde, sondern was *gilt*. Wenn `Professor rdfs:subClassOf Forscher` definiert ist, kann ein Triple Store auf die Frage "Gib mir alle Forscher" automatisch auch Professoren zurückliefern – ohne dass man das explizit eintragen muss. Ein Property Graph kann das nicht – dort muss die Applikation diese Logik selbst implementieren.
+**Inferenz macht den Unterschied.** 
 
-Drittens: **Standardisierte Vokabulare ermöglichen semantische Interoperabilität.** Knowledge Graphs leben davon, dass verschiedene Quellen dieselben Begriffe meinen. `schema:Person`, `dbo:birthPlace`, `owl:sameAs` – das sind W3C-standardisierte Prädikate, die in Wikidata, DBpedia, Schema.org und eigenen Daten gleich bedeuten. Property Graphs haben kein vergleichbares Konzept – jede Datenbank definiert ihre eigene Property-Welt, ohne dass `KENNT` in Neo4j und `KNOWS` in einer anderen Datenbank je zusammengeführt werden könnten.
+ **Standardisierte Vokabulare ermöglichen semantische Interoperabilität.** Knowledge Graphs leben davon, dass verschiedene Quellen dieselben Begriffe meinen. `schema:Person`, `dbo:birthPlace`, `owl:sameAs` – das sind W3C-standardisierte Prädikate, die in Wikidata, DBpedia, Schema.org und eigenen Daten gleich bedeuten. 
 
-**Kurz:** Triple Store ist die natürliche Heimat von Knowledge Graphs, weil das Datenmodell (RDF), die Abfragesprache (SPARQL + Federation), die Inferenz (RDFS/OWL) und die Vokabulare (W3C-Standards) genau auf diesen Anwendungsfall zugeschnitten sind. Ein Property Graph ist ein ausgezeichnetes Graphwerkzeug für in sich geschlossene Anwendungen – aber kein Knowledge-Graph-System.
+Property Graphs werden zunehmend ebenfalls für Knowledge Graphs eingesetzt — Technologien wie Amazon Neptune oder Microsoft Azure Cosmos DB zeigen, dass die Grenze verschwimmt. Der entscheidende Unterschied: Triple Stores haben URI-basierte offene Identitäten (gut für externe Verlinkung), Property Graphs haben bessere Traversierungsperformance.
 
-SQL ist hier praktisch irrelevant – kein nativer Graphansatz, kein Linked-Data-Mechanismus.
-
-**Takeaway:** Wer Semantik, Standards und verteilte Datenintegration braucht, nimmt Triple Stores. Wer tief in einer Graphstruktur navigiert und Performance braucht, nimmt Property Graph. Wer stabile tabellarische Daten hat, nimmt SQL. In der Praxis kombiniert man oft mehrere Ansätze.
-
----
 
 *Ende Kapitel Comparison*

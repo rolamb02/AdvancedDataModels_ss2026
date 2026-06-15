@@ -99,6 +99,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
 .c3m { width:210px; flex-shrink:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; background:#E5EAF5; border-left:1px solid #CDD5EC; border-right:1px solid #CDD5EC; font-size:15px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:var(--navy); text-align:center; padding:0 8px; }
 .c3row:nth-child(even) .c3m { background:#DBE2F0; }
 .rdf-w .c3r { background:rgba(43,200,154,.06); }
+.rdf-w-r .c3l { background:rgba(43,200,154,.06); }
 .sql-w .c3l { background:rgba(51,65,85,.07); }
 .pg-w  .c3r { background:rgba(249,97,103,.04); }
 .ic-sm svg { width:18px; height:18px; stroke-width:1.75; }
@@ -111,13 +112,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
 
 /* ── Comparison header labels ── */
 .col-labels-c1 { position:absolute; right:18px; top:50%; transform:translateY(-50%); display:flex; gap:12px; align-items:center; }
-.col-labels-c2 { position:absolute; left:84px; top:0; bottom:0; right:18px; display:flex; align-items:center; }
 .col-labels-c3 { position:absolute; right:18px; top:50%; transform:translateY(-50%); display:flex; gap:10px; align-items:center; }
 .cl { padding:7px 20px; border-radius:20px; font-size:16px; font-weight:700; color:#fff; }
 .cl-sql { background:#334155; } .cl-rdf { background:#0d9488; }
-.cl-rdf2 { flex:1; font-size:20px; font-weight:700; color:var(--teal); }
-.cl-mid  { width:224px; text-align:center; font-size:16px; color:rgba(255,255,255,.22); }
-.cl-pg   { flex:1; text-align:right; font-size:20px; font-weight:700; color:var(--coral); }
 .lp { padding:6px 18px; border-radius:20px; font-size:16px; font-weight:700; color:#fff; }
 .lp-rel { background:#334155; } .lp-pg { background:var(--coral); } .lp-ts { background:#0d9488; }
 .req { width:292px; flex-shrink:0; font-size:18px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--navy); }
@@ -214,6 +211,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
 <!-- ═══════════════════════════════════════════════════════
      MOTIVATION 01 — Tim Berners-Lee & Das WWW
 ═══════════════════════════════════════════════════════ -->
+<!-- Build 1: nur Tim Berners-Lee -->
 <div class="slide">
   <div class="lbar"></div>
   <div class="hdr">
@@ -227,57 +225,58 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
   </div>
   <div class="body">
     <div class="split">
-      <div class="sp-l" style="gap:16px;justify-content:center;">
-        <!-- TBL icon + timeline -->
-        <div style="display:flex;align-items:center;gap:18px;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--navy);">
-          <svg width="64" height="64" viewBox="0 0 64 64">
-            <circle cx="32" cy="32" r="30" fill="var(--navy)"/>
-            <text x="32" y="38" text-anchor="middle" fill="white" font-size="22" font-family="Segoe UI" font-weight="700">TBL</text>
-          </svg>
-          <div>
-            <div style="font-size:22px;font-weight:700;color:var(--navy);">Tim Berners-Lee</div>
-            <div style="font-size:18px;color:var(--muted);">CERN, Genf</div>
-          </div>
+      <div class="sp-l" style="justify-content:center;gap:20px;">
+        <div class="lbl lbl-coral">Wie alles begann</div>
+        <div style="font-size:30px;font-weight:700;font-family:Georgia,serif;color:var(--navy);line-height:1.3;">
+          1989 erfindet ein Physiker am CERN<br>das <span style="color:var(--coral);">World Wide Web</span>.
         </div>
-        <div style="display:flex;flex-direction:column;gap:10px;">
-          <div style="display:flex;align-items:center;gap:14px;background:rgba(249,97,103,.07);border-radius:10px;padding:12px 16px;">
-            <div style="font-size:22px;font-weight:700;color:var(--coral);width:52px;flex-shrink:0;">1989</div>
-            <div style="font-size:18px;color:var(--text);">Proposal: <em style="font-style:normal;font-weight:700;">„Information Management"</em> — Hyperlinks zwischen Dokumenten</div>
-          </div>
-          <div style="display:flex;align-items:center;gap:14px;background:rgba(43,200,154,.07);border-radius:10px;padding:12px 16px;">
-            <div style="font-size:22px;font-weight:700;color:var(--teal);width:52px;flex-shrink:0;">1991</div>
-            <div style="font-size:18px;color:var(--text);">Erstes WWW online — HTML-Seiten, Hyperlinks, Browser</div>
-          </div>
+        <div class="txt22" style="color:var(--muted);">Eine Idee, die Dokumente weltweit vernetzt — und doch einen blinden Fleck mit sich bringt.</div>
+      </div>
+      <div class="sp-r" style="justify-content:center;align-items:center;gap:16px;">
+        <img src="Pictures/Tim_B_Lee.png" alt="Tim Berners-Lee" style="height:300px;width:auto;border-radius:12px;box-shadow:0 4px 14px rgba(30,39,97,.22);display:block;">
+        <div style="text-align:center;">
+          <div style="font-size:22px;font-weight:700;color:var(--navy);">Sir Tim Berners-Lee</div>
+          <div style="font-size:18px;color:var(--muted);">* 1955 · Großbritannien</div>
         </div>
-        <div style="background:rgba(249,201,70,.1);border-radius:10px;padding:12px 16px;border-left:4px solid var(--gold);">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Build 2: Timeline + erstes WWW -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">01</div>
+    <div class="tag">Motivation</div>
+    <div class="title">Das World Wide Web – und sein blinder Fleck</div>
+  </div>
+  <div class="footer">
+    <div class="footer-center">Roman Lahm · Vinzent Lahm · Semantic Triple Stores</div>
+    <div class="footer-right"></div>
+  </div>
+  <div class="body">
+    <div class="split">
+      <div class="sp-l" style="gap:14px;justify-content:center;">
+        <div class="lbl lbl-navy" style="margin-bottom:2px;">Der Erfinder &amp; seine Idee</div>
+        <div style="display:flex;align-items:center;gap:14px;background:rgba(249,97,103,.07);border-radius:10px;padding:12px 16px;">
+          <div style="font-size:24px;font-weight:700;color:var(--coral);width:58px;flex-shrink:0;">1989</div>
+          <div style="font-size:18px;color:var(--text);">Proposal <em style="font-style:normal;font-weight:700;">„Information Management"</em> — Hyperlinks zwischen Dokumenten</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;background:rgba(43,200,154,.07);border-radius:10px;padding:12px 16px;">
+          <div style="font-size:24px;font-weight:700;color:var(--teal);width:58px;flex-shrink:0;">1991</div>
+          <div style="font-size:18px;color:var(--text);">Erstes WWW online — HTML-Seiten, Hyperlinks, Browser</div>
+        </div>
+        <div style="background:rgba(249,201,70,.1);border-radius:10px;padding:14px 16px;border-left:4px solid var(--gold);margin-top:14px;">
           <div style="font-size:18px;color:var(--text);">Das Web verbindet <strong>Dokumente</strong> — aber Dokumente haben keine maschinenlesbare Bedeutung.</div>
         </div>
       </div>
-      <div class="sp-r" style="justify-content:center;gap:14px;">
-        <div class="lbl lbl-navy" style="margin-bottom:6px;">Das WWW: ein Netz aus Seiten</div>
-        <!-- Document network SVG -->
-        <svg width="470" height="300" viewBox="0 0 470 300" style="display:block;">
-          <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><polygon points="0 0,8 4,0 8" fill="var(--muted)"/></marker></defs>
-          <!-- Document nodes -->
-          <rect x="170" y="10"  width="130" height="50" rx="8" fill="var(--navy)"/>
-          <text x="235" y="40"  text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="700">index.html</text>
-          <rect x="10"  y="120" width="130" height="50" rx="8" fill="#334155"/>
-          <text x="75"  y="150" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="700">about.html</text>
-          <rect x="330" y="120" width="130" height="50" rx="8" fill="#334155"/>
-          <text x="395" y="150" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="700">contact.html</text>
-          <rect x="170" y="230" width="130" height="50" rx="8" fill="#334155"/>
-          <text x="235" y="260" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="700">data.html</text>
-          <!-- Hyperlink arrows -->
-          <line x1="185" y1="60" x2="100" y2="120" stroke="var(--muted)" stroke-width="1.8" marker-end="url(#arr)"/>
-          <line x1="285" y1="60" x2="360" y2="120" stroke="var(--muted)" stroke-width="1.8" marker-end="url(#arr)"/>
-          <line x1="100" y1="170" x2="185" y2="230" stroke="var(--muted)" stroke-width="1.8" marker-end="url(#arr)"/>
-          <line x1="360" y1="170" x2="285" y2="230" stroke="var(--muted)" stroke-width="1.8" marker-end="url(#arr)"/>
-          <text x="120" y="98"  fill="var(--coral)" font-size="11" font-family="Segoe UI" font-weight="700">href</text>
-          <text x="330" y="98"  fill="var(--coral)" font-size="11" font-family="Segoe UI" font-weight="700">href</text>
-          <!-- Problem annotation -->
-          <rect x="100" y="195" width="270" height="36" rx="8" fill="rgba(220,38,38,.08)" stroke="var(--no)" stroke-width="1.5"/>
-          <text x="235" y="217" text-anchor="middle" fill="var(--no)" font-size="13" font-family="Segoe UI" font-weight="700">Was bedeutet „data"? — Die Maschine weiß es nicht.</text>
-        </svg>
+      <div class="sp-r" style="justify-content:center;align-items:center;gap:8px;">
+        <img src="Pictures/Tim_B_Lee.png" alt="Tim Berners-Lee" style="height:140px;width:auto;border-radius:10px;box-shadow:0 3px 10px rgba(30,39,97,.18);display:block;">
+        <div style="text-align:center;font-size:15px;color:var(--muted);">Sir Tim Berners-Lee · * 1955 · Großbritannien</div>
+        <img src="Pictures/WWW.gif" alt="Erstes World Wide Web" style="width:360px;height:auto;border-radius:10px;border:1px solid #CDD5EC;box-shadow:0 3px 10px rgba(30,39,97,.18);display:block;margin-top:6px;">
+        <div style="text-align:center;font-size:15px;color:var(--muted);">Erstes WWW — WorldWideWeb-Browser, CERN 1991</div>
       </div>
     </div>
   </div>
@@ -300,66 +299,55 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
   </div>
   <div class="body">
     <div class="split">
-      <div class="sp-l" style="gap:12px;">
-        <div class="lbl lbl-coral" style="margin-bottom:4px;">Das Problem: Inkompatible Datensilos</div>
-        <!-- Incompatibility visual -->
-        <svg width="430" height="160" viewBox="0 0 430 160" style="display:block;">
-          <rect x="10"  y="20" width="110" height="60" rx="8" fill="#334155"/>
-          <text x="65"  y="48" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="700">SQL-Tabelle</text>
-          <text x="65"  y="66" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="11" font-family="Segoe UI">starres Schema</text>
-          <rect x="160" y="20" width="110" height="60" rx="8" fill="#334155"/>
-          <text x="215" y="48" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="700">XML-Datei</text>
-          <text x="215" y="66" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="11" font-family="Segoe UI">eigene Struktur</text>
-          <rect x="310" y="20" width="110" height="60" rx="8" fill="#334155"/>
-          <text x="365" y="48" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="700">Excel-Liste</text>
-          <text x="365" y="66" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="11" font-family="Segoe UI">kein Standard</text>
-          <!-- No connection indicators -->
-          <line x1="120" y1="50" x2="158" y2="50" stroke="var(--no)" stroke-width="2.5"/>
-          <line x1="270" y1="50" x2="308" y2="50" stroke="var(--no)" stroke-width="2.5"/>
-          <text x="139" y="44" text-anchor="middle" fill="var(--no)" font-size="14" font-weight="700">✗</text>
-          <text x="289" y="44" text-anchor="middle" fill="var(--no)" font-size="14" font-weight="700">✗</text>
-          <!-- Arrow down to solution -->
-          <text x="215" y="110" text-anchor="middle" fill="var(--gold)" font-size="22" font-weight="700">↓</text>
-          <text x="215" y="140" text-anchor="middle" fill="var(--teal)" font-size="14" font-family="Segoe UI" font-weight="700">Lösung: Ein universelles Datenmodell — RDF &amp; Triples</text>
-        </svg>
-        <!-- NULL table vs Triple -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;">
-          <div>
-            <div class="lbl lbl-coral" style="font-size:14px;margin-bottom:6px;">SQL — breite Tabelle</div>
-            <div style="background:#fff;border-radius:8px;overflow:hidden;font-size:13px;box-shadow:0 2px 6px rgba(30,39,97,.07);">
-              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;background:var(--navy);color:#fff;font-weight:700;font-size:11px;">
-                <div style="padding:5px 8px;">Name</div><div style="padding:5px 8px;">Uni</div><div style="padding:5px 8px;">Gegründet</div>
-              </div>
-              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid #EEF1FA;">
-                <div style="padding:5px 8px;">UniS</div><div style="padding:5px 8px;">Stuttgart</div><div style="padding:5px 8px;color:var(--no);font-weight:700;">NULL</div>
-              </div>
-              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;background:#EEF1FA;">
-                <div style="padding:5px 8px;">KIT</div><div style="padding:5px 8px;color:var(--no);font-weight:700;">NULL</div><div style="padding:5px 8px;">1825</div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div class="lbl lbl-teal" style="font-size:14px;margin-bottom:6px;">RDF — nur Fakten</div>
-            <div class="code" style="font-size:13px;line-height:1.7;">
-<span class="iri">UniS</span> <span class="kw">hasName</span> <span class="str">"Stuttgart"</span> .<br>
-<span class="iri">KIT</span> <span class="kw">founded</span> <span class="str">1825</span> .<br>
-<span class="cm">→ kein NULL, kein ALTER TABLE</span>
-            </div>
-          </div>
+      <div class="sp-l" style="gap:14px;justify-content:center;">
+        <div style="display:flex;align-items:center;gap:14px;background:rgba(43,200,154,.08);border-radius:10px;padding:12px 16px;border-left:4px solid var(--teal);">
+          <div style="font-size:26px;font-weight:700;color:var(--teal);flex-shrink:0;font-family:Georgia,serif;">1998</div>
+          <div style="font-size:18px;color:var(--text);">Geburtsstunde des <strong>Semantic Web</strong> → Grundstein für <strong>RDF</strong> &amp; Triple Stores</div>
         </div>
-      </div>
-      <div class="sp-r" style="justify-content:center;gap:14px;">
-        <div class="lbl lbl-teal" style="margin-bottom:4px;">Geburtsstunde: Semantic Web (1998)</div>
-        <!-- Semantic web stack -->
-        <div style="display:flex;flex-direction:column;gap:8px;">
-          <div style="background:var(--navy);border-radius:10px;padding:12px 20px;text-align:center;color:#fff;font-size:20px;font-weight:700;">OWL — Ontologien &amp; Regeln</div>
-          <div style="text-align:center;color:var(--muted);font-size:18px;">↑ baut auf</div>
-          <div style="background:var(--teal);border-radius:10px;padding:12px 20px;text-align:center;color:#fff;font-size:20px;font-weight:700;">RDFS — Klassen &amp; Hierarchien</div>
-          <div style="text-align:center;color:var(--muted);font-size:18px;">↑ baut auf</div>
-          <div style="background:var(--coral);border-radius:10px;padding:12px 20px;text-align:center;color:#fff;font-size:20px;font-weight:700;">RDF — Subjekt · Prädikat · Objekt</div>
+        <div class="lbl lbl-coral">Das Problem: Inkompatible Datensilos</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:14px;background:#fff;border-radius:10px;padding:12px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid #334155;">
+            <div class="ci ic-lg" style="background:#334155;color:#fff;width:44px;height:44px;"><i data-lucide="database"></i></div>
+            <div><div style="font-size:20px;font-weight:700;color:var(--navy);">SQL-Tabelle</div><div style="font-size:16px;color:var(--muted);">starres Schema</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;background:#fff;border-radius:10px;padding:12px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid #334155;">
+            <div class="ci ic-lg" style="background:#334155;color:#fff;width:44px;height:44px;"><i data-lucide="file-code-2"></i></div>
+            <div><div style="font-size:20px;font-weight:700;color:var(--navy);">XML-Datei</div><div style="font-size:16px;color:var(--muted);">eigene Struktur</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;background:#fff;border-radius:10px;padding:12px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid #334155;">
+            <div class="ci ic-lg" style="background:#334155;color:#fff;width:44px;height:44px;"><i data-lucide="table-2"></i></div>
+            <div><div style="font-size:20px;font-weight:700;color:var(--navy);">Excel-Liste</div><div style="font-size:16px;color:var(--muted);">kein Standard</div></div>
+          </div>
         </div>
         <div style="background:rgba(249,201,70,.1);border-radius:10px;padding:12px 16px;border-left:4px solid var(--gold);">
-          <div style="font-size:18px;color:var(--text);">RDF gibt jedem Datenpunkt eine <strong>globale URI</strong> — Quellen aus aller Welt verbinden sich automatisch.</div>
+          <div style="font-size:18px;color:var(--text);">Kein gemeinsames Modell → <strong>Lösung: RDF &amp; Triples</strong> als universelle Sprache.</div>
+        </div>
+      </div>
+      <div class="sp-r" style="justify-content:center;gap:16px;">
+        <div>
+          <div class="lbl lbl-coral" style="margin-bottom:8px;">SQL — breite, dünn besetzte Tabelle</div>
+          <div style="background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(30,39,97,.07);">
+            <div style="display:grid;grid-template-columns:1.1fr 1fr 1fr 1.2fr 1.2fr;background:var(--navy);color:#fff;font-weight:700;font-size:13px;">
+              <div style="padding:7px 8px;">Uni</div><div style="padding:7px 8px;">Stadt</div><div style="padding:7px 8px;">Gegr.</div><div style="padding:7px 8px;">Mensa</div><div style="padding:7px 8px;">Twitter</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1.1fr 1fr 1fr 1.2fr 1.2fr;border-bottom:1px solid #EEF1FA;font-size:14px;">
+              <div style="padding:7px 8px;">UniS</div><div style="padding:7px 8px;">Stuttgart</div><div style="padding:7px 8px;color:var(--no);font-weight:700;">NULL</div><div style="padding:7px 8px;color:var(--no);font-weight:700;">NULL</div><div style="padding:7px 8px;">@uni_s</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1.1fr 1fr 1fr 1.2fr 1.2fr;background:#EEF1FA;font-size:14px;">
+              <div style="padding:7px 8px;">KIT</div><div style="padding:7px 8px;color:var(--no);font-weight:700;">NULL</div><div style="padding:7px 8px;">1825</div><div style="padding:7px 8px;">Ja</div><div style="padding:7px 8px;color:var(--no);font-weight:700;">NULL</div>
+            </div>
+          </div>
+          <div style="font-size:16px;color:var(--muted);margin-top:6px;">Jedes neue Attribut = neue Spalte + viele <span style="color:var(--no);font-weight:700;">NULL</span>s.</div>
+        </div>
+        <div>
+          <div class="lbl lbl-teal" style="margin-bottom:8px;">RDF — nur die Fakten, die es gibt</div>
+          <div class="code" style="font-size:15px;line-height:1.7;">
+<span class="iri">UniS</span> <span class="kw">hasCity</span> <span class="str">"Stuttgart"</span> .<br>
+<span class="iri">UniS</span> <span class="kw">twitter</span> <span class="str">"@uni_s"</span> .<br>
+<span class="iri">KIT</span> <span class="kw">founded</span> <span class="str">1825</span> .<br>
+<span class="iri">KIT</span> <span class="kw">hasMensa</span> <span class="str">true</span> .<br>
+<span class="cm">→ kein NULL, kein ALTER TABLE</span>
+          </div>
         </div>
       </div>
     </div>
@@ -383,8 +371,15 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
   </div>
   <div class="body">
     <div class="split">
-      <div class="sp-l" style="gap:14px;">
-        <div class="lbl lbl-navy" style="margin-bottom:4px;">Was bedeutet Semantik?</div>
+      <div class="sp-l" style="gap:16px;justify-content:center;">
+        <div style="display:flex;align-items:center;gap:16px;background:rgba(124,58,237,.06);border-radius:10px;padding:14px 18px;border-left:4px solid #7C3AED;">
+          <div style="font-size:34px;font-weight:700;color:#7C3AED;flex-shrink:0;font-family:Georgia,serif;">2001</div>
+          <div>
+            <div style="font-size:20px;font-weight:700;color:var(--navy);">Scientific American, Mai 2001</div>
+            <div style="font-size:18px;color:var(--text);">„The Semantic Web" — Berners-Lee, Hendler, Lassila</div>
+          </div>
+        </div>
+        <div class="lbl lbl-navy">Was bedeutet Semantik?</div>
         <div style="background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);">
           <div style="font-size:22px;color:var(--text);line-height:1.4;margin-bottom:12px;"><strong>Semantik</strong> = die <em style="font-style:normal;color:var(--teal);font-weight:700;">Bedeutung</em> hinter Zeichen und Symbolen</div>
           <div style="display:flex;flex-direction:column;gap:8px;">
@@ -398,33 +393,22 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
             </div>
           </div>
         </div>
-        <div style="background:rgba(30,39,97,.04);border-radius:10px;padding:12px 16px;border-left:4px solid var(--navy);">
-          <div style="font-size:16px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Scientific American, Mai 2001</div>
-          <div style="font-size:18px;color:var(--text);">„The Semantic Web" — Berners-Lee, Hendler, Lassila</div>
-        </div>
       </div>
-      <div class="sp-r" style="gap:10px;">
-        <div class="lbl lbl-teal" style="margin-bottom:4px;">Pete &amp; Lucy — Agenten im Einsatz</div>
-        <!-- Pete & Lucy story flow -->
-        <div style="display:flex;flex-direction:column;gap:7px;">
-          <div style="background:#fff;border-radius:8px;padding:10px 14px;box-shadow:0 1px 4px rgba(30,39,97,.07);display:flex;align-items:center;gap:12px;">
-            <div style="width:32px;height:32px;background:var(--coral);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;font-weight:700;color:#fff;">1</div>
-            <div style="font-size:18px;color:var(--text);">Mutter braucht Physiotherapie — Pete &amp; Lucy beauftragen ihre <strong>Software-Agenten</strong></div>
-          </div>
-          <div style="background:#fff;border-radius:8px;padding:10px 14px;box-shadow:0 1px 4px rgba(30,39,97,.07);display:flex;align-items:center;gap:12px;">
-            <div style="width:32px;height:32px;background:var(--navy);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;font-weight:700;color:#fff;">2</div>
-            <div style="font-size:18px;color:var(--text);">Agenten holen automatisch: Behandlungsdaten · Versicherungsstatus · Therapeutenbewertungen · freie Termine · Kalender</div>
-          </div>
-          <div style="background:#fff;border-radius:8px;padding:10px 14px;box-shadow:0 1px 4px rgba(30,39,97,.07);display:flex;align-items:center;gap:12px;">
-            <div style="width:32px;height:32px;background:var(--teal);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;font-weight:700;color:#fff;">3</div>
-            <div style="font-size:18px;color:var(--text);">Agenten <strong>verhandeln</strong> miteinander, filtern Optionen, prüfen Versicherung → schlagen optimalen Terminplan vor</div>
-          </div>
-          <div style="background:#fff;border-radius:8px;padding:10px 14px;box-shadow:0 1px 4px rgba(30,39,97,.07);display:flex;align-items:center;gap:12px;">
-            <div style="width:32px;height:32px;background:#7C3AED;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;font-weight:700;color:#fff;">4</div>
-            <div style="font-size:18px;color:var(--text);">Pete: „nicht quer durch die Stadt" → Agent berechnet <strong>sofort neue Optionen</strong></div>
-          </div>
+      <div class="sp-r" style="gap:12px;justify-content:center;">
+        <div class="lbl lbl-teal" style="margin-bottom:2px;">Pete &amp; Lucy — eine Vision</div>
+        <div style="background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--coral);">
+          <div class="lbl lbl-coral" style="font-size:15px;margin-bottom:4px;">Szenario</div>
+          <div style="font-size:19px;color:var(--text);line-height:1.35;">Pete &amp; Lucy suchen einen <strong>Physiotherapeuten</strong> für ihre Mutter.</div>
         </div>
-        <div style="background:rgba(43,200,154,.08);border-left:4px solid var(--teal);border-radius:8px;padding:12px 16px;margin-top:auto;">
+        <div style="background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--navy);">
+          <div class="lbl lbl-navy" style="font-size:15px;margin-bottom:4px;">Klassisch</div>
+          <div style="font-size:19px;color:var(--text);line-height:1.35;">Alle Therapeuten der Umgebung manuell durchgehen &amp; mit dem <strong>Terminkalender der Mutter</strong> abgleichen.</div>
+        </div>
+        <div style="background:rgba(43,200,154,.08);border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--teal);">
+          <div class="lbl lbl-teal" style="font-size:15px;margin-bottom:4px;">Mit Semantic Web</div>
+          <div style="font-size:19px;color:var(--text);line-height:1.35;"><strong>Software-Agenten</strong> holen automatisch: Behandlungsdaten · Versicherungsstatus · Therapeutenbewertungen · freie Termine · Kalender.</div>
+        </div>
+        <div style="background:rgba(249,201,70,.1);border-left:4px solid var(--gold);border-radius:8px;padding:12px 16px;">
           <div style="font-size:18px;color:var(--text);line-height:1.4;">Das braucht semantisch strukturierte Daten — Maschinen müssen <strong>Bedeutung</strong> verstehen, nicht nur Strings vergleichen.</div>
         </div>
       </div>
@@ -862,12 +846,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
         </div>
         <div style="display:flex;align-items:center;gap:8px;background:rgba(22,163,74,.06);border-radius:8px;padding:10px 14px;margin-bottom:8px;">
           <div class="badge b-ok" style="width:26px;height:26px;font-size:12px;flex-shrink:0;">✓</div>
-          <div class="txt18">Schema-light · organisch erweiterbar · AI-Pipeline-freundlich</div>
+          <div class="txt18">Schema-light · organisch erweiterbar</div>
         </div>
-        <div style="background:#fff;border-radius:10px;padding:14px 18px;box-shadow:0 2px 8px rgba(30,39,97,.07);">
-          <div class="lbl lbl-navy" style="font-size:16px;margin-bottom:8px;">Ideal für heterogene AI-Workflows</div>
-          <div class="txt18">RAG-Systeme integrieren ständig neue Quellen — RDF bricht nicht, wenn unbekannte Prädikate auftauchen.</div>
-        </div>
+        
       </div>
     </div>
   </div>
@@ -906,15 +887,15 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
           <rect x="230" y="10" width="190" height="36" rx="10" fill="var(--teal)"/>
           <rect x="230" y="36" width="190" height="10" fill="var(--teal)"/>
           <text x="325" y="33" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="700">Triple Table</text>
-          <text x="250" y="62"  fill="var(--muted)" font-size="11" font-family="Segoe UI" font-weight="700">S</text><text x="290" y="62" fill="var(--muted)" font-size="11" font-family="Segoe UI" font-weight="700">P</text><text x="330" y="62" fill="var(--muted)" font-size="11" font-family="Segoe UI" font-weight="700">O</text>
+          <text x="250" y="62"  fill="var(--muted)" font-size="13" font-family="Segoe UI" font-weight="700">S</text><text x="290" y="62" fill="var(--muted)" font-size="13" font-family="Segoe UI" font-weight="700">P</text><text x="330" y="62" fill="var(--muted)" font-size="13" font-family="Segoe UI" font-weight="700">O</text>
           <line x1="230" y1="68" x2="420" y2="68" stroke="#EEF1FA" stroke-width="1"/>
           <text x="250" y="88"  fill="var(--coral)" font-size="13" font-family="Consolas" font-weight="700">201</text><text x="285" y="88" fill="var(--coral)" font-size="13" font-family="Consolas" font-weight="700">301</text><text x="322" y="88" fill="var(--coral)" font-size="13" font-family="Consolas" font-weight="700">101</text>
           <text x="250" y="116" fill="var(--coral)" font-size="13" font-family="Consolas" font-weight="700">201</text><text x="285" y="116" fill="var(--coral)" font-size="13" font-family="Consolas" font-weight="700">401</text><text x="322" y="116" fill="var(--coral)" font-size="13" font-family="Consolas" font-weight="700">501</text>
           <!-- Annotation -->
-          <text x="245" y="155" fill="var(--muted)" font-size="11" font-family="Segoe UI">statt:</text>
-          <text x="245" y="175" fill="var(--muted)" font-size="10" font-family="Consolas">uni:UniStuttgart</text>
-          <text x="245" y="192" fill="var(--muted)" font-size="10" font-family="Consolas">uni:locatedIn</text>
-          <text x="245" y="209" fill="var(--muted)" font-size="10" font-family="Consolas">dbr:Stuttgart</text>
+          <text x="245" y="155" fill="var(--muted)" font-size="12" font-family="Segoe UI">statt:</text>
+          <text x="245" y="173" fill="var(--muted)" font-size="12" font-family="Consolas">uni:UniStuttgart</text>
+          <text x="245" y="191" fill="var(--muted)" font-size="12" font-family="Consolas">uni:locatedIn</text>
+          <text x="245" y="209" fill="var(--muted)" font-size="12" font-family="Consolas">dbr:Stuttgart</text>
         </svg>
       </div>
       <div class="sp-r" style="gap:14px;justify-content:center;">
@@ -941,7 +922,84 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
 
 
 <!-- ═══════════════════════════════════════════════════════
-     DATA STRUCTURE 04 — Index-Permutationen
+     DATA STRUCTURE 04 — Index-Permutationen - V1 (Übung / Interaktion!)
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">04</div>
+    <div class="tag">Data Structure</div>
+    <div class="title">Physische Speicherung II – Index-Permutationen</div>
+  </div>
+  <div class="body">
+    <div style="padding:16px 28px;height:100%;display:flex;flex-direction:column;gap:14px;">
+      <div style="display:flex;gap:14px;align-items:stretch;">
+        <div style="flex:1;background:#fff;border-radius:12px;padding:14px 18px;box-shadow:0 2px 8px rgba(30,39,97,.07);">
+          <div class="lbl lbl-navy" style="margin-bottom:10px;">6 Index-Permutationen</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+            <div style="background:var(--navy);border-radius:8px;padding:8px 12px;text-align:center;color:#fff;font-family:Consolas;font-size:18px;font-weight:700;">SPO</div>
+            <div style="background:var(--navy);border-radius:8px;padding:8px 12px;text-align:center;color:#fff;font-family:Consolas;font-size:18px;font-weight:700;">SOP</div>
+            <div style="background:var(--teal);border-radius:8px;padding:8px 12px;text-align:center;color:#fff;font-family:Consolas;font-size:18px;font-weight:700;">PSO</div>
+            <div style="background:var(--teal);border-radius:8px;padding:8px 12px;text-align:center;color:#fff;font-family:Consolas;font-size:18px;font-weight:700;">POS</div>
+            <div style="background:#7C3AED;border-radius:8px;padding:8px 12px;text-align:center;color:#fff;font-family:Consolas;font-size:18px;font-weight:700;">OSP</div>
+            <div style="background:#7C3AED;border-radius:8px;padding:8px 12px;text-align:center;color:#fff;font-family:Consolas;font-size:18px;font-weight:700;">OPS</div>
+          </div>
+        </div>
+        
+      </div>
+      
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>Ohne passenden Index = Full Scan. <strong>Mit Permutationsindizes</strong> findet jede Query-Form in O(log n) ihren Einstiegspunkt.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     DATA STRUCTURE 04 — Index-Permutationen - V2
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">04</div>
+    <div class="tag">Data Structure</div>
+    <div class="title">Physische Speicherung II – Index-Permutationen</div>
+  </div>
+  <div class="body">
+    <div style="padding:16px 28px;height:100%;display:flex;flex-direction:column;gap:14px;">
+      <div style="display:flex;gap:14px;align-items:stretch;">
+        <div style="flex:1;background:#fff;border-radius:12px;padding:14px 18px;box-shadow:0 2px 8px rgba(30,39,97,.07);">
+          <div class="lbl lbl-navy" style="margin-bottom:10px;">6 Index-Permutationen</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+            <div style="background:var(--navy);border-radius:8px;padding:8px 12px;text-align:center;color:#fff;font-family:Consolas;font-size:18px;font-weight:700;">SPO</div>
+            <div style="background:var(--navy);border-radius:8px;padding:8px 12px;text-align:center;color:#fff;font-family:Consolas;font-size:18px;font-weight:700;">SOP</div>
+            <div style="background:var(--teal);border-radius:8px;padding:8px 12px;text-align:center;color:#fff;font-family:Consolas;font-size:18px;font-weight:700;">PSO</div>
+            <div style="background:var(--teal);border-radius:8px;padding:8px 12px;text-align:center;color:#fff;font-family:Consolas;font-size:18px;font-weight:700;">POS</div>
+            <div style="background:#7C3AED;border-radius:8px;padding:8px 12px;text-align:center;color:#fff;font-family:Consolas;font-size:18px;font-weight:700;">OSP</div>
+            <div style="background:#7C3AED;border-radius:8px;padding:8px 12px;text-align:center;color:#fff;font-family:Consolas;font-size:18px;font-weight:700;">OPS</div>
+          </div>
+        </div>
+        
+      </div>
+      <!-- Query patterns table -->
+      <div style="flex:1;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(30,39,97,.07);">
+        <div style="display:grid;grid-template-columns:2fr 2fr 1fr;background:var(--navy);color:#fff;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;">
+          <div style="padding:8px 16px;">SPARQL-Pattern</div><div style="padding:8px 16px;">Beispiel</div><div style="padding:8px 16px;">Nutzt Index</div>
+        </div>
+        <div style="display:grid;grid-template-columns:2fr 2fr 1fr;border-bottom:1px solid #EEF1FA;font-size:16px;">
+          <div style="padding:8px 16px;font-family:Consolas;">dbr:UniS ?p ?o</div><div style="padding:8px 16px;color:var(--muted);">Alle Fakten über UniStuttgart</div><div style="padding:8px 16px;font-family:Consolas;font-weight:700;color:var(--navy);">SPO</div>
+        </div>
+        <div style="display:grid;grid-template-columns:2fr 2fr 1fr;background:#EEF1FA;border-bottom:1px solid #DDE3F0;font-size:16px;">
+          <div style="padding:8px 16px;font-family:Consolas;">?s uni:loc dbr:Stuttgart</div><div style="padding:8px 16px;color:var(--muted);">Was liegt in Stuttgart?</div><div style="padding:8px 16px;font-family:Consolas;font-weight:700;color:var(--teal);"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>Ohne passenden Index = Full Scan. <strong>Mit Permutationsindizes</strong> findet jede Query-Form in O(log n) ihren Einstiegspunkt.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     DATA STRUCTURE 04 — Index-Permutationen - V3
 ═══════════════════════════════════════════════════════ -->
 <div class="slide">
   <div class="lbar"></div>
@@ -997,6 +1055,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
 </div>
 
 
+
 <!-- ═══════════════════════════════════════════════════════
      DATA STRUCTURE 05 — Datenintegration über URIs
 ═══════════════════════════════════════════════════════ -->
@@ -1009,15 +1068,23 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
   </div>
   <div class="body">
     <div style="padding:16px 28px;height:100%;display:flex;flex-direction:column;gap:14px;">
-      <!-- URI uniqueness -->
+      <!-- URI uniqueness + chain -->
       <div style="display:flex;gap:14px;">
-        <div style="flex:1;background:#fff;border-radius:10px;padding:14px 18px;box-shadow:0 2px 8px rgba(30,39,97,.07);">
+        <div style="flex:1;background:#fff;border-radius:10px;padding:12px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);">
           <div class="lbl lbl-coral" style="margin-bottom:6px;">Mehrdeutigkeit ohne URI</div>
           <div class="txt22">"Stuttgart" — Stadt? Nachname? String?</div>
         </div>
-        <div style="flex:1;background:#fff;border-radius:10px;padding:14px 18px;box-shadow:0 2px 8px rgba(30,39,97,.07);">
+        <div style="flex:1.3;background:#fff;border-radius:10px;padding:12px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--gold);">
+          <div class="lbl lbl-navy" style="margin-bottom:6px;">URI als Knotenpunkt</div>
+          <div style="font-family:Consolas;font-size:14px;line-height:1.85;">
+            <span style="color:var(--coral);">:UniS</span> <span style="color:var(--muted);">→</span> <span style="color:var(--navy);">locatedIn</span> <span style="color:var(--muted);">→</span> <span style="color:var(--teal);">dbr:Stuttgart</span> <span style="color:var(--muted);font-size:11px;">(Objekt)</span><br>
+            <span style="color:var(--teal);">dbr:Stuttgart</span> <span style="color:var(--muted);">→</span> <span style="color:var(--navy);">locatedIn</span> <span style="color:var(--muted);">→</span> <span style="color:#7C3AED;">dbr:BW</span> <span style="color:var(--muted);font-size:11px;">(Subjekt)</span><br>
+            <span style="color:var(--muted);">⟶ Kette: UniS → Stuttgart → BW</span>
+          </div>
+        </div>
+        <div style="flex:1;background:#fff;border-radius:10px;padding:12px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);">
           <div class="lbl lbl-teal" style="margin-bottom:6px;">Eindeutigkeit mit URI</div>
-          <div style="font-family:Consolas;font-size:16px;color:var(--teal);">http://dbpedia.org/resource/Stuttgart</div>
+          <div style="font-family:Consolas;font-size:15px;color:var(--teal);line-height:1.5;">http://dbpedia.org/resource/<br>Stuttgart</div>
         </div>
       </div>
       <!-- Integration visual -->
@@ -1091,7 +1158,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
       <div style="background:#fff;border-radius:12px;padding:16px 24px;box-shadow:0 2px 8px rgba(30,39,97,.07);display:flex;align-items:center;gap:16px;">
         <div class="badge b-ok" style="width:44px;height:44px;font-size:22px;flex-shrink:0;">→</div>
         <div style="font-size:22px;color:var(--text);line-height:1.35;">
-          Eine <strong>globale Wissensstruktur</strong>, die über Datenbankgrenzen hinweg maschinenlesbar und inferenzfähig bleibt.
+          Eine <strong>globale Wissensstruktur</strong>, die maschinenlesbar und über Datenbankgrenzen hinweg verlinkbar bleibt.
           <span style="color:var(--muted);font-size:18px;"> → Wie fragen wir das ab? SPARQL!</span>
         </div>
       </div>
@@ -1124,8 +1191,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
           <div class="badge b-no" style="width:auto;padding:0 12px;border-radius:8px;font-size:14px;white-space:nowrap;">Tabellenschema nötig</div>
           <div class="badge b-no" style="width:auto;padding:0 12px;border-radius:8px;font-size:14px;white-space:nowrap;">Explizite JOIN-Keys</div>
-          <div class="badge b-no" style="width:auto;padding:0 12px;border-radius:8px;font-size:14px;white-space:nowrap;">Keine Semantik</div>
-        </div>
+          </div>
       </div>
       <div class="sp-r" style="gap:12px;">
         <div class="lbl lbl-teal" style="margin-bottom:4px;">SPARQL — Graph Pattern Matching</div>
@@ -1147,17 +1213,70 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
       </div>
     </div>
   </div>
-  <div class="insight"><span class="ia">→</span><span>SQL fragt Tabellen ab. SPARQL beschreibt <strong>Muster im Graphen</strong> — geteilte Variablen verbinden Patterns implizit.</span></div>
+  <div class="insight"><span class="ia">→</span><span><code>location_id = 42</code> ist eine nackte Zahl — keine Bedeutung außerhalb der DB. <code>uni:location</code> ist eine URI: global, maschinenlesbar, W3C-standardisiert. <strong>Das ist der Semantik-Unterschied.</strong></span></div>
 </div>
 
 
 <!-- ═══════════════════════════════════════════════════════
-     QUERY MODEL 02 — SELECT/WHERE & Triple Patterns
+     QUERY MODEL 02 — Query-Typen (Übersicht)
 ═══════════════════════════════════════════════════════ -->
 <div class="slide">
   <div class="lbar"></div>
   <div class="hdr">
     <div class="num">02</div>
+    <div class="tag">Query Model</div>
+    <div class="title">Query-Typen – SELECT · ASK · CONSTRUCT · DESCRIBE</div>
+  </div>
+  <div class="body">
+    <div class="grid22">
+      <div class="card card-teal">
+        <div class="ch"><div class="ci ic"><i data-lucide="table"></i></div><div class="ct">SELECT — Tabelle</div></div>
+        <div class="code" style="font-size:13px;">
+<span class="kw">SELECT</span> <span class="var">?u</span> <span class="var">?name</span> <span class="kw">WHERE</span> { ... }
+        </div>
+        <div class="cb">Eine Spalte pro Variable, eine Zeile pro Match — Standardfall für alle Abfragen.</div>
+      </div>
+      <div class="card card-coral">
+        <div class="ch"><div class="ci ic"><i data-lucide="check-circle-2"></i></div><div class="ct">ASK — Boolean</div></div>
+        <div class="code" style="font-size:13px;">
+<span class="kw">ASK</span> { <span class="iri">uni:AliceSchmidt</span> <span class="kw">a</span> <span class="iri">uni:Student</span> . }
+        </div>
+        <div class="cb">Nur <strong>true</strong> oder <strong>false</strong> — kein Datensatz. Validierung, Assertions, Existenz-Checks.</div>
+      </div>
+      <div class="card card-navy">
+        <div class="ch"><div class="ci ic"><i data-lucide="share-2"></i></div><div class="ct">CONSTRUCT — neuer Graph</div></div>
+        <div class="code" style="font-size:11px;line-height:1.35;padding:8px 12px;">
+<span class="kw">CONSTRUCT</span> {<br>
+&nbsp;&nbsp;<span class="var">?p</span> <span class="iri">foaf:name</span> <span class="var">?name</span> ;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="iri">foaf:memberOf</span> <span class="iri">uni:Stuttgart</span> .<br>
+} <span class="kw">WHERE</span> {<br>
+&nbsp;&nbsp;<span class="var">?p</span> <span class="kw">a</span> <span class="iri">uni:Student</span> ;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="iri">uni:hatName</span> <span class="var">?name</span> ;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="iri">uni:studiertAn</span> <span class="iri">uni:Stuttgart</span> .<br>
+}
+        </div>
+        <div class="cb">Übersetzt <code>uni:</code>-Vokabular in <code>foaf:</code> — Quellen vereinheitlichen, RAG-Kontext aufbereiten.</div>
+      </div>
+      <div class="card card-gold">
+        <div class="ch"><div class="ci ic"><i data-lucide="search"></i></div><div class="ct">DESCRIBE — Ressource</div></div>
+        <div class="code" style="font-size:13px;">
+<span class="kw">DESCRIBE</span> <span class="iri">uni:Stuttgart</span>
+        </div>
+        <div class="cb">Alles über eine URI — store-definiert, oft äquivalent zu <code>SELECT ?p ?o WHERE { uni:Stuttgart ?p ?o }</code>. Schnelle Exploration.</div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>CONSTRUCT macht RDF zum <strong>strukturierten RAG-Kontext</strong> — jede LLM-Aussage bleibt auf konkrete Triples rückführbar. ASK für automatisierte Konsistenz-Checks.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     QUERY MODEL 03 — SELECT/WHERE & Triple Patterns
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">03</div>
     <div class="tag">Query Model</div>
     <div class="title">Triple Patterns &amp; SELECT / WHERE</div>
   </div>
@@ -1188,11 +1307,11 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
           </div>
           <div class="card card-navy">
             <div class="ch"><div class="ci ic"><i data-lucide="link-2"></i></div><div class="ct">Präfixe</div></div>
-            <div class="cb">Kurzschreibweise für Namespace-URIs — nur syntaktischer Zucker, keine externe DB</div>
+            <div class="cb">Kurzschreibweise für Namespace-URIs</div>
           </div>
-          <div class="card card-coral">
-            <div class="ch"><div class="ci ic"><i data-lucide="git-branch"></i></div><div class="ct">Query-Typen</div></div>
-            <div class="cb"><strong>SELECT</strong> (Tabelle) · <strong>ASK</strong> (Boolean) · <strong>CONSTRUCT</strong> (neuer Graph) · <strong>DESCRIBE</strong></div>
+          <div class="card card-gold">
+            <div class="ch"><div class="ci ic"><i data-lucide="layers"></i></div><div class="ct">Implizites AND</div></div>
+            <div class="cb">Alle Patterns müssen gleichzeitig matchen — Reihenfolge egal, der Optimizer startet mit dem <strong>selektivsten Pattern</strong> (wenigste Treffer) und hält Zwischenergebnisse klein</div>
           </div>
         </div>
       </div>
@@ -1203,20 +1322,20 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
 
 
 <!-- ═══════════════════════════════════════════════════════
-     QUERY MODEL 03 — FILTER, OPTIONAL, UNION
+     QUERY MODEL 04 — FILTER, OPTIONAL, Property Paths
 ═══════════════════════════════════════════════════════ -->
 <div class="slide">
   <div class="lbar"></div>
   <div class="hdr">
-    <div class="num">03</div>
+    <div class="num">04</div>
     <div class="tag">Query Model</div>
     <div class="title">FILTER · OPTIONAL · Property Paths</div>
   </div>
   <div class="body">
     <div class="grid3">
-      <div style="display:flex;flex-direction:column;gap:10px;overflow:hidden;">
+      <div style="display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:10px;overflow:hidden;">
         <div class="lbl lbl-coral">FILTER</div>
-        <div class="code" style="font-size:12px;flex:1;">
+        <div class="code" style="font-size:12px;overflow:hidden;">
 <span class="kw">SELECT</span> <span class="var">?name</span> <span class="var">?sem</span><br>
 <span class="kw">WHERE</span> {<br>
 &nbsp;<span class="var">?s</span> <span class="kw">a</span> <span class="iri">uni:Student</span>;<br>
@@ -1229,9 +1348,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
           <div class="cb" style="font-size:18px;">Schränkt Bindungen ein — analog zu SQL WHERE</div>
         </div>
       </div>
-      <div style="display:flex;flex-direction:column;gap:10px;overflow:hidden;">
+      <div style="display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:10px;overflow:hidden;">
         <div class="lbl lbl-teal">OPTIONAL</div>
-        <div class="code" style="font-size:12px;flex:1;">
+        <div class="code" style="font-size:12px;overflow:hidden;">
 <span class="kw">SELECT</span> <span class="var">?name</span> <span class="var">?fach</span><br>
 <span class="kw">WHERE</span> {<br>
 &nbsp;<span class="var">?p</span> <span class="kw">a</span> <span class="iri">uni:Professor</span>;<br>
@@ -1242,24 +1361,22 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
 }
         </div>
         <div class="card card-teal" style="padding:10px 14px;">
-          <div class="cb" style="font-size:18px;">= LEFT JOIN — fehlende Fakten bleiben erlaubt (Open-World)</div>
+          <div class="cb" style="font-size:17px;">= LEFT JOIN · Open World: fehlendes Triple = „unbekannt". <strong>Ohne OPTIONAL:</strong> Zeile fällt raus — 0 Treffer, kein Fehler</div>
         </div>
       </div>
-      <div style="display:flex;flex-direction:column;gap:10px;overflow:hidden;">
+      <div style="display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:10px;overflow:hidden;">
         <div class="lbl lbl-navy">Property Path</div>
-        <div class="code" style="font-size:12px;flex:1;">
-<span class="cm">-- Alternative Prädikate:</span><br>
+        <div class="code" style="font-size:12px;overflow:hidden;">
+<span class="cm">-- Alt-Prädikate:</span><br>
 <span class="var">?person</span><br>
 &nbsp;(<span class="iri">uni:studiesAt</span><br>
-&nbsp; | <span class="iri">uni:worksAt</span>)<br>
-&nbsp;<span class="var">?u</span> .<br><br>
-<span class="cm">-- Transitive Traversal:</span><br>
-<span class="var">?typ</span><br>
-&nbsp;<span class="iri">rdfs:subClassOf*</span><br>
-&nbsp;<span class="iri">uni:Person</span> .
+&nbsp; | <span class="iri">uni:worksAt</span>) <span class="var">?u</span> .<br><br>
+<span class="cm">-- Transitive:</span><br>
+<span class="var">?typ</span> <span class="iri">rdfs:subClassOf*</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="iri">uni:Person</span> .
         </div>
         <div class="card card-navy" style="padding:10px 14px;">
-          <div class="cb" style="font-size:18px;"><strong>|</strong> Alternative · <strong>*</strong> 0+ Schritte · <strong>+</strong> 1+ Schritte · <strong>/</strong> Sequenz</div>
+          <div class="cb" style="font-size:16px;"><strong>|</strong> = „oder" &nbsp;·&nbsp; <strong>*</strong> = 0 oder mehr Schritte &nbsp;·&nbsp; <strong>+</strong> = mind. 1 Schritt &nbsp;·&nbsp; <strong>/</strong> = A dann B<br><em style="font-size:14px;">Alt-Muster (ganze WHERE-Blöcke) → <strong>UNION</strong></em></div>
         </div>
       </div>
     </div>
@@ -1269,12 +1386,12 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
 
 
 <!-- ═══════════════════════════════════════════════════════
-     QUERY MODEL 04 — Aggregation
+     QUERY MODEL 05 — Aggregation
 ═══════════════════════════════════════════════════════ -->
 <div class="slide">
   <div class="lbar"></div>
   <div class="hdr">
-    <div class="num">04</div>
+    <div class="num">05</div>
     <div class="tag">Query Model</div>
     <div class="title">Aggregation – COUNT, GROUP BY, ORDER BY</div>
   </div>
@@ -1300,20 +1417,14 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
         <div style="display:flex;flex-direction:column;gap:10px;">
           <div class="card card-teal">
             <div class="ch"><div class="ci ic"><i data-lucide="calculator"></i></div><div class="ct">Aggregation</div></div>
-            <div class="cb">COUNT(?person) gruppiert nach Universität — wie SQL GROUP BY</div>
+            <div class="cb"><strong>COUNT(?person)</strong> zählt Personen pro Gruppe · <strong>GROUP BY ?uniname</strong> gruppiert nach Universität — Syntax wie SQL GROUP BY</div>
           </div>
           <div class="card card-navy">
             <div class="ch"><div class="ci ic"><i data-lucide="layers"></i></div><div class="ct">rdfs:subClassOf*</div></div>
             <div class="cb">Findet alle Klassen unterhalb uni:Person — braucht zusätzlich <strong>?person a ?typ</strong> für Instanzen</div>
           </div>
-          <div class="card card-coral">
-            <div class="ch"><div class="ci ic"><i data-lucide="git-branch"></i></div><div class="ct">Property Path Union</div></div>
-            <div class="cb">(studiesAt | worksAt) — Personen egal ob Student oder Mitarbeiter</div>
-          </div>
         </div>
-        <div style="background:rgba(249,201,70,.1);border-radius:8px;padding:10px 14px;border-left:3px solid var(--gold);">
-          <div class="txt18"><strong>Aggregation ≠ Inferenz.</strong> COUNT verdichtet Ergebnisse. rdfs:subClassOf* ist ein Pfadmuster — Inferenz leitet neue Tripel ab.</div>
-        </div>
+        
       </div>
     </div>
   </div>
@@ -1322,91 +1433,156 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
 
 
 <!-- ═══════════════════════════════════════════════════════
-     QUERY MODEL 05 — Der Aha-Moment: Inferenz
-═══════════════════════════════════════════════════════ -->
-<div class="slide">
-  <div class="lbar"></div>
-  <div class="hdr">
-    <div class="num">05</div>
-    <div class="tag">Query Model</div>
-    <div class="title">Der Aha-Moment: Inferenz in der Praxis</div>
-  </div>
-  <div class="body">
-    <div style="padding:14px 28px;height:100%;display:flex;flex-direction:column;gap:12px;">
-      <!-- Class hierarchy -->
-      <div style="display:flex;align-items:center;justify-content:center;gap:20px;">
-        <svg width="500" height="90" viewBox="0 0 500 90">
-          <rect x="190" y="5" width="120" height="40" rx="8" fill="var(--navy)"/>
-          <text x="250" y="29" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="700">uni:Person</text>
-          <rect x="40"  y="60" width="120" height="28" rx="6" fill="var(--teal)"/>
-          <text x="100" y="78" text-anchor="middle" fill="white" font-size="12" font-family="Segoe UI" font-weight="700">uni:Student</text>
-          <rect x="180" y="60" width="120" height="28" rx="6" fill="var(--teal)"/>
-          <text x="240" y="78" text-anchor="middle" fill="white" font-size="12" font-family="Segoe UI" font-weight="700">uni:Professor</text>
-          <rect x="340" y="60" width="120" height="28" rx="6" fill="var(--teal)"/>
-          <text x="400" y="78" text-anchor="middle" fill="white" font-size="12" font-family="Segoe UI" font-weight="700">uni:Staff</text>
-          <line x1="190" y1="45" x2="135" y2="60" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4,3"/>
-          <line x1="230" y1="45" x2="230" y2="60" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4,3"/>
-          <line x1="270" y1="45" x2="370" y2="60" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4,3"/>
-          <text x="100" y="53" fill="var(--muted)" font-size="10" font-family="Segoe UI">subClassOf</text>
-        </svg>
-      </div>
-      <!-- Query 4 vs 5 -->
-      <div style="display:flex;gap:14px;flex:1;align-items:stretch;">
-        <div style="flex:1;display:flex;flex-direction:column;gap:8px;">
-          <div style="background:rgba(220,38,38,.06);border-radius:10px;padding:12px 16px;border:2px solid var(--no);">
-            <div class="lbl lbl-coral" style="margin-bottom:8px;">Query 4 — ohne Inferenz</div>
-            <div class="code" style="font-size:13px;">
-<span class="kw">SELECT</span> <span class="var">?p</span><br>
-<span class="kw">WHERE</span> {<br>
-&nbsp;&nbsp;<span class="var">?p</span> <span class="kw">a</span> <span class="iri">uni:Person</span> .<br>
-}
-            </div>
-          </div>
-          <div style="background:var(--no);border-radius:10px;padding:16px 20px;text-align:center;color:#fff;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;">
-            <div style="font-size:52px;font-weight:700;margin-bottom:4px;">0</div>
-            <div style="font-size:18px;font-weight:700;">Ergebnisse</div>
-            <div style="font-size:16px;opacity:.8;margin-top:4px;">Niemand ist explizit als uni:Person gespeichert</div>
-          </div>
-        </div>
-        <!-- Arrow -->
-        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
-          <svg width="50" height="60" viewBox="0 0 50 60"><line x1="25" y1="0" x2="25" y2="40" stroke="var(--gold)" stroke-width="3"/><polygon points="10,35 25,55 40,35" fill="var(--gold)"/></svg>
-          <div style="font-size:13px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px;text-align:center;">Reasoner<br>aktivieren</div>
-        </div>
-        <div style="flex:1;display:flex;flex-direction:column;gap:8px;">
-          <div style="background:rgba(22,163,74,.06);border-radius:10px;padding:12px 16px;border:2px solid var(--ok);">
-            <div class="lbl lbl-teal" style="margin-bottom:8px;">Query 5 — mit rdfs:subClassOf*</div>
-            <div class="code" style="font-size:13px;">
-<span class="kw">SELECT</span> <span class="var">?p</span><br>
-<span class="kw">WHERE</span> {<br>
-&nbsp;&nbsp;<span class="var">?p</span>  <span class="kw">a</span>  <span class="var">?typ</span> .<br>
-&nbsp;&nbsp;<span class="var">?typ</span> <span class="iri">rdfs:subClassOf*</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="iri">uni:Person</span> .<br>
-}
-            </div>
-          </div>
-          <div style="background:var(--ok);border-radius:10px;padding:16px 20px;text-align:center;color:#fff;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;">
-            <div style="font-size:52px;font-weight:700;margin-bottom:4px;">7</div>
-            <div style="font-size:18px;font-weight:700;">Ergebnisse</div>
-            <div style="font-size:16px;opacity:.85;margin-top:4px;">Studenten + Professoren + Staff werden erkannt</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="insight"><span class="ia">→</span><span>Dasselbe Modell, dasselbe Wissen — nur <strong>Modelwissen über Klassenhierarchien genutzt</strong>. Das ist der Unterschied zu SQL und Property Graph.</span></div>
-</div>
-
-
-<!-- ═══════════════════════════════════════════════════════
-     QUERY MODEL 06 — Federation & Query-Typen
+     QUERY MODEL 06 — Der Aha-Moment: Inferenz (1/2)
 ═══════════════════════════════════════════════════════ -->
 <div class="slide">
   <div class="lbar"></div>
   <div class="hdr">
     <div class="num">06</div>
     <div class="tag">Query Model</div>
-    <div class="title">Federated Queries &amp; Ausgabeformate</div>
+    <div class="title">Der Aha-Moment: Inferenz in der Praxis</div>
+  </div>
+  <div class="body">
+    <div style="padding:18px 32px;height:100%;display:flex;flex-direction:column;gap:16px;">
+      <!-- Class hierarchy -->
+      <div style="display:flex;align-items:center;justify-content:center;">
+        <svg width="560" height="104" viewBox="0 0 560 104">
+          <rect x="215" y="0" width="130" height="42" rx="8" fill="var(--navy)"/>
+          <text x="280" y="26" text-anchor="middle" fill="white" font-size="15" font-family="Segoe UI" font-weight="700">uni:Person</text>
+          <rect x="15"  y="62" width="140" height="32" rx="6" fill="var(--teal)"/>
+          <text x="85" y="83" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="700">uni:Student</text>
+          <rect x="210" y="62" width="140" height="32" rx="6" fill="var(--teal)"/>
+          <text x="280" y="83" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="700">uni:Professor</text>
+          <rect x="405" y="62" width="140" height="32" rx="6" fill="var(--teal)"/>
+          <text x="475" y="83" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="700">uni:Staff</text>
+          <line x1="220" y1="42" x2="155" y2="62" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="280" y1="42" x2="280" y2="62" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="340" y1="42" x2="405" y2="62" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <text x="110" y="55" fill="var(--muted)" font-size="12" font-family="Segoe UI">rdfs:subClassOf</text>
+        </svg>
+      </div>
+      <!-- Query 4 vs 5 -->
+      <div style="display:flex;gap:20px;flex:1;align-items:stretch;">
+        <div style="flex:1;display:flex;flex-direction:column;gap:12px;">
+          <div style="background:rgba(220,38,38,.06);border-radius:10px;padding:14px 18px;border:2px solid var(--no);">
+            <div class="lbl lbl-coral" style="margin-bottom:8px;">Query 4 — ohne Inferenz</div>
+            <div class="code" style="font-size:15px;">
+<span class="kw">SELECT</span> <span class="var">?p</span> <span class="kw">WHERE</span> { <span class="var">?p</span> <span class="kw">a</span> <span class="iri">uni:Person</span> . }
+            </div>
+          </div>
+          <div style="background:var(--no);border-radius:10px;padding:18px 22px;text-align:center;color:#fff;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+            <div style="font-size:64px;font-weight:700;line-height:1;">0</div>
+            <div class="lbl" style="color:#fff;margin-top:6px;">Ergebnisse</div>
+            <div style="font-size:18px;opacity:.85;margin-top:8px;">Niemand ist explizit als uni:Person gespeichert</div>
+          </div>
+        </div>
+        <!-- Arrow -->
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;flex-shrink:0;width:90px;">
+          <svg width="60" height="64" viewBox="0 0 60 64"><line x1="30" y1="2" x2="30" y2="42" stroke="var(--gold)" stroke-width="4"/><polygon points="12,38 30,60 48,38" fill="var(--gold)"/></svg>
+          <div class="lbl" style="color:var(--gold);text-align:center;line-height:1.2;">Reasoner<br>aktivieren</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:12px;">
+          <div style="background:rgba(22,163,74,.06);border-radius:10px;padding:14px 18px;border:2px solid var(--ok);">
+            <div class="lbl lbl-teal" style="margin-bottom:8px;">Query 5 — mit rdfs:subClassOf*</div>
+            <div class="code" style="font-size:15px;">
+<span class="kw">SELECT</span> <span class="var">?p</span> <span class="kw">WHERE</span> {<br>
+&nbsp;&nbsp;<span class="var">?p</span> <span class="kw">a</span> <span class="var">?typ</span> .<br>
+&nbsp;&nbsp;<span class="var">?typ</span> <span class="iri">rdfs:subClassOf*</span> <span class="iri">uni:Person</span> .<br>
+}
+            </div>
+          </div>
+          <div style="background:var(--ok);border-radius:10px;padding:18px 22px;text-align:center;color:#fff;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+            <div style="font-size:64px;font-weight:700;line-height:1;">7</div>
+            <div class="lbl" style="color:#fff;margin-top:6px;">Ergebnisse</div>
+            <div style="font-size:18px;opacity:.85;margin-top:8px;">Studenten + Professoren + Staff werden erkannt</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>SPARQL gibt zurück, was im Graph <strong>gilt</strong> — nicht nur, was wörtlich <strong>gespeichert</strong> ist. Alice wird über die Klassenhierarchie automatisch zur Person.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     QUERY MODEL 07 — Der Aha-Moment: Inferenz (2/2)
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">07</div>
+    <div class="tag">Query Model</div>
+    <div class="title">Traversal vs. Inferenz · RDF vs. Property Graph</div>
+  </div>
+  <div class="body">
+    <div class="grid2">
+      <div class="card card-navy">
+        <div class="ch"><div class="ci ic"><i data-lucide="route"></i></div><div class="ct">Traversal vs. Inferenz</div></div>
+        <div style="display:flex;align-items:center;justify-content:center;flex:1;">
+          <svg width="440" height="150" viewBox="0 0 440 150">
+            <rect x="10" y="10" width="130" height="36" rx="6" fill="var(--teal)"/>
+            <text x="75" y="33" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="700">uni:Student</text>
+            <rect x="300" y="10" width="130" height="36" rx="6" fill="var(--navy)"/>
+            <text x="365" y="33" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="700">uni:Person</text>
+            <line x1="140" y1="28" x2="295" y2="28" stroke="var(--teal)" stroke-width="3"/>
+            <polygon points="290,21 305,28 290,35" fill="var(--teal)"/>
+            <text x="220" y="18" text-anchor="middle" fill="var(--teal)" font-size="12" font-weight="700" font-family="Consolas">subClassOf</text>
+            <text x="220" y="62" text-anchor="middle" fill="var(--muted)" font-size="13" font-family="Segoe UI">Traversal: existierende Kante wird gefolgt</text>
+            <rect x="10" y="100" width="130" height="36" rx="6" fill="var(--bg)" stroke="var(--gold)" stroke-width="2"/>
+            <text x="75" y="123" text-anchor="middle" fill="var(--navy)" font-size="13" font-family="Segoe UI" font-weight="700">alice</text>
+            <rect x="300" y="100" width="130" height="36" rx="6" fill="var(--bg)" stroke="var(--gold)" stroke-width="2" stroke-dasharray="5,4"/>
+            <text x="365" y="123" text-anchor="middle" fill="var(--navy)" font-size="13" font-family="Segoe UI" font-weight="700">a uni:Person</text>
+            <line x1="140" y1="118" x2="295" y2="118" stroke="var(--gold)" stroke-width="3" stroke-dasharray="6,4"/>
+            <polygon points="290,111 305,118 290,125" fill="var(--gold)"/>
+            <text x="220" y="148" text-anchor="middle" fill="var(--gold)" font-size="12" font-weight="700" font-family="Consolas">+ inferiert</text>
+          </svg>
+        </div>
+        <div class="cb">Hier: <strong>Traversal</strong> entlang gespeicherter <code>subClassOf</code>-Kanten. Bei <strong>Inferenz/Entailment</strong> (Architecture) leitet der Store das neue Triple ab und speichert es zusätzlich.</div>
+      </div>
+      <div class="card card-coral">
+        <div class="ch"><div class="ci ic"><i data-lucide="git-compare-arrows"></i></div><div class="ct">RDF vs. Property Graph</div></div>
+        <div style="display:flex;align-items:center;justify-content:center;flex:1;">
+          <svg width="440" height="150" viewBox="0 0 440 150">
+            <text x="105" y="18" text-anchor="middle" fill="var(--navy)" font-size="13" font-weight="700" font-family="Segoe UI">PROPERTY GRAPH</text>
+            <circle cx="40"  cy="70" r="24" fill="var(--teal)"/>
+            <text x="40" y="74" text-anchor="middle" fill="white" font-size="11" font-family="Segoe UI" font-weight="700">alice</text>
+            <circle cx="170" cy="70" r="24" fill="var(--navy)"/>
+            <text x="170" y="74" text-anchor="middle" fill="white" font-size="11" font-family="Segoe UI" font-weight="700">Student</text>
+            <line x1="64" y1="70" x2="146" y2="70" stroke="var(--teal)" stroke-width="3"/>
+            <polygon points="141,63 156,70 141,77" fill="var(--teal)"/>
+            <text x="105" y="58" text-anchor="middle" fill="var(--teal)" font-size="11" font-weight="700" font-family="Consolas">Pointer-Hop</text>
+            <text x="105" y="118" text-anchor="middle" fill="var(--no)" font-size="13" font-family="Segoe UI">✕ subClassOf nicht nativ modelliert</text>
+            <line x1="220" y1="0" x2="220" y2="150" stroke="#DDE3F0" stroke-width="2"/>
+            <text x="330" y="18" text-anchor="middle" fill="var(--navy)" font-size="13" font-weight="700" font-family="Segoe UI">RDF / TRIPLE STORE</text>
+            <circle cx="260" cy="70" r="24" fill="var(--teal)"/>
+            <text x="260" y="74" text-anchor="middle" fill="white" font-size="11" font-family="Segoe UI" font-weight="700">alice</text>
+            <circle cx="400" cy="70" r="24" fill="var(--navy)"/>
+            <text x="400" y="74" text-anchor="middle" fill="white" font-size="10" font-family="Segoe UI" font-weight="700">Person</text>
+            <rect x="305" y="56" width="50" height="28" rx="5" fill="var(--gold)"/>
+            <text x="330" y="74" text-anchor="middle" fill="var(--navy)" font-size="10" font-weight="700" font-family="Consolas">Index</text>
+            <line x1="284" y1="70" x2="303" y2="70" stroke="var(--gold)" stroke-width="3"/>
+            <line x1="357" y1="70" x2="376" y2="70" stroke="var(--gold)" stroke-width="3"/>
+            <polygon points="371,63 386,70 371,77" fill="var(--gold)"/>
+            <text x="330" y="118" text-anchor="middle" fill="var(--ok)" font-size="13" font-family="Segoe UI">✓ subClassOf* nutzbar</text>
+          </svg>
+        </div>
+        <div class="cb"><strong>Property Graph:</strong> Pointer-Hop ist sehr schnell, kennt Klassenhierarchien aber nicht nativ. <strong>RDF:</strong> Index-Lookup pro Schritt, gewinnt aber beim <em>semantischen</em> Traversal via <code>subClassOf*</code>.</div>
+      </div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>Dasselbe Modell, dasselbe Wissen — nur <strong>Modellwissen über Klassenhierarchien genutzt</strong>. Das ist der Unterschied zu SQL und Property Graph.</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     QUERY MODEL 07 — Federated Queries
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">08</div>
+    <div class="tag">Query Model</div>
+    <div class="title">Federated Queries – Das Web of Data</div>
   </div>
   <div class="body">
     <div class="split">
@@ -1429,29 +1605,41 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
         <div class="txt18" style="color:var(--muted);">Verknüpft lokale Daten mit externen Endpoints via <strong style="color:var(--navy);">owl:sameAs</strong> — kein Datenkopie nötig.</div>
       </div>
       <div class="sp-r" style="gap:12px;justify-content:center;">
-        <div class="lbl lbl-navy" style="margin-bottom:4px;">Ausgabeformate &amp; Einsatz</div>
+        <div class="lbl lbl-navy" style="margin-bottom:4px;">Warum geht das nur mit W3C-SPARQL?</div>
+        <svg width="460" height="74" viewBox="0 0 460 74" style="align-self:center;">
+          <rect x="0" y="14" width="160" height="46" rx="8" fill="var(--navy)"/>
+          <text x="80" y="32" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="Segoe UI">Lokaler Store</text>
+          <text x="80" y="49" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="11" font-family="Segoe UI">Oxigraph</text>
+          <line x1="165" y1="37" x2="290" y2="37" stroke="var(--gold)" stroke-width="3"/>
+          <polygon points="290,30 305,37 290,44" fill="var(--gold)"/>
+          <polygon points="165,30 150,37 165,44" fill="var(--gold)"/>
+          <text x="227" y="27" text-anchor="middle" fill="var(--muted)" font-size="11" font-weight="700" font-family="Consolas">SERVICE</text>
+          <rect x="305" y="14" width="155" height="46" rx="8" fill="var(--teal)"/>
+          <text x="382" y="32" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="Segoe UI">DBpedia</text>
+          <text x="382" y="49" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="11" font-family="Segoe UI">SPARQL-Endpoint</text>
+        </svg>
         <div style="display:flex;flex-direction:column;gap:8px;">
-          <div style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:12px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);">
-            <div style="background:var(--teal);color:#fff;font-weight:700;font-size:14px;padding:4px 12px;border-radius:8px;flex-shrink:0;">JSON</div>
-            <div class="txt18">APIs, Python-Pipelines, RAG-Systeme</div>
+          <div class="card card-teal" style="padding:8px 14px;flex-direction:row;align-items:center;gap:10px;">
+            <div class="ci ic" style="flex-shrink:0;"><i data-lucide="globe"></i></div>
+            <div class="cb" style="font-size:18px;">Oxigraph, DBpedia, Wikidata, GraphDB, Neptune — <strong>alle sprechen denselben Standard</strong></div>
           </div>
-          <div style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:12px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);">
-            <div style="background:var(--navy);color:#fff;font-weight:700;font-size:14px;padding:4px 12px;border-radius:8px;flex-shrink:0;">CSV</div>
-            <div class="txt18">Tabellenanalyse, Excel, schneller Export</div>
+          <div class="card card-coral" style="padding:8px 14px;flex-direction:row;align-items:center;gap:10px;">
+            <div class="ci ic" style="flex-shrink:0;"><i data-lucide="x-circle"></i></div>
+            <div class="cb" style="font-size:18px;">Neo4j Cypher, MongoDB: <strong>keine</strong> gemeinsame Abfragesprache mit externen Endpoints</div>
           </div>
-          <div style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:12px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);">
-            <div style="background:var(--coral);color:#fff;font-weight:700;font-size:14px;padding:4px 12px;border-radius:8px;flex-shrink:0;">RDF/XML</div>
-            <div class="txt18">CONSTRUCT-Queries, Graph-Export</div>
+          <div class="card card-navy" style="padding:8px 14px;flex-direction:row;align-items:center;gap:10px;">
+            <div class="ci ic" style="flex-shrink:0;"><i data-lucide="layers-3"></i></div>
+            <div class="cb" style="font-size:18px;"><strong>Ein</strong> Query-Mechanismus, <strong>viele</strong> Datenquellen weltweit</div>
           </div>
         </div>
-        <div style="background:rgba(249,201,70,.1);border-radius:8px;padding:12px 14px;border-left:3px solid var(--gold);">
-          <div class="lbl lbl-gold" style="font-size:15px;margin-bottom:4px;">Demo — Query 7</div>
-          <div class="txt18">Die Federation-Query läuft live gegen DBpedia. Internetabhängig — Screenshot-Fallback bereit.</div>
+        <div style="background:rgba(43,200,154,.06);border-radius:8px;padding:10px 14px;border-left:3px solid var(--teal);">
+          <div class="lbl lbl-teal" style="font-size:15px;margin-bottom:2px;">Ausgabeformate</div>
+          <div class="txt18">JSON (APIs, RAG) · CSV (Tabellenanalyse) · RDF/XML (CONSTRUCT-Export)</div>
         </div>
       </div>
     </div>
   </div>
-  <div class="insight"><span class="ia">→</span><span>SERVICE verbindet lokale Daten mit dem <strong>Web of Data</strong> — Federated Queries sind SPARQL-nativer Linked-Data-Mechanismus.</span></div>
+  <div class="insight"><span class="ia">→</span><span>SERVICE verbindet lokale Daten live mit dem <strong>Web of Data</strong> — keine Kopie, kein ETL, nur möglich durch W3C-Standardisierung.</span></div>
 </div>
 
 
@@ -1853,10 +2041,20 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
   </div>
   <div class="body">
     <div class="c3rows">
-      <div class="c3row rdf-w">
-        <div class="c3l"><div class="rv-m">Zeile in Tabelle</div><div class="badge b-warn">≈</div></div>
+      <div class="c3row">
+        <div class="c3l"><div class="rv-m">Zeile in Tabelle</div><div class="badge b-ok">✓</div></div>
         <div class="c3m"><div class="ic ic-sm"><i data-lucide="package"></i></div>Dateneinheit</div>
-        <div class="c3r"><div class="badge b-ok">✓</div>Subjekt – Prädikat – Objekt</div>
+        <div class="c3r"><div class="badge b-ok">✓</div><div class="rv-m">Subjekt – Prädikat – Objekt</div></div>
+      </div>
+        <div class="c3row rdf-w">
+        <div class="c3l"><div class="rv-m">SQL</div><div class="badge b-ok">✓</div></div>
+        <div class="c3m"><div class="ic ic-sm"><i data-lucide="search"></i></div>Abfragesprache</div>
+        <div class="c3r"><div class="badge b-ok">✓</div><div class="rv-m">SPARQL (Pattern Matching)</div></div>
+      </div>
+      <div class="c3row sql-w">
+        <div class="c3l"><div class="rv-m">garantiert</div><div class="badge b-ok">✓</div></div>
+        <div class="c3m"><div class="ic ic-sm"><i data-lucide="shield-check"></i></div>Konsistenz</div>
+        <div class="c3r"><div class="badge b-warn">≈</div><div class="rv-m">begrenzt</div></div>
       </div>
       <div class="c3row rdf-w">
         <div class="c3l"><div class="rv-m">starr, vordefiniert</div><div class="badge b-warn">≈</div></div>
@@ -1866,13 +2064,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
       <div class="c3row rdf-w">
         <div class="c3l"><div class="rv-m">Joins (teuer, komplex)</div><div class="badge b-no">✗</div></div>
         <div class="c3m"><div class="ic ic-sm"><i data-lucide="share-2"></i></div>Beziehungen</div>
-        <div class="c3r"><div class="badge b-ok">✓</div>Kanten = native Struktur</div>
+        <div class="c3r"><div class="badge b-ok">✓</div>Geteilte Variablen</div>
       </div>
-      <div class="c3row rdf-w">
-        <div class="c3l"><div class="rv-m">SQL</div><div class="badge b-warn">≈</div></div>
-        <div class="c3m"><div class="ic ic-sm"><i data-lucide="search"></i></div>Abfragesprache</div>
-        <div class="c3r"><div class="badge b-ok">✓</div>SPARQL (Pattern Matching)</div>
-      </div>
+    
       <div class="c3row rdf-w">
         <div class="c3l"><div class="rv-m">keine</div><div class="badge b-no">✗</div></div>
         <div class="c3m"><div class="ic ic-sm"><i data-lucide="brain"></i></div>Semantik</div>
@@ -1890,7 +2084,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
 
 
 <!-- ═══════════════════════════════════════════════════════
-     COMPARISON 02 — Triple Store vs. Property Graph
+     COMPARISON 02 — Triple Store vs. Property Graph V1
 ═══════════════════════════════════════════════════════ -->
 <div class="slide">
   <div class="lbar"></div>
@@ -1898,43 +2092,83 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="num">02</div>
     <div class="tag">Comparison</div>
     <div class="title">Triple Store vs. Property Graph</div>
-    <div class="col-labels-c2">
-      <div class="cl-rdf2">Triple Store (RDF)</div>
-      <div class="cl-mid">Kriterium</div>
-      <div class="cl-pg">Property Graph</div>
+    <div class="col-labels-c1">
+      <div class="cl" style="background:var(--coral);">Property Graph</div>
+      <div class="cl cl-rdf">Triple Store (RDF)</div>
     </div>
   </div>
   <div class="body">
     <div class="c3rows">
-      <div class="c3row rdf-w">
-        <div class="c3r" style="justify-content:flex-end;"><div class="rv-m" style="text-align:right;">W3C-Standard · SPARQL, OWL</div><div class="badge b-ok">✓</div></div>
+      <div class="c3row rdf-w-r">
+        <div class="c3r" style="justify-content:flex-end;"><div class="rv-m" style="text-align:right;">vendor-spezifisch (Cypher)</div><div class="badge b-no">✗</div></div>
         <div class="c3m"><div class="ic ic-sm"><i data-lucide="shield-check"></i></div>Standardisierung</div>
-        <div class="c3l" style="justify-content:flex-start;"><div class="badge b-no">✗</div><div class="rv-m">vendor-spezifisch (Cypher)</div></div>
+        <div class="c3l" style="justify-content:flex-start;"><div class="badge b-ok">✓</div><div class="rv-m">W3C-Standard · SPARQL, OWL</div></div>
       </div>
-      <div class="c3row rdf-w">
-        <div class="c3r" style="justify-content:flex-end;"><div class="rv-m" style="text-align:right;">RDFS / OWL built-in</div><div class="badge b-ok">✓</div></div>
+      <div class="c3row rdf-w-r">
+        <div class="c3r" style="justify-content:flex-end;"><div class="rv-m" style="text-align:right;">manuell implementieren</div><div class="badge b-no">✗</div></div>
         <div class="c3m"><div class="ic ic-sm"><i data-lucide="cpu"></i></div>Inferenz</div>
-        <div class="c3l" style="justify-content:flex-start;"><div class="badge b-no">✗</div><div class="rv-m">manuell implementieren</div></div>
+        <div class="c3l" style="justify-content:flex-start;"><div class="badge b-ok">✓</div><div class="rv-m">RDFS / OWL built-in</div></div>
       </div>
       <div class="c3row pg-w">
-        <div class="c3r" style="justify-content:flex-end;"><div class="rv-m" style="text-align:right;">nur via Reifikation</div><div class="badge b-no">✗</div></div>
+        <div class="c3r" style="justify-content:flex-end;"><div class="rv-m" style="text-align:right;"></div></div>
         <div class="c3m"><div class="ic ic-sm"><i data-lucide="tag"></i></div>Kanten-Properties</div>
-        <div class="c3l" style="justify-content:flex-start;"><div class="badge b-ok">✓</div><div class="rv-m">nativ an der Kante</div></div>
+        <div class="c3l" style="justify-content:flex-start;"><div class="rv-m"></div></div>
       </div>
       <div class="c3row pg-w">
-        <div class="c3r" style="justify-content:flex-end;"><div class="rv-m" style="text-align:right;">gut mit Index-Permutationen</div><div class="badge b-warn">≈</div></div>
+        <div class="c3r" style="justify-content:flex-end;"><div class="rv-m" style="text-align:right;">pointer-nativ, sehr schnell</div><div class="badge b-ok">✓</div></div>
         <div class="c3m"><div class="ic ic-sm"><i data-lucide="zap"></i></div>Traversal-Performance</div>
-        <div class="c3l" style="justify-content:flex-start;"><div class="badge b-ok">✓</div><div class="rv-m">pointer-nativ, sehr schnell</div></div>
+        <div class="c3l" style="justify-content:flex-start;"><div class="badge b-warn">≈</div><div class="rv-m">Index-basiert</div></div>
       </div>
-      <div class="c3row rdf-w">
-        <div class="c3r" style="justify-content:flex-end;"><div class="rv-m" style="text-align:right;">URIs · Linked Data · Federation</div><div class="badge b-ok">✓</div></div>
+      <div class="c3row rdf-w-r">
+        <div class="c3r" style="justify-content:flex-end;"><div class="rv-m" style="text-align:right;">Insellösung</div><div class="badge b-no">✗</div></div>
         <div class="c3m"><div class="ic ic-sm"><i data-lucide="globe"></i></div>Datenintegration</div>
-        <div class="c3l" style="justify-content:flex-start;"><div class="badge b-no">✗</div><div class="rv-m">Insellösung</div></div>
+        <div class="c3l" style="justify-content:flex-start;"><div class="badge b-ok">✓</div><div class="rv-m">URIs · Linked Data · Federation</div></div>
       </div>
-      <div class="c3row">
-        <div class="c3r" style="justify-content:flex-end;"><div class="rv-m" style="text-align:right;">Knowledge Graphs · AI / RAG</div><div class="badge b-ok">✓</div></div>
-        <div class="c3m"><div class="ic ic-sm"><i data-lucide="briefcase"></i></div>Typischer Use Case</div>
-        <div class="c3l" style="justify-content:flex-start;"><div class="badge b-ok">✓</div><div class="rv-m">soziale Netze · Routing</div></div>
+    </div>
+  </div>
+  <div class="insight"><span class="ia">→</span><span>RDF gewinnt bei Semantik, Standards &amp; Offenheit — <em>Property Graph gewinnt bei tiefer, performance-kritischer Traversal.</em></span></div>
+</div>
+
+<!--════════════════════════════════════════════════
+     COMPARISON 02 — Triple Store vs. Property Graph V2
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">02</div>
+    <div class="tag">Comparison</div>
+    <div class="title">Triple Store vs. Property Graph</div>
+    <div class="col-labels-c1">
+      <div class="cl" style="background:var(--coral);">Property Graph</div>
+      <div class="cl cl-rdf">Triple Store (RDF)</div>
+    </div>
+  </div>
+  <div class="body">
+    <div class="c3rows">
+      <div class="c3row rdf-w-r">
+        <div class="c3r" style="justify-content:flex-end;"><div class="rv-m" style="text-align:right;">vendor-spezifisch (Cypher)</div><div class="badge b-no">✗</div></div>
+        <div class="c3m"><div class="ic ic-sm"><i data-lucide="shield-check"></i></div>Standardisierung</div>
+        <div class="c3l" style="justify-content:flex-start;"><div class="badge b-ok">✓</div><div class="rv-m">W3C-Standard · SPARQL, OWL</div></div>
+      </div>
+      <div class="c3row rdf-w-r">
+        <div class="c3r" style="justify-content:flex-end;"><div class="rv-m" style="text-align:right;">manuell implementieren</div><div class="badge b-no">✗</div></div>
+        <div class="c3m"><div class="ic ic-sm"><i data-lucide="cpu"></i></div>Inferenz</div>
+        <div class="c3l" style="justify-content:flex-start;"><div class="badge b-ok">✓</div><div class="rv-m">RDFS / OWL built-in</div></div>
+      </div>
+      <div class="c3row pg-w">
+        <div class="c3r" style="justify-content:flex-end;"><div class="rv-m" style="text-align:right;">nativ an der Kante</div><div class="badge b-ok">✓</div></div>
+        <div class="c3m"><div class="ic ic-sm"><i data-lucide="tag"></i></div>Kanten-Properties</div>
+        <div class="c3l" style="justify-content:flex-start;"><div class="badge b-no">✗</div><div class="rv-m">nicht nativ möglich</div></div>
+      </div>
+      <div class="c3row pg-w">
+        <div class="c3r" style="justify-content:flex-end;"><div class="rv-m" style="text-align:right;">pointer-nativ, sehr schnell</div><div class="badge b-ok">✓</div></div>
+        <div class="c3m"><div class="ic ic-sm"><i data-lucide="zap"></i></div>Traversal-Performance</div>
+        <div class="c3l" style="justify-content:flex-start;"><div class="badge b-warn">≈</div><div class="rv-m">Index-basiert</div></div>
+      </div>
+      <div class="c3row rdf-w-r">
+        <div class="c3r" style="justify-content:flex-end;"><div class="rv-m" style="text-align:right;">Insellösung</div><div class="badge b-no">✗</div></div>
+        <div class="c3m"><div class="ic ic-sm"><i data-lucide="globe"></i></div>Datenintegration</div>
+        <div class="c3l" style="justify-content:flex-start;"><div class="badge b-ok">✓</div><div class="rv-m">URIs · Linked Data · Federation</div></div>
       </div>
     </div>
   </div>
@@ -1964,7 +2198,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
       <div class="row"><div class="req-icon"><i data-lucide="brain"></i></div><div class="req">Semantik &amp; Inferenz</div><div class="arr">→</div><div class="pills"><div class="pill p-ts">Triple Store</div></div></div>
       <div class="row"><div class="req-icon"><i data-lucide="globe"></i></div><div class="req">Offene Datenintegration</div><div class="arr">→</div><div class="pills"><div class="pill p-ts">Triple Store</div></div></div>
       <div class="row"><div class="req-icon"><i data-lucide="wrench"></i></div><div class="req">Einstieg &amp; Tooling</div><div class="arr">→</div><div class="pills"><div class="pill p-rel">Relational</div><div class="pill-s ps-pg">Property Graph</div></div></div>
-      <div class="row"><div class="req-icon"><i data-lucide="bot"></i></div><div class="req">AI / RAG / Knowledge Graphs</div><div class="arr">→</div><div class="pills"><div class="pill p-ts">Triple Store</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="brain"></i></div><div class="req">Knowledge Graphs</div><div class="arr">→</div><div class="pills"><div class="pill p-ts">Triple Store</div></div></div>
     </div>
   </div>
   <div class="insight"><span class="ia">→</span><span><strong>Kein Modell gewinnt immer</strong> — Triple Store ist die Wahl, wenn Semantik, Standards und verteilte Datenintegration zählen.</span></div>
@@ -1979,6 +2213,8 @@ const contentSlides = Array.from(allSlides).filter(s => s.querySelector('.hdr'))
 const total = contentSlides.length;
 
 contentSlides.forEach((s, i) => {
+  if (s.querySelector('.footer')) return; // bereits verarbeitet (Hot-Reload-Schutz)
+
   const hdr = s.querySelector('.hdr');
 
   // ── Restructure header into flex chrome format ──
@@ -2000,12 +2236,6 @@ contentSlides.forEach((s, i) => {
     meta.appendChild(tagEl);   // moves tagEl into meta
     meta.appendChild(sep);
     meta.appendChild(titleEl); // moves titleEl into meta
-
-    // For slides with full-width col-labels-c2, hide the title text
-    // (col-labels serve as the visual title for that row)
-    if (hdr.querySelector('.col-labels-c2')) {
-      titleEl.style.display = 'none';
-    }
 
     hdr.innerHTML = '';        // removes numEl and extras too
     hdr.appendChild(numEl);

@@ -5,6 +5,11 @@ Für Romi (roman) ist nur **Gruppe 2 (Triple Stores)** relevant — alle anderen
 
 Und sonst eben die Dateien auf oberste Ebene wie `README.md` und `report.md`
 
+## Aufgabenteilung Präsentation
+
+**Roman präsentiert:** Data Structure · Query Model · Comparison
+**Vinzent präsentiert:** Motivation · Conceptual Model · Architecture · Demo
+
 ---
 
 ## Relevanter Bereich: Gruppe 2 – Triple Stores

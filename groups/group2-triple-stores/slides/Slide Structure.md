@@ -107,45 +107,170 @@
 
 ---
 
-# Sektion 4: Query Model – Folienstruktur (kompakt)
-
-### Folie 1: Kernidee & Lernziele
-- **Kern:** Was macht SPARQL anders als SQL? (Graph vs. Tabelle)
-- **Lernziele:** Pattern-Matching verstehen, Inferenz‑Impact erkennen, einfache Queries schreiben
-- **Visual:** 1‑Zeilen Vergleichstabelle SQL ↔ SPARQL
-Kommentar: Unnötig? 
-
-### Folie 2: Triple Patterns + SELECT/WHERE
-- **Kern:** Triple-Pattern = Subjekt‑Prädikat‑Objekt (Variablen mit `?`)
-- **Beispiel:** einfache `SELECT`/`WHERE` Query (Typ + Label)
-- **Takeaway:** geteilte Variablen verbinden Muster (implizite JOINs)
-Kommentar:  Präfixe erklären in diesem Kontext? 
-
-### Folie 3: FILTER, OPTIONAL, UNION (Kurzreferenz)
-- **FILTER:** Eingrenzen von Bindungen (kurzes Beispiel)
-- **OPTIONAL:** wie LEFT JOIN, fehlende Fakten bleiben erlaubt
-- **UNION:** Alternativen in Mustern (kurze Notation)
-Kommentar: Kann ich statt Union nicht einfach das | verwenden oder geht das nur bei  prädikaten diese property paths?  
-
-### Folie 4: Aggregation & Praxisbeispiel
-- **Konzepte:** `COUNT`, `GROUP BY`, `ORDER BY` in SPARQL
-- **Beispiel:** Personenanzahl pro Universität (mit `rdfs:subClassOf*`)
-- **Hinweis:** Aggregation + Gruppierung korrekt verwenden
-
-### Folie 5: Property Paths & Inferenz (RDFS/OWL kurz)
-- **Property Paths:** `/`, `|`, `*`, `+` — Beispiel `rdfs:subClassOf*`
-- **Inferenz:** ohne vs. mit RDFS/OWL (Aha‑Moment: Query4 vs. Query5)
-- **Visual:** kleine Klassen‑Hierarchy mit Traversalpfeil
-Kommentar: Im Vergleich zu Porperty Graph kann ich ja auch da durchgehen, wie sieht das da konkret aus und warum heißt dass dann, das die besser sind im langen durchgehen (also so hab ich das verstanden, weil da stand, property grpah stark bei traversal performance)? 
-
-### Folie 6: Federation, Ausgabeformate & Debug‑Checks
-- **Federation:** `SERVICE`‑Pattern kurz erwähnen (dbpedia Beispiel)
-- **Formate:** JSON (API), CSV (Analysen) — kurzer Tipp
-- **Debug:** typische Fehlerchecks (DefaultGraph, Encoding, Entailment)
-
-### Vielleicht Folie 7 mit ASK / CONSTRUCT / DESCRIBE
+# Sektion 4: Query Model
+**Kernbotschaft des Kapitels:** SPARQL fragt keine Tabellen ab — es beschreibt Bedeutungsstrukturen im Graphen und kann dabei Wissen *ableiten*, das nie explizit gespeichert wurde.
 
 ---
+
+## Folie 1: SPARQL – Pattern Matching statt Tabellen
+**Kernbotschaft:** SQL kennt Tabellen und fragt sie ab. SPARQL kennt keine Tabellen — es beschreibt, wie das Gesuchte *aussehen soll*, und der Store findet alle passenden Belegungen.
+
+- **Das Grundprinzip — Triple Pattern als Schablone:**
+    - Jedes Pattern sieht aus wie ein RDF-Triple, nur mit Variablen als Platzhalter (`?`)
+    - `?u a uni:University` → "Finde alles, das ein University-Typ ist"
+    - `?u uni:location ?stadt` → "Hole dazu die zugehörige Location-Ressource"
+    - `?stadt uni:bundesland "Baden-Wuerttemberg"` → "Nur wenn die Location in BW liegt"
+- **Geteilte Variablen = impliziter JOIN:**
+    - `?u` taucht in zwei Patterns auf — das verbindet sie automatisch
+    - Kein `JOIN`-Keyword, kein expliziter Fremdschlüssel nötig
+    - Analogie: Lückentext — alle Lücken mit demselben Namen müssen denselben Wert haben
+- **Gegenüberstellung SQL vs. SPARQL:**
+    - SQL: `FROM university u JOIN city c ON u.location_id = c.id WHERE c.state = '...'`
+    - SPARQL: `?u a uni:University . ?u uni:location ?stadt . ?stadt uni:bundesland "..."` — kein FROM, kein JOIN, kein Schema
+- **Visual:** Split-Layout — SQL-Query links (mit JOIN hervorgehoben), SPARQL-Query rechts (mit geteilter Variable hervorgehoben)
+
+---
+
+## Folie 2: SELECT & WHERE – Anatomie einer SPARQL-Query
+**Kernbotschaft:** Eine SPARQL-Query hat eine klar lesbare Struktur. Sobald man die Bestandteile kennt, kann man jede Query lesen und schreiben.
+
+- **PREFIX — Namespace-Abkürzung:**
+    - `uni:University` steht für `<http://example.org/uni/University>`
+    - Vergleich: wie `import numpy as np` in Python — kein Datenbankzugriff, nur ein kurzer Name für einen langen Pfad
+    - Ohne PREFIX: volle URI in spitzen Klammern überall nötig
+- **SELECT — Ausgabe-Variablen:**
+    - `SELECT ?u ?name` → diese zwei Variablen erscheinen als Spalten im Ergebnis
+    - `SELECT *` → alle gebundenen Variablen ausgeben
+- **WHERE — die Musterbedingungen:**
+    - Jede Zeile ist ein Triple Pattern; alle Patterns müssen gleichzeitig erfüllt sein (implizites AND)
+    - Reihenfolge der Patterns ist dem Store überlassen — der Query Optimizer entscheidet
+- **ORDER BY, LIMIT, OFFSET:** funktionieren wie in SQL
+- **Variablen-Konzept:**
+    - Namen sind bedeutungslos: `?u`, `?x`, `?baum` liefern dasselbe
+    - Typ entsteht durch Pattern (`?s a uni:University`), nicht durch den Variablennamen
+    - Gleichnamige Variablen in verschiedenen Patterns müssen denselben Wert haben → impliziter Join-Mechanismus
+- **Beispiel (Query 1):** `SELECT ?u ?name WHERE { ?u a uni:University . ?u rdfs:label ?name . } ORDER BY ?name`
+- **Visual:** Annotierte Query mit farbigen Markierungen auf PREFIX, SELECT, WHERE, einzelne Patterns und Variablen
+
+---
+
+## Folie 3: FILTER · OPTIONAL · Property Paths
+**Kernbotschaft:** SPARQL hat drei mächtige Werkzeuge, um Matches einzugrenzen, optionale Fakten zu behandeln und Pfade im Graphen zu traversieren.
+
+- **FILTER — Einschränkung nach Match:**
+    - `FILTER(?semester >= 5)` — schränkt bereits gebundene Variablen ein
+    - Kommt *nach* den Pattern-Bindungen, nicht *statt* eines Patterns. Erst matchen, dann filtern
+    - Analog SQL WHERE, aber auf Graph-Pattern-Ergebnissen
+- **OPTIONAL — fehlende Fakten erlaubt:**
+    - `OPTIONAL { ?p uni:fachgebiet ?fach . }` — Professoren ohne Fachgebiet bleiben im Ergebnis, `?fach` bleibt leer (unbound)
+    - Entspricht SQL LEFT JOIN: alle Zeilen der linken Seite, ungebunden wenn kein Match rechts
+    - **Open World Assumption:** Im RDF-Modell bedeutet ein fehlendes Triple "unbekannt", nicht "falsch"
+    - **Ohne OPTIONAL:** das Pattern muss vollständig matchen — fehlender Wert = Zeile fällt komplett raus, 0 Ergebnisse für diese Entität, kein Fehler
+- **Property Paths — Graph-Traversal in einer Zeile:**
+    - `(uni:studiesAt | uni:worksAt)` → Alternative Prädikate. Gilt nur für Prädikate, nicht für ganze Muster
+    - Für alternative Muster braucht man `UNION`: `{ ?p a uni:Student } UNION { ?p a uni:Professor }`
+    - `rdfs:subClassOf*` → transitive Traversal, 0 oder mehr Schritte entlang der Klassenhierarchie
+    - `rdfs:subClassOf+` → 1 oder mehr Schritte (direkte Superklasse ausgeschlossen)
+    - SQL kennt kein Äquivalent ohne rekursive CTEs
+- **Visual:** Drei-Spalten-Layout — FILTER links, OPTIONAL mitte, Property Path rechts, je mit Code-Snippet und Erklärung
+
+---
+
+## Folie 4: Aggregation – COUNT, GROUP BY, ORDER BY
+**Kernbotschaft:** SPARQL kann aggregieren wie SQL — aber die Treffermenge entsteht durch Graph-Pattern-Matching mit Klassenhierarchie-Traversal, nicht durch einen einfachen Tabellen-Scan.
+
+- **Die Query (Query 6) — Personen pro Universität zählen:**
+    - `SELECT ?uniname (COUNT(?person) AS ?anzahl)`
+    - `WHERE { ?person a ?typ . ?typ rdfs:subClassOf* uni:Person . ?person (uni:studiesAt|uni:worksAt) ?u . ?u rdfs:label ?uniname . }`
+    - `GROUP BY ?uniname ORDER BY DESC(?anzahl)`
+- **Was steckt drin:**
+    - `COUNT(?person)` → Anzahl eindeutiger Personen pro Gruppe
+    - `GROUP BY ?uniname` → eine Ergebniszeile pro Universität
+    - `?typ rdfs:subClassOf* uni:Person` → findet alle Unterklassen: Student, Professor, Staff
+    - `?person a ?typ` → findet die *Instanzen* dieser Klassen (nicht die Klassen selbst — deshalb beide Patterns zusammen nötig)
+    - `(uni:studiesAt | uni:worksAt)` → Property Path Union: Personen egal ob Student oder Mitarbeiter
+- **Wichtige Abgrenzung:**
+    - **Aggregation** verdichtet vorhandene Treffer (COUNT, SUM, AVG, MIN, MAX)
+    - **Inferenz** leitet neue Fakten ab — beides kommt hier vor, sind aber verschiedene Konzepte
+- **Visual:** Query links annotiert, rechts drei Cards: Aggregation, rdfs:subClassOf*-Erklärung, Property Path Union
+
+---
+
+## Folie 5: Der Aha-Moment – Inferenz (Query 4 vs. Query 5)
+**Kernbotschaft:** Gleiche Daten, gleiche Abfragesprache — aber mit Ontologie-Wissen findet SPARQL 7 Ergebnisse, wo naives SPARQL und SQL 0 liefern würden.
+
+- **Das Setup — was im Store steht:**
+    - `uni:Student rdfs:subClassOf uni:Person`
+    - `uni:Professor rdfs:subClassOf uni:Person`
+    - `uni:Staff rdfs:subClassOf uni:Person`
+    - Alice ist als `uni:Student` gespeichert — *nie* explizit als `uni:Person`
+- **Query 4 — ohne Klassenhierarchie → 0 Ergebnisse:**
+    - `SELECT ?p WHERE { ?p a uni:Person . }`
+    - Store gibt nur zurück, was wörtlich drin steht. Kein explizites `alice a uni:Person`-Triple → keine Treffer
+    - Wie SQL: keine impliziten Ableitungen
+- **Query 5 — mit Klassenhierarchie → 7 Ergebnisse:**
+    - `SELECT ?p WHERE { ?p a ?typ . ?typ rdfs:subClassOf* uni:Person . }`
+    - Zwei Patterns: erst Individuum → Klasse (`?p a ?typ`), dann Klassenhierarchie traversieren
+    - Warum zwei Patterns? `?p rdfs:subClassOf* uni:Person` allein würde nur *Klassen* finden, nicht *Instanzen*
+- **Chain of Thought:**
+    - Store weiß: `Student subClassOf Person` → Alice ist Student → also *gilt*: Alice ist Person
+    - SQL gibt zurück, was *steht*. SPARQL + Ontologie gibt zurück, was *gilt*
+- **Abgrenzung Traversal vs. Inferenz:**
+    - **Traversal (hier):** bewegt sich entlang *existierender* `subClassOf`-Kanten
+    - **Inferenz/Entailment (stärker, kommt in Architecture):** Store leitet *neue* Triples ab — `Alice a Person` wird automatisch materialisiert
+- **Property Graph-Vergleich:**
+    - Property Graphs: direkte Speicher-Pointer zwischen Knoten → Traversal-Schritt = Pointer-Lookup, sehr schnell bei struktureller Navigation
+    - RDF: Index-Lookup pro Schritt — etwas langsamer bei rein struktureller Traversal
+    - RDF gewinnt beim *semantischen* Traversal: `rdfs:subClassOf*` nutzt Ontologie-Wissen. Property Graph kennt Klassenhierarchien nicht nativ — müsste manuell modelliert und traversiert werden
+- **Visual:** Klassenhierarchie-Diagramm oben, darunter Query 4 (roter Rahmen, "0") vs. Query 5 (grüner Rahmen, "7")
+
+---
+
+## Folie 6: Federated Queries – Das Web of Data
+**Kernbotschaft:** Eine SPARQL-Query kann Teile live an externe Endpoints delegieren und lokale Daten mit dem weltweiten Web of Data verbinden — ohne Datenkopie, ohne ETL.
+
+- **SERVICE-Pattern — live gegen DBpedia (Query 7):**
+    - `SERVICE <https://dbpedia.org/sparql> { ?dbCity dbo:abstract ?description . FILTER (lang(?description) = "de") }`
+    - Der SERVICE-Block wird live an den externen Endpoint geschickt; Antwort wird mit lokalen Daten gejoint
+    - Keine Datenkopie, kein Import, kein ETL-Job
+- **Verbindung über owl:sameAs:**
+    - `uni:Stuttgart owl:sameAs dbr:Stuttgart` — verknüpft lokale URI mit globaler DBpedia-URI
+    - Der Store weiß: diese beiden Bezeichner meinen dieselbe Entität → Bindeglied zwischen lokalem Store und DBpedia
+- **Warum das nur mit W3C SPARQL geht:**
+    - Alle SPARQL-Endpoints (Oxigraph, DBpedia, Wikidata, GraphDB, Amazon Neptune) sprechen denselben Standard
+    - Neo4j Cypher oder MongoDB können nicht gegen externe Endpoints queren — keine gemeinsame Sprache
+    - W3C-Standardisierung = ein Query-Mechanismus, viele Datenquellen weltweit
+- **Ausgabeformate:** JSON (APIs, RAG-Pipelines), CSV (Tabellenanalyse), RDF/XML (CONSTRUCT-Export)
+- **Demo-Hinweis:** Query 7 ist internetabhängig — kann langsam sein oder fehlschlagen. Screenshot-Fallback bereithalten.
+- **Visual:** Diagramm mit lokalem Store + Pfeil zu DBpedia-Endpoint + rückkommende Daten, daneben SERVICE-Code annotiert
+
+---
+
+## Folie 7: Query-Typen — SELECT · ASK · CONSTRUCT · DESCRIBE
+**Kernbotschaft:** SPARQL hat vier Query-Formen für vier verschiedene Aufgaben. SELECT ist der Standardfall — die anderen drei sind mächtige Werkzeuge für spezifische Situationen.
+
+- **SELECT** → tabellarische Variablenbindungen:
+    - Alle Demo-Queries. Gibt Tabelle zurück: eine Spalte pro Variable, eine Zeile pro Match
+    - Einsatz: Daten abfragen, anzeigen, in Anwendungen weiterverwenden
+- **ASK** → Boolean-Prüfung:
+    - `ASK { uni:AliceSchmidt a uni:Student . }` → `true` oder `false`
+    - Kein Ergebnis-Datensatz, nur Ja/Nein
+    - Einsatz: Validierung vor einer Verarbeitung, Assertions in Datenpipelines, "Existiert dieser Datenpunkt?"
+- **CONSTRUCT** → neuen RDF-Graph erzeugen:
+    - Query definiert ein Triple-Template: aus den Treffern werden neue Triples nach dem Template gebaut
+    - Einsatz: Daten aus mehreren Quellen in einheitliches Format überführen, Teilgraph exportieren, Regeln materialisieren, Kontext für RAG-Pipelines aufbereiten
+    - Gibt RDF zurück, keine Tabelle
+- **DESCRIBE** → Beschreibung einer Ressource:
+    - `DESCRIBE uni:Stuttgart` → Store gibt alles zurück, was er über diese URI weiß
+    - Format nicht normiert, variiert je nach Store-Implementierung
+    - Einsatz: schnelle Exploration ohne Schema zu kennen
+- **AI-Relevanz:**
+    - CONSTRUCT: strukturierten RDF-Graphen als Kontext für RAG — jede Aussage auf konkrete Triples rückführbar → Explainability
+    - ASK: Konsistenz-Checks in automatisierten Wissensgraph-Pipelines
+- **Visual:** 2x2-Grid — je eine Card pro Query-Typ mit Name, kurzem Code-Snippet und Einsatzfall
+
+---
+
 # Sektion 5: Architekture
 
 ## Folie 1 – Von RDF zur praktischen Umsetzung
