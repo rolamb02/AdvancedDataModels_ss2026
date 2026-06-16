@@ -6,8 +6,10 @@ Foliendesign:
 - Präfixe an geeigneter stelle ausreichen erklären
 - Gliederung vervollständigen 
 - Serialisierung? 
-- Design+berarbeiten 13,15(gelber kasten, 30
+- Design+berarbeiten 13,15(gelber kasten, 30, 37 kösten tauschen
 - Serialisierungsprozess
+
+- mehr inhalt auf takeaway folien
 
 - Aussprache foaf
 - Sorechtexte designen
@@ -27,6 +29,7 @@ Theorie:
     - Schwachstellen von unserem System
     - Selbstbeziehung möglich in TS? 
     - Abgrenzung konkret zu Cypher
+    - warum für oxigraph entschieden? 
     
 
 Durchsprechen:
