@@ -1,27 +1,32 @@
 # Important Todos: 
 Foliendesign: 
-- Finaler Abgleich nochmal mit Report Md, passt alles? 
-- more AI related stuff hinzufügen? 
-- finale Folie: Referenzen & Quellen
-- Präfixe an geeigneter stelle ausreichen erklären
-- Gliederung vervollständigen 
-- Serialisierung? 
-- Design+berarbeiten 13,15(gelber kasten, 30, 37 kösten tauschen
-- Serialisierungsprozess
+- more AI related stuff hinzufügen? - Vinz
+- Key takeaways informativer gestalten
 
-- mehr inhalt auf takeaway folien
 
-- Aussprache foaf
+
+
+
 - Sorechtexte designen
 
 Theorie: 
+
+
+Queries: 
+    - Präfixe an geeigneter stelle ausreichen erklären
+    - was sind Assertions
+    - DESCRIBE Ressource, DESCRIBE uni:Stuttgart; Alles über eine URI — store-definiert, oft äquivalent zu SELECT ?p ?o WHERE { uni:Stuttgart ?p ?o }. Schnelle Exploration. - stimmt das mit dem Äquivalent überhaupt? 
+
+
 - Entailment, equivalence and inconsistency wiederholen
 - wissensabgrenzung: rdf, owl, w3c, 
-- Baum zeichen wiederholen
-- gibt es beib tree 1st und 2nd ebene soriterung
-- wird immer 6 permutationen gemacht? 
+
+ 
+
+- was bedeutet Open world bei Optional bei Query model? 
 
 - Slides final wrapup: 
+    - Foliennummern oben links anpassen! 
 
 
 - nochmal andere Datenbanken im Vergleich analyiseren,Vorbereitung auf Fragen von Prof
@@ -37,12 +42,36 @@ Durchsprechen:
 
 
 
+## Die 1,0-Lücken (priorisiert)
+1. AI-Bezug vorhanden, aber verstreut & ohne Höhepunkt — größter Hebel.
+Der report rahmt alles als „data modeling = cornerstone of AI engineering". Ihr habt gute Touches (CONSTRUCT als RAG-Kontext [1931], Architecture-AI-Folie [2526], federated [2290]). Aber es fehlt der eine starke Moment:
+- Kein expliziter Triple Store vs. Vector DB für RAG — genau das schlägt §7 als Debatte vor.
+- Kein Explainability/Halluzinations-Argument: Triples = nachvollziehbare Quelle vs. Blackbox-Embeddings. Das ist im AI-Kurs euer stärkstes „warum jetzt relevant".
+→ Die geplante AI-Folie in Motivation sollte genau das setzen und als Synthese-Folie am Ende wiederkommen (GraphRAG, §11 nennt es als Extension).
+
+2. Synthese / Cross-Model fehlt (Rubric „Reflection & synthesis" 10%, Woche 9).
+Comparison vergleicht nur SQL & Property Graph. Der Kurs will „how to combine models in AI pipelines". Eine Folie: Triple Store + Vector DB im selben RAG-Stack (Triples = Fakten/Explainability, Vektoren = Fuzzy-Retrieval). Das trennt 1,0 von 1,3.
+
+3. Discussion-Slot (§6.9, 10 min) hat keine Folie.
+Quiz ≠ offene Diskussion. Eine Abschluss-Folie mit 2-3 Fragen („Wann KEIN Triple Store?", „Triple Store oder Vector DB für euer RAG?") schließt den Slot und liefert die Synthese aus Punkt 2 gleichzeitig.
+
+4. Reflexion-Deliverable fehlt (Rubric 10%, §9.10).
+Keine reflection.md im Gruppenordner. 1-2 Seiten: Trade-offs, Verbindung zu anderen Modellen, future directions. Nach der Präsi nachreichbar — aber einplanen.
+
+Mittel
+5. Interactive Activity ist passiv. MC-Quiz erfüllt die 10%, ist aber rezeptiv. §7 bevorzugt hands-on „live query challenge" — Publikum schreibt/führt selbst eine SPARQL gegen euren laufenden Oxigraph (Umgebung habt ihr!). Schon eine Mini-Query („findet alle Studenten der TUM") hebt das von gut auf stark.
+
+6. Demo-Q7 braucht Internet (Wikidata). Single Point of Failure live. Fallback-Screenshot bereithalten, vorher ansagen.
+
+7. Timing-Risiko Conceptual: 13 Folien für 15 min. Named Graphs (2 Folien) ist prio-schwächer als der Inferenz-Kern — erster Straffungskandidat bei Zeitnot.
+
+Kurz: inhaltlich/handwerklich seid ihr auf 1,0-Niveau. Was fehlt, ist fast ausschließlich die AI-Klammer (Punkte 1-3) plus zwei Deliverable-Formalitäten (4, 5). Punkte 2+3+1 lassen sich in einer einzigen Abschluss/Synthese-Folie bündeln — bester ROI.
+
 
 
 
 # Ideen
 - wie gehts eigentlich weiter nach triplestores, ist das das Ende der Fahnenstange
-- Named Graph noch reinbringen? 
 - Forward and Backward chaining bei Architecture? 
 
 

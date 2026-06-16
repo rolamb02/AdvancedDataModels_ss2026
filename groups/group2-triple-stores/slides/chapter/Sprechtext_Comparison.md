@@ -174,3 +174,8 @@ Property Graphs werden zunehmend ebenfalls für Knowledge Graphs eingesetzt — 
 
 
 *Ende Kapitel Comparison*
+
+
+https://www.youtube.com/watch?v=m_9_23jXPoE&t=16s
+
+

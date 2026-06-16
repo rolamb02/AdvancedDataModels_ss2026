@@ -3,49 +3,28 @@
 Query model (15 min) – Introduce the query language (Cypher, SPARQL, ANN API, MongoDB queries, Redis commands, CQL, DuckDB SQL). Explain how queries differ from SQL.
 ---
 
-## Folie 1: SPARQL – Pattern Matching statt Tabellen
+
+
+## Folie 2: SELECT & WHERE – Anatomie einer SPARQL-Query
 
 ---
 
 ### Kernpunkte
 
-- **Der fundamentale Denkwechsel:** In SQL schreibe ich `FROM university JOIN city ON ...` — ich weiß genau, welche Tabellen existieren, und verknüpfe sie mit Schlüsseln. In SPARQL gibt es keine Tabellen. Ich beschreibe, wie das Gesuchte *aussieht* — und der Store findet alle Belegungen, die passen
-- **Triple Pattern = Schablone:** Jedes Pattern ist ein RDF-Triple mit Variablen als Platzhalter
-    - `?u a uni:University` → „Finde alles, das ein University-Typ ist"
-    - `?u uni:location ?stadt` → „Hole dazu die Location-Ressource"
-    - `?stadt uni:bundesland "Baden-Wuerttemberg"` → „Nur wenn die Location in BW liegt"
-- **Geteilte Variablen verbinden Patterns:** `?u` taucht in zwei Patterns auf — das verbindet sie automatisch, ohne ein `JOIN`-Keyword. Analogie: Lückentext — alle Lücken mit demselben Namen müssen denselben Wert haben
-- **SQL braucht eine Struktur, die man kennt. SPARQL braucht eine Beschreibung, die passt.**
-
- **Semantik-Kontext am SQL-Beispiel erklären:** Die `location_id = 42` im JOIN ist eine nackte Zahl — die Datenbank verknüpft damit Zeilen, aber sie weiß nicht, *was* 42 bedeutet. Das ist intern, proprietär, außerhalb der Datenbank bedeutungslos. Das Prädikat `uni:location` hingegen ist eine URI — sie verweist auf ein global definiertes, maschinenlesbares Konzept. Das Prädikat trägt Bedeutung. Und wenn man statt `uni:location` die standardisierte Property `schema:location` aus schema.org verwendet, versteht jeder Store weltweit dasselbe — ohne Absprache. *Das* ist der „Keine Semantik"-Badge beim SQL-Code und der „W3C-Standard"-Badge bei SPARQL in der Folie.
-
-
-**Chain of Thought:**
-> „Warum kein JOIN?" → weil die Verbindung *implizit* durch die geteilte Variable entsteht → weil der Graph selbst schon die Beziehungen trägt → kein Umweg über Fremdschlüssel-Tabellen nötig
+**PREFIX — Namespace-Abkürzung:**
 
 ---
 
+## Folie 3: Query-Typen — SELECT · ASK · CONSTRUCT · DESCRIBE
 
-## Folie 2: Query-Typen — SELECT · ASK · CONSTRUCT · DESCRIBE
 
----
 
-### Kernpunkte
-
-**SELECT** — tabellarische Variablenbindungen:
-- Alle Demo-Queries verwenden SELECT. Gibt eine Tabelle zurück: eine Spalte pro Variable, eine Zeile pro Match
-- Einsatz: Daten abfragen, anzeigen, in Anwendungen weiterverwenden
-
-**ASK** — Boolean-Prüfung:
-- `ASK { uni:AliceSchmidt a uni:Student . }` → `true` oder `false`
-- Kein Ergebnis-Datensatz, nur Ja oder Nein
+**ASK** 
 - Einsatz: Validierung vor einer Verarbeitung, Assertions in Datenpipelines, „Existiert dieser Datenpunkt überhaupt?"
 
-**CONSTRUCT** — neuen RDF-Graph erzeugen:
-- Query definiert ein Triple-Template: aus den Treffern werden neue Triples nach dem Template gebaut
+**CONSTRUCT** 
 - Einsatz: Daten aus mehreren Quellen in einheitliches Format überführen, Teilgraph exportieren, Regeln materialisieren, strukturierten Kontext für RAG-Pipelines aufbereiten
 - Gibt RDF zurück, keine Tabelle
-
 
 **Friend of a Friend** — ein standardisiertes RDF-Vokabular für Personen und soziale Netzwerke. W3C-spezifiziert, URI: `http://xmlns.com/foaf/0.1/`.
 
@@ -56,55 +35,19 @@ Typische Properties:
 - `foaf:Person` → Klasse "Person"
 - `foaf:memberOf` → Mitglied einer Organisation
 
-In der Präsi taucht es in der CONSTRUCT-Query auf — dort wird `uni:`-Vokabular in `foaf:` übersetzt, um eigene Daten ins Standardformat zu bringen, das andere Systeme weltweit verstehen.
 
 
-**DESCRIBE** — Beschreibung einer Ressource:
-- `DESCRIBE uni:Stuttgart` → Store gibt alles zurück, was er über diese URI weiß
+**DESCRIBE** — 
 - Format nicht normiert, variiert je nach Store
-- Einsatz: schnelle Exploration ohne Schema zu kennen
 
 **AI-Relevanz:**
 - CONSTRUCT: aufbereitete RDF-Graphen als Kontext für LLM-Antworten — jede Aussage auf konkrete Triples rückführbar → Explainability
 - ASK: Konsistenz-Checks in automatisierten Wissensgraph-Pipelines
 
 
-**Case-Sensitivity — wichtig für Fragen aus dem Publikum:**
-- SPARQL-URIs sind vollständig **case-sensitiv**: `rdfs:label` und `rdfs:LABEL` sind *verschiedene URIs* — `rdfs:LABEL` expandiert zu `<...rdf-schema#LABEL>`, das nicht existiert → **0 Ergebnisse, kein Fehler**
-- Gleiches gilt für nicht-existente Prädikate wie `rdfs:label1` — syntaktisch gültig, aber kein Triple im Store matcht → 0 Ergebnisse
-- SPARQL wirft keinen Fehler für unbekannte Prädikate (Open World: fehlen = unbekannt, nicht falsch)
-- Keywords wie `SELECT`, `WHERE`, `FILTER` sind hingegen **case-insensitiv**
-
-**Query Optimizer — genauer:**
-- Die Reihenfolge der Patterns im WHERE-Block ist dem Store überlassen — der Query Optimizer entscheidet
-- Prinzip: Der Optimizer schätzt die **Selektivität** jedes Patterns — d.h. wie viele Triples dieses Muster matchen. Ein Pattern wie `?u a uni:University` liefert vielleicht 5 Treffer, `?s ?p ?o` tausende
-- Er beginnt mit dem **selektivsten Pattern** (wenigste Treffer), weil das die Kandidatenmenge sofort klein hält. Alle folgenden Joins operieren dann auf diesem reduzierten Set — exakt wie ein SQL-Query-Planner JOIN-Reihenfolgen optimiert
-
 ---
 
-## Folie 3: SELECT & WHERE – Anatomie einer SPARQL-Query
-
----
-
-### Kernpunkte
-
-**PREFIX — Namespace-Abkürzung:**
-- `uni:University` steht für `<http://example.org/uni/University>`
-- Vergleich: wie `import numpy as np` in Python — man lädt keine externe Datenbank, man gibt einem langen Pfad einen kurzen Namen
-- Ohne PREFIX muss man überall die volle URI in spitzen Klammern schreiben — lesbar, aber mühsam
-
-**SELECT + WHERE:**
-- `SELECT ?u ?name` — welche Variablen als Spalten zurückgegeben werden
-- `WHERE { ... }` — die Musterbedingungen; jede Zeile ist ein Triple Pattern
-- Alle Patterns müssen gleichzeitig erfüllt sein (implizites AND)
-- `ORDER BY`, `LIMIT`, `OFFSET` funktionieren wie in SQL
-
-**Schlüsselkonzept Variablen:**
-- Namen sind bedeutungslos: `?u`, `?x`, `?baum` liefern dasselbe Ergebnis
-- Der Typ kommt aus dem Pattern (`?s a uni:University`), nicht aus dem Variablennamen
-- Gleichnamige Variablen in verschiedenen Patterns müssen denselben Wert haben — das ist der implizite Join-Mechanismus
-
----
+HIER WEITERMACHEN MORGEN!!
 
 ## Folie 4: FILTER · OPTIONAL · Property Paths
 
