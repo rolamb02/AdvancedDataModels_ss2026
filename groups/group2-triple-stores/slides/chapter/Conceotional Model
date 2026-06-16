@@ -1,91 +1,14 @@
-**Prio 1:**
-- RDF-Struktur und Komponenten:
-  - Triple
-  - Gerichteter Graph
-  - URIs / Ressourcen
-  - Literale
-  - Blank Nodes
-- Begriffe und Regeln:
-  - RDF Schema (RDFS)
-  - OWL
-  - Ontologien und Vokabulare
-- Inferenz (machine-readable)
-- Named Graphs
-- Unterschied zu Property Graphs
-
-**Details:**
-- **RDF-Grundstruktur**
-  - Triple: Subjekt – Prädikat – Objekt
-  - Darstellung als gerichteter Graph
-  - Subgraphen als Denkmodell statt Tabellen
-- **RDF-Komponenten**
-  - URIs/IRIs zur eindeutigen Identifikation
-  - Literale (Strings, Zahlen, datatypes)
-  - Blank Nodes
-- **RDF Graph vs. RDF Dataset**
-  - Default Graph
-  - Benannte Graphen (Named Graphs)
-- **Ontologien und Vokabulare**
-  - RDF Schema (RDFS): Klassen, Properties, Domain, Range
-  - OWL für erweiterte semantische Modellierung
-  - Bedeutung kontrollierter Vokabulare für Konsistenz
-- **Semantik & Bedeutung**
-  - Maschinenlesbare Bedeutung durch standardisierte Prädikate
-  - Grundlage für Inferenz (Ableitung neuer Aussagen)
-- **Unterschied zu Property Graphs**
-  - RDF: standardisiert, interoperabel, formal
-  - Property Graph: flexibler, aber weniger standardisiert
-
-
-Erklärung Click interaktion: erst nur ein teil der folie sichtbar, dann nächste folie ein weiterer Teil der folie sichtbar. 
-bsp: erst linke hälfte sichtbar, dann linke und rechte hälfte sichtbar. 
-umsetzung durch zwei folien 
-
-insgesamt nur keywords auf folien und viel grafisch darstellen
-  Folie 1: 
-  - Triple links dargestellt mit SPO und Beispiel "Alice works at SAP"
-  - Graph, wenn mehrere Triple kombiniert werden, rechts dargestellt, Beispiel links wird erweitert um fakten: alice = person & SAP = ... Mitarbeiter & = Unternehmen
-  - erste nur links sichtbar und dann gesamte folie sichtbar Klick interaktion
-  Folie 2: 
-  Ressource: 
-  - Problem: Marke Apple vs Frucht Apple, Hintergrund Sematisches Web
-  - Lösung: Ressourcen mit URI --> Eindeutigkeit
-  Click interaktion: 
-  Literal
-  - 2 Bspsätze mit Literalen
-  - Feststellung: nicht alles muss eindeutig identifizierbare Ressource sein
-  - Lösung: Literale 
-  - weitere Einsatzgebiete zeigen durch Beispiele und Key eigenschaften 
-  Folie 3:
-  - Blank Node wie folgt vorstellen: 
-  - 2 use cases zeigen anhand von einfachen Bspen zeigen
-  - grafisch zeigen --> Blank node als umsetzung/Lsg für use cases
-  - kurze stichworte von wichtigsten eigenschaften von blank notes 
-  Folie 4: 
-  - Vocabulary & RDFS mit beispielen und warum mans braucht in stichworten 
-  Professor rdfs:subClassOf Person
-  worksAt rdfs:domain Person
-  worksAt rdfs:range Company
-  Folie 5: 
-  - Ontology grafisch dargestellt & OWL 
-  - unterer Teil der Folie als nach Click interaktion: 
-  Analogie: Ontologie, RDFS (RDF Schema), OWL (Web Ontology Language): Der Bauplan für ein Haus. , Der einfache Rohbau (Wände und Türen)., Der detaillierte Innenausbau mit Elektronik und Logikschaltungen.
-  - Interferenz/ Reasoning mit Beispielen erklären: was gespeichert -> was daraus abgeleitet werden kann
-  Folie 6: 
-  - named graph: erst problem erklären: mehrere Graphen zusammenführen (nur grafisch darstellen. mit zwei mini graphen als beispiel), 
-  - lösung vorstellen: named graph: erst idee, dann wie es konkret aussieht (einfaches beispiel)
-  - interaktive frage: vorstellen für was es noch einsetzbar ist? 
-  - nach click interaktion: antwort (zugriffsrechte,...)
-
-  Folie 7: zusammenfassung: 
-  - key erkenntnisse. 
-  - analogie von OWL/RDFS/Ontologie nochmal zeigen 
-
-
   Sprechtext: 
   - literal: https://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#section-Graph-Literal 
   - introduction, dass mit RDFS Semantik beginnt
   - nach Folie 5: Zurückkehren, warum man das alles braucht um Bsp von Motivation zu machen, evtl FOlie einfügen
+
+aktueller stand sematik web: 
+https://www.google.com/search?q=sematische+web+aktueller+stand+&sca_esv=ab325edc4e2c3391&sxsrf=ANbL-n5mnBUdIA0GDB-7Qk39XNKhqbJF4g%3A1781528771575&ei=w_gvaqinH_KMi-gP556wuAs&iflsig=AFdpzrgAAAAAajAG0zdfs9cpEirrCFQJYuIFuCS4FrHx&uact=5&sclient=gws-wiz&udm=50&fbs=ADc_l-YGrpJMQtvjQ6h14rj-dfIrbPkd_Upq68wJVnEIgo2Pwxu679PACFfTKv4n_1_FsyWR9so79QFBXNFS75h6g1Gu1DrXaLYeuAQpqY-05WcGs2FoUri7tU8Iton0u176wzuypVG6vedtgS7YYt3j0N9eaAkd9iiJsE6Txo62y66c_EVc5PFB-qXhvDNeXpMf0pXnSqHN&aep=10&ntc=1&mstk=AUtExfDeiUWfT0eDvbhIqA2nOuiIwiMz_p84dOc8EEiBeWCA51uBhPpb5155DI3nfdONoG3tk43C1xSiv_VuzDmAWYjXpgV-MRzYMCcA4AySxL4mWGaGc93v8Q3fSsD4wXl-r2Xzlw2VNLJdmTgLyUVnIKQPk-5QWqVhFgcuXF_4eGvYEgoXwPbYba_DCd2Q1Yddb7TR_VI-pqAjGSNXGHA8rswRk5C_y8yhPxmq25gwxBnn1NowQCnlvMO0kMQLP0XdntWC3izcqM84eiiCnO7eTIFd3XxkWWTdjYNwa3sWV5w76OlbjORHfs57WNTSSaCH76F5HBXUdqZ3w9773xuCOQT0zbGMQTLclXDkvmm7aOoQGVbSv8Z3DlM&aioh=3&csuir=1&cs=1&mtid=-vsvap7YOYLBxc8P0PHaoAk
+
+RDFS/OWL/Ontologie Einordnung: 
+https://www.google.com/search?q=ontology+vs+owl&sca_esv=bcc915fd4b92abab&biw=1528&bih=698&sxsrf=ANbL-n5apjymL8zmVj9Pk90qTGVmFsdZPg%3A1781014730796&ei=yiAoaoyhMI2zi-gP3dujyAg&uact=5&sclient=gws-wiz-serp&udm=50&fbs=ADc_l-YGrpJMQtvjQ6h14rj-dfIrbPkd_Upq68wJVnEIgo2Pwwmd36hvjv0a5D-I2YXEp8HFYncYh8OcdPViWgSirzztqIkzhEErj7igMkuOK3_JssAm76i3iEAfDm_WuFFrv9JBqgU6hi7F2DZZFVUexg2h399grClUmkHRI7Z34VSl6oJoDP8chvKNM0Cx9_ZRMEMN7Ioe&aep=10&ntc=1&mstk=AUtExfAiUkYPszZuFnZGbhWdbHo0HD3u_mfOCMtpNon5AkKRWmwnjszWmRAHhg1zpSvvNgyfPnaCTLtDE4LP1tVJLurF8zhLjsUmAZhh07Al7sRD2w_acO7tgg5XW069h7VttY9HeTKY2KR6Su_CbZJ3ZJhvqOXKOWWZAwI3iESsP0x8E_U_OmUAfxwlfAJZNoIt2tK4SRINYuh0yp4HJj5h1rwlFOaA9jHdEVMfBpVkR1PTGmtx_Mn9Fz2R4q-DtuNXNevnlP3Ih1bWGWASV02QvQXwNu8Vg5-7NuFQmH4AZlVVtYDRE5U47ah1mL8J4SyOJY5jk9zSm6bPB08sljitHUMf9LveH_nfhg&aioh=3&csuir=1&cs=1&mtid=HCEoasHFGMWwi-gP8cy1uAU
+
 
 
 
