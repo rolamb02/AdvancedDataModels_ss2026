@@ -46,6 +46,19 @@ Query model (15 min) – Introduce the query language (Cypher, SPARQL, ANN API, 
 - Einsatz: Daten aus mehreren Quellen in einheitliches Format überführen, Teilgraph exportieren, Regeln materialisieren, strukturierten Kontext für RAG-Pipelines aufbereiten
 - Gibt RDF zurück, keine Tabelle
 
+
+**Friend of a Friend** — ein standardisiertes RDF-Vokabular für Personen und soziale Netzwerke. W3C-spezifiziert, URI: `http://xmlns.com/foaf/0.1/`.
+
+Typische Properties:
+- `foaf:name` → Name einer Person
+- `foaf:knows` → kennt eine andere Person
+- `foaf:mbox` → E-Mail-Adresse
+- `foaf:Person` → Klasse "Person"
+- `foaf:memberOf` → Mitglied einer Organisation
+
+In der Präsi taucht es in der CONSTRUCT-Query auf — dort wird `uni:`-Vokabular in `foaf:` übersetzt, um eigene Daten ins Standardformat zu bringen, das andere Systeme weltweit verstehen.
+
+
 **DESCRIBE** — Beschreibung einer Ressource:
 - `DESCRIBE uni:Stuttgart` → Store gibt alles zurück, was er über diese URI weiß
 - Format nicht normiert, variiert je nach Store
@@ -117,6 +130,35 @@ Query model (15 min) – Introduce the query language (Cypher, SPARQL, ANN API, 
     - `+` = mindestens 1 Schritt: `rdfs:subClassOf+` → „direkte Superklasse und aufwärts, nicht die Klasse selbst"
     - `/` = Verkettung: erst Schritt A, dann Schritt B entlang der Kante
 - Gilt nur für **Prädikate** in einem einzigen Triple Pattern — nicht für ganze WHERE-Blöcke
+
+**`+` (mindestens 1 Schritt) vs. `*` (0 oder mehr Schritte):**
+
+```sparql
+-- * : findet Student selbst UND alle Oberklassen (Person)
+?x rdfs:subClassOf* uni:Student
+
+-- + : findet NUR die Oberklassen (Person), NICHT Student selbst
+?x rdfs:subClassOf+ uni:Student
+```
+
+Praktisch: `rdfs:subClassOf+` wäre z.B. sinnvoll wenn du willst "welche Klassen stehen *über* Student" — ohne Student in der Ergebnismenge zu haben.
+
+---
+
+**`/` (Verkettung):**
+
+```sparql
+-- Ohne /: zwei separate Patterns
+?person uni:studiesAt ?uni .
+?uni uni:location ?city .
+
+-- Mit /: ein einziger Property Path
+?person uni:studiesAt/uni:location ?city .
+```
+
+`uni:studiesAt/uni:location` heißt: "gehe von Person über `studiesAt` zur Uni, dann von dort über `location` zur Stadt." Das ist reines Syntactic Sugar — kompakter, aber identisches Ergebnis.
+
+
 - Für alternative *Muster* (z.B. Typ-Alternativen) braucht man `UNION`: `{ ?p a uni:Student } UNION { ?p a uni:Professor }`
 
 - SQL kennt kein direktes Äquivalent — rekursive CTEs wären nötig

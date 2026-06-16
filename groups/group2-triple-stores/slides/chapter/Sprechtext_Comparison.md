@@ -11,7 +11,6 @@ Eine kompakte Tabelle, die die wichtigsten Unterschiede zwischen SQL-Datenbanken
 
 ### Sprechtext
 
-Wir haben SQL in den letzten Kapiteln immer wieder als Kontrastfolie benutzt. Bevor wir jetzt den Vergleich mit Property Graphs angehen – der wirklich interessante Teil – möchte ich die SQL-Seite nochmal kurz schärfen.
 
 **Dateneinheit:** In SQL ist die grundlegende Einheit eine *Zeile in einer Tabelle*. Ein Student, eine Universität, ein Kurs – alles landet in Zeilen mit vordefinierten Spalten. Im Triple Store ist die Grundeinheit ein einzelnes Faktum: Subjekt – Prädikat – Objekt. Kein Zeilen-Denken, kein Spalten-Denken.
 
@@ -23,6 +22,18 @@ Wir haben SQL in den letzten Kapiteln immer wieder als Kontrastfolie benutzt. Be
 Konkret: Wenn ich in Neo4j `(Romi)-[:KENNT]->(Marten)` abspeichere, liegt im Speicher ein Kanten-Datensatz, der sagt: "Quell-Knoten ist an Adresse X, Ziel-Knoten ist an Adresse Y, Typ ist KENNT." Das ist eine native Kante – kein Join-Tabellen-Umweg, kein String-Lookup, sondern ein direkter Pointer. Im Triple Store ist `uni:Romi uni:kennt uni:Marten` auch eine Art Kante, aber technisch gespeichert als drei IDs in einer Tabellenzeile – die "Kante" ist implizit durch die Kombination von Subjekt und Objekt, nicht als eigenständiges Speicherobjekt mit Pointern.
 
 **Schema:** SQL verlangt vorab definierte Spalten. Will man ein neues Attribut, braucht man `ALTER TABLE`. Im Triple Store fügt man einfach neue Triples hinzu – das Schema wächst organisch.
+
+**Consistency**
+**SQL:** Volle ACID-Garantien eingebaut — jede Transaktion ist atomar, konsistent, isoliert, dauerhaft. Das war von Anfang an zentrales Design-Ziel relationaler DBs.
+
+**Triple Store:** Kommt auf die Implementierung an:
+- Oxigraph (wie in der Demo): bietet Transaktionen, aber keine vollständige Isolation — concurrent writes können Konflikte erzeugen
+- GraphDB, Stardog: bieten vollständiges ACID, aber mit Performance-Overhead
+- Distributed Triple Stores (wie Virtuoso im Cluster): oft nur Eventually Consistent
+
+**Warum ist das bei Triple Stores schwieriger?** Ein einzelner Vorgang ("Alice studiert jetzt an Uni B statt A") bedeutet: altes Triple löschen + neues Triple einfügen — zwei Operationen. In SQL ist das ein einziges UPDATE. Bei Millionen verteilter Triples ist atomare Konsistenz technisch aufwendiger.
+
+**Sprechtext-Formulierung:** "SQL garantiert Konsistenz per Design — Triple Stores können das auch, aber es ist nicht überall Standard, und man muss gezielt den richtigen Store wählen."
 
 **Semantik – was heißt das?** Semantik bedeutet *Bedeutung*. In SQL weiß die Datenbank nicht, was "Professor" bedeutet – sie weiß nur, dass es einen Wert in einer Spalte gibt. Ein Triple Store mit RDFS oder OWL *versteht* Bedeutungsebenen. Wenn ich definiere, dass `Professor` eine Unterklasse von `Person` ist (`rdfs:subClassOf`), kann das System *schlussfolgern*, dass jeder Professor automatisch auch eine Person ist – ohne dass ich das nochmal explizit eintragen muss. Das nennt sich Inferenz. Wichtig: Inferenz ist **nicht** dasselbe wie Traversal – dazu mehr bei Folie 2.
 
