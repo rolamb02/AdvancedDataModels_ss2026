@@ -85,7 +85,8 @@ show_background_explanation() {
     echo "     - Ein kurzes Python-Snippet formatiert die Ausgabe lesbar"
     echo ""
     echo "  4) SCHRITT 9 (Federated Query):"
-    echo "     - Lokaler Oxigraph sendet SERVICE-Teil an https://dbpedia.org/sparql"
+    echo "     - Lokaler Oxigraph sendet SERVICE-Teil an https://query.wikidata.org/sparql"
+    echo "     - VALUES grenzt die externen Ressourcen ein (Oxigraph pusht keine Bindings)"
     echo "     - Lokale und externe Ergebnisse werden zusammengeführt"
     echo ""
     echo "  5) Wichtige Demo-Faktoren:"
@@ -270,21 +271,21 @@ run_query "$QUERY_DIR/06_count_pro_uni.sparql"
 pause
 
 # =============================================================
-echo -e "${BLUE}[SCHRITT 9 – OPTIONAL] Query 7 – Federated Query gegen DBpedia${NC}"
+echo -e "${BLUE}[SCHRITT 9 – OPTIONAL] Query 7 – Federated Query gegen Wikidata${NC}"
 echo -e "${BOLD}Zeigt: Warum globale URIs so mächtig sind – zwei Stores, eine Anfrage${NC}"
 # =============================================================
 echo ""
-echo -e "  ${YELLOW}Hinweis: Braucht Internetzugang. DBpedia kann langsam sein (~5s).${NC}"
+echo -e "  ${YELLOW}Hinweis: Braucht Internetzugang. Wikidata kann ein paar Sekunden brauchen.${NC}"
 echo -e "  ${YELLOW}Bei Verbindungsproblemen: Screenshot als Fallback zeigen.${NC}"
 echo ""
 echo "  Ausführen? (j/n)"
 read -r answer
 if [ "$answer" = "j" ] || [ "$answer" = "J" ]; then
-    # Federated query: local endpoint performs a remote SERVICE call to DBpedia.
-    cat "$QUERY_DIR/07_federated_dbpedia.sparql" | grep -v "^#" | sed 's/^/  /'
+    # Federated query: local endpoint performs a remote SERVICE call to Wikidata.
+    cat "$QUERY_DIR/07_federated_wikidata.sparql" | grep -v "^#" | sed 's/^/  /'
     echo ""
     echo -e "${GREEN}Ergebnis (kann einige Sekunden dauern):${NC}"
-    run_query "$QUERY_DIR/07_federated_dbpedia.sparql"
+    run_query "$QUERY_DIR/07_federated_wikidata.sparql"
 else
     echo "  → Übersprungen."
 fi

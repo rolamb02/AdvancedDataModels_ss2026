@@ -59,7 +59,7 @@ triplestore-demo/
     ├── 04_personen_OHNE_inferenz.sparql   ← Aha-Moment Teil 1
     ├── 05_personen_MIT_inferenz.sparql    ← Aha-Moment Teil 2
     ├── 06_count_pro_uni.sparql
-    └── 07_federated_dbpedia.sparql        ← Optional
+    └── 07_federated_wikidata.sparql       ← Optional
 ```
 
 ---
@@ -445,73 +445,65 @@ Hier kann man gut zeigen, dass SPARQL nicht nur filtern kann, sondern auch aggre
 ### Query 7 – Federated Query (Optional)
 
 ```sparql
+PREFIX schema: <http://schema.org/>
+PREFIX wd:     <http://www.wikidata.org/entity/>
+
 SELECT ?uniname ?stadtname ?description
 WHERE {
-    # Lokal: Unis in BW
+    # Lokal: Unis, deren Standort DIREKT auf eine Wikidata-Ressource zeigt
     ?u a uni:University .
     ?u rdfs:label ?uniname .
-    ?u uni:location ?stadt .
-    ?stadt uni:bundesland "Baden-W\u00FCrttemberg" .
-    ?stadt rdfs:label ?stadtname .
-    ?stadt owl:sameAs ?dbCity .
+    ?u uni:location ?wdCity .
+    FILTER (STRSTARTS(STR(?wdCity), "http://www.wikidata.org/"))
 
-    # Von DBpedia: Beschreibung zur verlinkten Stadt-Ressource
-    SERVICE <https://dbpedia.org/sparql> {
-        ?dbCity dbo:abstract ?description .
+    # Von Wikidata: Label + deutsche Beschreibung der verlinkten Ressource
+    SERVICE <https://query.wikidata.org/sparql> {
+        VALUES ?wdCity { wd:Q1726 wd:Q64 }
+        ?wdCity schema:description ?description .
         FILTER (lang(?description) = "de")
+        ?wdCity rdfs:label ?stadtname .
+        FILTER (lang(?stadtname) = "de")
     }
 }
+ORDER BY ?uniname
 ```
 
 **Was passiert:** `SERVICE` delegiert einen Teil der Query an den
-DBpedia-Endpunkt. Der lokale Store kombiniert beide Ergebnisse automatisch.
+Wikidata-Endpunkt. Der lokale Store kombiniert beide Ergebnisse automatisch.
 
-Der entscheidende Linked-Data-Schritt ist `owl:sameAs`:
-Unsere lokale Ressource `uni:Stuttgart` ist explizit auf `dbr:Stuttgart` gemappt.
-Dadurch wird nicht "geschummelt" (hart codierter DBpedia-Knoten), sondern sauber
-über eine semantische Identitätsverknüpfung zwischen lokalem und globalem Wissen gejoint.
+Der entscheidende Linked-Data-Schritt diesmal: **zwei Unis verlinken ihren
+Standort gar nicht auf einen lokalen `uni:City`-Knoten**, sondern direkt auf
+eine globale Wikidata-IRI:
+
+```turtle
+uni:TUMuenchen uni:location wd:Q1726 .   # München
+uni:FUBerlin   uni:location wd:Q64 .     # Berlin
+```
+
+Stuttgart + Karlsruhe bleiben bewusst lokal (`uni:Stuttgart` / `uni:Karlsruhe`,
+mit `uni:bundesland`) als Kontrast — sie haben keine externe Verlinkung.
 
 **Erklärung für Publikum:** "Das ist die Stärke von Linked Data.
 Wir brauchen nicht alle Daten der Welt selbst zu speichern.
-Wir verlinken einfach auf andere Triplestores."
+Wir verlinken einfach auf andere Wissensgraphen."
 
-**Fallback:** Screenshot vorab erstellen falls DBpedia langsam ist.
+**Erwartung:** 2 Zeilen – TUM München (Beschreibung von München) und
+FU Berlin (Beschreibung von Berlin).
 
-**Wichtiger Praxis-Hinweis:**
-Diese Query ist bewusst optional. Wenn DBpedia nicht erreichbar ist, das Netz blockiert, oder die Antwort sehr langsam ist, ist das kein Defekt im lokalen Datensatz. In der Live-Demo sollte man deshalb immer einen vorbereiteten Screenshot oder eine Alternative parat haben.
+**Fallback:** Screenshot vorab erstellen falls Wikidata langsam ist.
 
-**Warum sie in manchen Umgebungen 0 liefern kann:**
-Der lokale Teil ist korrekt, aber der `SERVICE`-Aufruf hängt von einem externen SPARQL-Endpunkt ab. Wenn dieser nicht antwortet, die Netzwerkkonfiguration restriktiv ist oder die URI falsch geschrieben ist, bricht die Query in der Praxis leicht weg.
+**Wichtiger Praxis-Hinweis – warum `VALUES` zwingend ist:**
+Oxigraph 0.5.x macht **keine** Bindings-Substitution in `SERVICE` (kein
+"bound join"). Ein ungebundenes `?wdCity` im `SERVICE`-Block würde Wikidata
+zwingen, *alle* `schema:description`-Triples im gesamten Graphen zu streamen
+→ Timeout/abgebrochener Chunked-Stream → 0 Ergebnisse. `VALUES ?wdCity { ... }`
+grenzt die externe Anfrage auf genau die benötigten Ressourcen ein.
 
-**Wichtiger Praxis-Hinweis:**
-Im DBpedia-Web-Editor müssen die Prefixe entweder oben definiert sein oder vollständig ausgeschrieben werden. Für den Test im Browser also am besten zuerst diese Prefixe setzen:
-
-```sparql
-PREFIX dbr: <http://dbpedia.org/resource/>
-PREFIX dbo: <http://dbpedia.org/ontology/>
-```
-
-**Alternative (frühere Demo-Variante, ebenfalls gültig):**
-Diese kompakte Query war in einer älteren Fassung enthalten. Sie fragt den DBpedia-Knoten der University of Stuttgart direkt ab und liefert typischerweise englische Abstracts.
-
-```sparql
-SELECT ?uniname ?abstract
-WHERE {
-    # Lokal: Unis in BW
-    ?u a uni:University .
-    ?u rdfs:label ?uniname .
-    ?u uni:location ?stadt .
-    ?stadt uni:bundesland "Baden-Württemberg" .
-
-    # Von DBpedia: Beschreibung der Uni Stuttgart
-    SERVICE <https://dbpedia.org/sparql> {
-        dbr:University_of_Stuttgart dbo:abstract ?abstract .
-        FILTER (lang(?abstract) = "en")
-    }
-}
-```
-
-Diese Variante ist didaktisch einfacher, aber weniger Linked-Data-streng als die `owl:sameAs`-Variante oben.
+**Warum nicht mehr DBpedia:**
+Der öffentliche DBpedia-SPARQL-Endpunkt (`https://dbpedia.org/sparql`)
+antwortete zuletzt mit `503 Service Unavailable – License has expired` und ist
+für Live-Demos aktuell nicht nutzbar. Wikidata (`https://query.wikidata.org/sparql`)
+ist deutlich zuverlässiger.
 
 ---
 
@@ -539,7 +531,7 @@ Diese Variante ist didaktisch einfacher, aber weniger Linked-Data-streng als die
 - [ ] `bash run_demo.sh` einmal vollständig durchgetestet
 - [ ] Port 7878 in Windows-Firewall freigegeben (falls LAN-Interaktion geplant)
 - [ ] Zugriff von einem zweiten Gerät getestet (`http://<DEINE_IPV4>:7878`)
-- [ ] Fallback-Screenshot von Query 7 (DBpedia) gespeichert
+- [ ] Fallback-Screenshot von Query 7 (Wikidata) gespeichert
 - [ ] Für Interaktive Übung: Query 4 und 5 als Aufgabe vorbereitet
 
 ---
@@ -558,11 +550,11 @@ Der Demo-Ablauf wirkt interaktiv, ist technisch aber ein klarer Request-Flow:
     - Query wird per `POST /query` als `application/sparql-query` gesendet.
 4. Oxigraph liefert SPARQL-JSON zurück.
 5. Ein eingebettetes Python-Snippet formatiert das JSON als terminalfreundliche Tabelle.
-6. Bei Query 7 führt Oxigraph intern den `SERVICE`-Teil gegen `https://dbpedia.org/sparql` aus und kombiniert lokale + externe Teilergebnisse.
+6. Bei Query 7 führt Oxigraph intern den `SERVICE`-Teil gegen `https://query.wikidata.org/sparql` aus und kombiniert lokale + externe Teilergebnisse.
 
 **Wichtig für die Präsentation:**
 - Schritte 1-8 funktionieren komplett lokal (kein Internet nötig).
-- Nur Query 7 braucht Internet und einen erreichbaren DBpedia-Endpunkt.
+- Nur Query 7 braucht Internet und einen erreichbaren Wikidata-Endpunkt.
 - Wenn Query 7 ausfällt, ist das oft ein externes Netz-/Endpoint-Thema und kein Fehler im lokalen Datensatz.
 
 **Daten laden via curl (manuell):**

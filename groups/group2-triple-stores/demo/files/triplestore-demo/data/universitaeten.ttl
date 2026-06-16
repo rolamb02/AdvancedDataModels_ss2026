@@ -15,6 +15,7 @@
 @prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
 @prefix owl:  <http://www.w3.org/2002/07/owl#> .
 @prefix dbr:  <http://dbpedia.org/resource/> .
+@prefix wd:   <http://www.wikidata.org/entity/> .
 @prefix uni:  <http://example.org/uni/> .
 
 # =============================================================
@@ -55,12 +56,14 @@ uni:Stuttgart
     a uni:City ;
     rdfs:label "Stuttgart"@de ;
     owl:sameAs dbr:Stuttgart ;
+    owl:sameAs wd:Q1022 ;
     uni:bundesland "Baden-Württemberg" ;
     uni:einwohner 635911 .
 
 uni:Karlsruhe
     a uni:City ;
     rdfs:label "Karlsruhe"@de ;
+    owl:sameAs wd:Q1040 ;
     uni:bundesland "Baden-Württemberg" ;
     uni:einwohner 308436 .
 
@@ -94,17 +97,23 @@ uni:KIT
     uni:gruendungsjahr 1825 ;
     uni:studentenanzahl 24000 .
 
+# Didaktischer Kontrast für die Federated Query (Query 7):
+# Diese zwei Unis verlinken ihren Standort NICHT auf einen lokalen uni:City-Knoten,
+# sondern direkt auf die globale Wikidata-Ressource. Dadurch kann Query 7 live
+# Daten (Beschreibung, Label) aus Wikidata nachladen.
+# Stuttgart + Karlsruhe bleiben bewusst lokal (uni:Stuttgart / uni:Karlsruhe)
+# als Vergleich – sie haben keine externe Verlinkung.
 uni:TUMuenchen
     a uni:University ;
     rdfs:label "Technische Universität München"@de ;
-    uni:location uni:Muenchen ;
+    uni:location wd:Q1726 ;          # wd:Q1726 = München (Wikidata)
     uni:gruendungsjahr 1868 ;
     uni:studentenanzahl 50000 .
 
 uni:FUBerlin
     a uni:University ;
     rdfs:label "Freie Universität Berlin"@de ;
-    uni:location uni:Berlin ;
+    uni:location wd:Q64 ;            # wd:Q64 = Berlin (Wikidata)
     uni:gruendungsjahr 1948 ;
     uni:studentenanzahl 35000 .
 

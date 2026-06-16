@@ -55,23 +55,24 @@ Chrome-Struktur (finales Design — gilt für ALLE Folien)
 /* Content area */
 .body  { position:absolute; left:18px; right:0; top:62px; bottom:26px; overflow:hidden; }
 
-Footer-Inhalt (per JS automatisch befüllt — am Ende jeder HTML-Datei):
+⚠️ KRITISCHE REGEL — Header & Footer NICHT manuell bauen ⚠️
+Das Script am Ende von presentation_v2.html verarbeitet JEDE Folie automatisch:
+  1. Es wrappt .num/.tag/.title im Header in <div class="meta"> + <div class="sep">
+     → erst dadurch wird der Header-Text vertikal zentriert & der Trennstrich gesetzt.
+  2. Es injiziert den Footer (inkl. Seitenzahl) selbst.
 
-<script>
-lucide.createIcons();
-const slides = document.querySelectorAll('.slide');
-const total = slides.length;
-slides.forEach((s, i) => {
-  const r = s.querySelector('.footer-right');
-  if (r) r.textContent = `${i + 1} / ${total}`;
-});
-</script>
+Das Script hat einen Hot-Reload-Schutz:
+    if (s.querySelector('.footer')) return;   // Folie gilt als bereits verarbeitet
+=> Wenn man manuell ein <div class="footer"> in eine Folie schreibt, wird die GANZE
+   Folie übersprungen: der Header wird NICHT zentriert (Text klebt oben/abgeschnitten,
+   kein Trennstrich). Das ist der „Bug oben in der Ecke".
 
-Footer HTML-Snippet (in jede Folie, direkt vor .body):
-<div class="footer">
-  <div class="footer-center">Roman Lahm · Vinzent Lahm · Semantic Triple Stores</div>
-  <div class="footer-right"></div>
-</div>
+DESHALB beim Anlegen neuer Folien:
+  • Header enthält NUR <div class="num">, <div class="tag">, <div class="title">
+    als direkte Kinder von .hdr — KEIN .meta, KEIN .sep selbst schreiben.
+  • NIEMALS ein <div class="footer"> / .footer-center / .footer-right manuell einfügen.
+  • Footer + Seitenzahl + Header-Zentrierung macht das Script automatisch.
+Nach jeder Änderung mit slide-screenshot prüfen, dass der Header zentriert ist.
 
 Platzübersicht
 - Left bar:  18px
@@ -106,4 +107,8 @@ PDF-Export (Chrome Headless)
   --print-to-pdf-no-header `
   "C:\...\slides\presentation.html"
 
-  Gerne viel Symbole, Visualisierung, ... wenig text! Besser didaktisch veranschaulicht als mit langen Textblöcken. Fokus auf Klarheit, nicht auf Detaillierung.
+ !!**Arebeite sehr gerne viel Symbole, Visualisierung, ... wenig text! Besser didaktisch veranschaulicht als mit langen Textblöcken. Fokus auf Klarheit, nicht auf Detaillierung.**
+
+Aktuelle Datei & Verifikation
+Die finale, zu bearbeitende Datei ist `presentation_v2.html` (nicht `presentation.html`).
+Layout-Änderungen immer visuell prüfen mit dem `slide-screenshot`-Skill, bevor man sie als fertig betrachtet.

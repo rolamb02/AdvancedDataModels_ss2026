@@ -1,0 +1,48 @@
+# QUERY 7 – Federated Query gegen Wikidata (optional / Bonus)
+# Fragt LIVE den öffentlichen Wikidata SPARQL-Endpunkt ab
+# Kombiniert unsere lokalen Daten mit globalem Linked Data
+#
+# Was hier passiert:
+#   SERVICE = "frag diesen externen Endpunkt"
+#   Der lokale Triplestore liefert die zwei Unis, deren uni:location
+#   direkt auf eine Wikidata-Ressource zeigt (TUMuenchen -> wd:Q1726,
+#   FUBerlin -> wd:Q64). Für genau diese Städte holt Wikidata live
+#   Label + Beschreibung. Ergebnisse werden zusammengeführt.
+#
+# Zeigt: Wie lokale und globale Ressourcen über eine gemeinsame, globale
+#        URI (die Wikidata-IRI) verknüpft werden – zwei Stores, eine Anfrage.
+#        Stuttgart + Karlsruhe bleiben rein lokal (kein externer Link).
+#
+# Technischer Hinweis (wichtig für die Demo):
+#   Oxigraph 0.5.x macht KEINE Bindings-Substitution in SERVICE ("bound join").
+#   Ein ungebundenes ?wdCity im SERVICE-Block würde Wikidata zwingen, ALLE
+#   Beschreibungen zu streamen -> Timeout -> 0 Ergebnisse.
+#   Deshalb wird die Menge der externen Ressourcen über VALUES eingegrenzt.
+#
+# Hinweis: Braucht Internetzugang. Wikidata-Endpunkt ist meist zuverlässig.
+# Als Fallback: Screenshot der Ergebnisse zeigen.
+
+PREFIX uni:    <http://example.org/uni/>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX schema: <http://schema.org/>
+PREFIX wd:     <http://www.wikidata.org/entity/>
+
+SELECT ?uniname ?stadtname ?description
+WHERE {
+    # Aus unserem lokalen Store: Unis, deren Standort direkt auf Wikidata zeigt
+    ?u  a uni:University .
+    ?u  rdfs:label ?uniname .
+    ?u  uni:location ?wdCity .
+    FILTER (STRSTARTS(STR(?wdCity), "http://www.wikidata.org/"))
+
+    # Von Wikidata: Label + Beschreibung der verlinkten Stadt-Ressource.
+    # VALUES grenzt die externe Anfrage ein (siehe Hinweis oben).
+    SERVICE <https://query.wikidata.org/sparql> {
+        VALUES ?wdCity { wd:Q1726 wd:Q64 }
+        ?wdCity schema:description ?description .
+        FILTER (lang(?description) = "de")
+        ?wdCity rdfs:label ?stadtname .
+        FILTER (lang(?stadtname) = "de")
+    }
+}
+ORDER BY ?uniname

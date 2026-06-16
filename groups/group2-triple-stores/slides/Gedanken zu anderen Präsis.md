@@ -1,3 +1,55 @@
+# Important Todos: 
+Foliendesign: 
+- Finaler Abgleich nochmal mit Report Md, passt alles? 
+- more AI related stuff hinzufügen? 
+- finale Folie: Referenzen & Quellen
+- Präfixe an geeigneter stelle ausreichen erklären
+- Gliederung vervollständigen 
+- Serialisierung? 
+- Design+berarbeiten 13,15(gelber kasten, 30, 37 kösten tauschen
+- Serialisierungsprozess
+
+- mehr inhalt auf takeaway folien
+
+- Aussprache foaf
+- Sorechtexte designen
+
+Theorie: 
+- Entailment, equivalence and inconsistency wiederholen
+- wissensabgrenzung: rdf, owl, w3c, 
+- Baum zeichen wiederholen
+- gibt es beib tree 1st und 2nd ebene soriterung
+- wird immer 6 permutationen gemacht? 
+
+- Slides final wrapup: 
+
+
+- nochmal andere Datenbanken im Vergleich analyiseren,Vorbereitung auf Fragen von Prof
+    - Vergleich Property Graph: https://neo4j.com/blog/knowledge-graph/rdf-vs-property-graphs-knowledge-graphs/
+    - Schwachstellen von unserem System
+    - Selbstbeziehung möglich in TS? 
+    - Abgrenzung konkret zu Cypher
+    - warum für oxigraph entschieden? 
+    
+
+Durchsprechen:
+- final Presentation after demo of wikidata - only Video? 
+
+
+
+
+
+
+# Ideen
+- wie gehts eigentlich weiter nach triplestores, ist das das Ende der Fahnenstange
+- Named Graph noch reinbringen? 
+- Forward and Backward chaining bei Architecture? 
+
+
+
+
+
+# Gedanken
 ## Relational DB
 **Overall**
 Kernfragen pro Kapitel definieren? 
@@ -43,36 +95,6 @@ Super interessant zum einbinden. Vielleicht au nen Real world / experimental exa
 ### Fragen
 Property Graph: 
 vs. RDF: Metadaten dynamisch ergänzbar? 
-
-
-## Ideen
-- Überblick nach den jeweiligen Kapiteln / Recap, Studis kurz Zeit lassen zum Durchdenken. 
-- Query Model : FAQ 2 / frage 7 umsetzen - Präsi an entsprechender Stelle anpassen (Bsp. F7 QUery Model!)
-- wie gehts eigentlich weiter nach triplestores, ist das das Ende der Fahnenstange
-- Named Graph noch reinbringen? 
-- Forward and Backward chaining bei Architecture? 
-
-
-## Important Todos: 
-- Präfixe an geeigneter stelle ausreichen erklären
-- Finaler Abgleich nochmal mit Report Md, passt alles? 
-- Ist alles von Gedanken zu anderen Präsis drinnen? 
-- AI related stuff hinzufügen? 
-- Entailment, equivalence and inconsistency wiederholen
-
-- Slides final wrapup: 
-## Allgemeine Verbesserungen  
-- zu Beginn jedes Kapitels: - Kapitelvorstellung:  linke spalte welches kapitel jetzt kommt (also alle kapitel von Miotivation bis Comprison sichtbar und das farbig markiert, welches jetzt kommt), rechts stichpunkte zum inhalt grob des kapitels
-- Abschlussfolie pro kapitel mit den wichtigsten Erkenntnissen vom Kapitel in stichworten 
-
-- nochmal andere Datenbanken im Vergleich analyiseren,Vorbereitung auf Fragen von Prof
-    - Vergleich Property Graph: https://neo4j.com/blog/knowledge-graph/rdf-vs-property-graphs-knowledge-graphs/
-
-
-Next Task: 
-1. Final Folien Lookup. 
-2. Vinz anfragen aktueller Stand sowie Folienüberarbeitung wie vorgehen? 
- 
 
 
 
