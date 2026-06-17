@@ -3,27 +3,13 @@
 Foliendesign:
 
 - more AI related stuff hinzufügen? - Vinz
-- Sorechtexte designen
-
-Theorie:
-- Entailment, equivalence and inconsistency wiederholen
-
-Comparison: 
-- Oxigraph (wie in der Demo): bietet Transaktionen, aber keine vollständige Isolation — concurrent writes können Konflikte erzeugen - bitte das genauer ausführen und wie ist es bei Jena fusenki? 
-- im Sprechtext wird amazon neptune genannt als kg mit property graph, in der präsi ist das glaub teilweise als tripelstore aufgelistet. bitte überprüfe und verifzieren mit notebook lm
-
 
 
 - Slides final wrapup:
 
   - Foliennummern oben links anpassen!
-- nochmal andere Datenbanken im Vergleich analyiseren,Vorbereitung auf Fragen von Prof
 
-  - Vergleich Property Graph: https://neo4j.com/blog/knowledge-graph/rdf-vs-property-graphs-knowledge-graphs/
-  - Schwachstellen von unserem System
-  - Selbstbeziehung möglich in TS?
-  - Abgrenzung konkret zu Cypher
-  - warum für oxigraph entschieden?
+
 
 Die 1,0-Lücken (priorisiert)
 

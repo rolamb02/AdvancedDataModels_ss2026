@@ -1,69 +1,62 @@
-# Sprechtext – Kapitel: Comparison (Einordnung & Abgrenzung)
+# Spickzettel – Kapitel: Comparison
 
 ---
 
-## Folie 1: Triple Store vs. SQL – kurze Wiederholung
+## Folie 1: Triple Store vs. SQL – Consistency / ACID
 
+**ACID** = **A**tomicity · **C**onsistency · **I**solation · **D**urability
 
-**Consistency**
-**SQL:** Volle ACID-Garantien eingebaut — jede Transaktion ist atomar, konsistent, isoliert, dauerhaft. Das war von Anfang an zentrales Design-Ziel relationaler DBs.
+| | SQL | Triple Store |
+|---|---|---|
+| **Atomicity** | 1 UPDATE = 1 atomare Op | Update = delete + insert (2 Ops) → schwieriger atomar |
+| **Consistency** | Constraints & Triggers erzwingen gültigen Zustand | implementierungsabhängig |
+| **Isolation** | Serializable Standard in den meisten Engines | Oxigraph: Repeatable Read; Jena TDB2: Serializable |
+| **Durability** | jahrzehnte-erprobt | gegeben, aber je nach Impl. |
 
-**Triple Store:** Kommt auf die Implementierung an:
-- Oxigraph (wie in der Demo): bietet Transaktionen, aber keine vollständige Isolation — concurrent writes können Konflikte erzeugen
-- GraphDB, Stardog: bieten vollständiges ACID, aber mit Performance-Overhead
-- Distributed Triple Stores (wie Virtuoso im Cluster): oft nur Eventually Consistent
+**Triple Store implementierungsabhängig:**
+- **Oxigraph:** Repeatable-Read-Isolation, nur 1 Writer gleichzeitig (kein concurrent write)
+- **GraphDB / Stardog:** vollständiges ACID, aber Performance-Overhead
+- **Distributed (Virtuoso Cluster):** oft nur Eventually Consistent (CAP-Theorem)
 
-**Warum ist das bei Triple Stores schwieriger?** Ein einzelner Vorgang ("Alice studiert jetzt an Uni B statt A") bedeutet: altes Triple löschen + neues Triple einfügen — zwei Operationen. In SQL ist das ein einziges UPDATE. Bei Millionen verteilter Triples ist atomare Konsistenz technisch aufwendiger.
+**Kernproblem:** 1 Update ("Alice wechselt Uni") = 2 Ops (delete + insert); SQL = 1 UPDATE → bei Millionen verteilter Triples aufwendiger atomar zu halten
 
-**Interaktion**: Wer weiß für was ETL noch stand (Extract, Transform, Load)
-
-
----
-
-## Folie 2: Triple Store vs. Property Graph – die wichtige Abgrenzung
-
-**Was zeigt die Folie?**
-Vergleichstabelle zwischen RDF Triple Stores und Property Graphs (z.B. Neo4j). Beide sind Graphmodelle – die Unterschiede sind aber fundamental.
+**Interaktion:** ETL = Extract, Transform, Load
 
 ---
 
-### Sprechtext
+## Folie 2: Triple Store vs. Property Graph
 
+**Standardisierung:**
+- Cypher (Neo4j) = herstellerspezifisch, kein W3C-Standard, verschiedene Dialekte
+- SPARQL = W3C-Standard → alle konformen Stores sprechen dieselbe Abfragesprache
+- Standardisierte Vokabulare: RDFS, OWL, Dublin Core, Schema.org
+  - `rdfs:subClassOf`, `owl:sameAs`, `dbo:birthPlace` = global definierte Bedeutungen
+  - → semantische Interoperabilität zwischen Systemen, die dieselben Vokabulare nutzen
+- Property Graphs: kein Vokabular-Standard
 
-**Standardisierung – was genau ist gemeint?**
-Es geht um zwei Ebenen. Erstens: Cypher (Neo4j) definiert zwar Abfragesyntax – aber das ist ein herstellerspezifischer Standard, kein W3C-Standard. Verschiedene Property-Graph-Systeme sprechen verschiedene Dialekte. SPARQL hingegen ist W3C-standardisiert: jeder konforme Triple Store versteht dieselbe Abfragesprache. Zweitens – und das ist entscheidend: Es gibt standardisierte *Vokabulare*. RDFS, OWL, Dublin Core, Schema.org – das sind gemeinsam vereinbarte Bedeutungen für Prädikate und Klassen. `rdfs:subClassOf`, `owl:sameAs`, `dbo:birthPlace` – diese URIs haben weltweit eine definierte Bedeutung. Das ermöglicht semantische Interoperabilität zwischen verschiedenen Systemen, die dieselben Vokabulare nutzen. Property Graphs haben das nicht.
+**Traversal-Performance Property Graph (Neo4j):**
+- Knoten = fester Datensatz mit Pointer auf 1. ausgehende Kante
+- Kante = Pointer auf Zielknoten + Pointer auf nächste Kante desselben Knotens (verkettete Liste im Speicher)
+- Beispiel "Romi":
+  - Hop 1: Knoteneintrag → Pointer → 1. Kante → Zielknoten = O(1), 2 Speicherzugriffe
+  - Nächste Kante: Kante enthält Pointer auf nächste Kante → O(1)
+  - 4 Hops × 10 Freunde/Level: 10 + 100 + 1.000 + 10.000 = **~11.110 Pointer-Sprünge**, kein Index-Lookup
 
+**Traversal-Performance Triple Store (Oxigraph/Jena):**
+- Keine physischen Pointer → SPO-Index (B-Tree oder Hash)
+- Pro Hop: Index-Lookup "alle Triples wo Subj = uni:Romi, Pred = uni:kennt" → O(log n) oder O(1)+Overhead
+- 4 Hops × 10 Freunde: gleiche Anzahl Lookups, aber jeder Lookup teurer als Pointer-Sprung
+- Größerer Graph → nicht mehr vollständig im RAM → noch langsamer
 
+**Fazit:** Property Graph = pointer-native → schneller bei tiefer Traversal; Triple Store → stärker bei semantischer Reichweite + externer Datenintegration
 
-**Traversal-Performance – warum genau ist Property Graph technisch schneller? (mit Beispiel)**
-
-Im **Property Graph (Neo4j)**:
-Neo4j speichert jeden Knoten als festen Datensatz auf der Festplatte. Jeder Knoten enthält einen Pointer (eine direkte Speicheradresse) auf seine erste ausgehende Kante. Jede Kante enthält wiederum Pointer auf den nächsten Knoten *und* auf die nächste Kante desselben Knotens. Das ist eine verkettete Liste direkt im Speicher.
-
-Wenn ich von "Romi" einen Hop mache:
-1. Gehe zu Romis Knoteneintrag → lese Pointer auf erste Kante → O(1), ein Speicherzugriff.
-2. Gehe zur Kante → lese Pointer auf Zielknoten → O(1), ein Speicherzugriff.
-3. Nächste Kante von Romi: Kante enthält Pointer auf nächste Kante → O(1).
-
-Jeder Hop ist also buchstäblich ein oder zwei Pointer-Sprünge im Speicher. Bei 4 Hops mit je 10 Freunden: 10 + 100 + 1000 + 10000 = ~11.110 Pointer-Sprünge. Kein Index-Lookup, kein Suchen.
-
-Im **Triple Store (Oxigraph/Jena)**:
-Es gibt keine physischen Pointer zwischen Triples. Stattdessen liegt eine Index-Tabelle vor (z.B. SPO-Index). Wenn ich von Romi einen Hop mache, muss der Store im Index nachschlagen: "Gib mir alle Triples, wo Subjekt = uni:Romi und Prädikat = uni:kennt." Das ist ein B-Tree- oder Hash-Index-Lookup – schnell, aber nicht O(1) wie ein Pointer, sondern O(log n) oder O(1) mit Hash, plus der Overhead des Index-Traversals. Für jeden einzelnen Knoten auf jeder Ebene wird ein neuer Index-Lookup ausgeführt.
-
-Bei 4 Hops mit je 10 Freunden: dieselbe Anzahl an Lookups, aber jeder einzelne Lookup ist langsamer als ein Pointer-Sprung, weil Indizes im Vergleich zu direkten Speicheradressen teurer sind – besonders wenn der Graph größer wird und nicht mehr vollständig im RAM liegt.
-
-**Fazit:** Property Graph ist bei tiefer Traversal in *einer* Datenbank schneller, weil die Graphstruktur direkt in der Speicherorganisation abgebildet ist – Pointer statt Index-Lookup. Triple Store ist dafür stärker bei semantischer Reichweite und externer Datenintegration, wo kein Property Graph mithalten kann.
-
-
-
-**Warum brauche ich für dbo-Prädikate kein SERVICE, für das Stuttgart-Objekt aus DBpedia aber schon?**
- Prädikate sind nur Label/Namen – die kommen immer aus dem lokalen TTL-Präfix-Block. Objekte/Ressourcen können echte externe Datenobjekte sein, die nur auf fremden Servern liegen – dafür braucht man SERVICE.
-
+**SERVICE-Frage (dbo-Prädikat vs. Stuttgart-Objekt):**
+- Prädikate = Labels aus lokalem Präfix-Block → kein SERVICE nötig
+- Objekte/Ressourcen können echte externe Datenobjekte sein → SERVICE nötig
 
 ---
 
 ## Folie 3: Wann nimmt man was? – Use-Case-Matrix
-
 
 Diese Matrix ist als schnelle Orientierungshilfe gedacht. Kein Modell gewinnt immer.
 
@@ -79,12 +72,10 @@ Diese Matrix ist als schnelle Orientierungshilfe gedacht. Kein Modell gewinnt im
 - NHS/Medizin: SNOMED CT & ICD-10 als OWL-Ontologien mit automatischer Inferenz
 - Open PHACTS (EU): RDF-Integration von DrugBank, ChEMBL, UniProt für Wirkstoffforschung
 
-
 **Offene Datenintegration → Triple Store ✅:** 
 - BBC: RDF-Verlinkung von Nachrichtenartikeln mit Archivmaterial via DBpedia
 - New York Times: Publikation von Personen/Orten/Organisationen als Linked Open Data
 - Open PHACTS: Federated SPARQL über mehrere Pharmadatenbanken ohne ETL-Pipeline
-
 
 **Einfacher Einstieg / Tooling:**
 - SQL ✅: längste Geschichte, breiteste Entwickler-Community, beste Tool-Unterstützung.
@@ -103,14 +94,11 @@ Diese Matrix ist als schnelle Orientierungshilfe gedacht. Kein Modell gewinnt im
 
 **Inferenz macht den Unterschied.** 
 
- **Standardisierte Vokabulare ermöglichen semantische Interoperabilität.** Knowledge Graphs leben davon, dass verschiedene Quellen dieselben Begriffe meinen. `schema:Person`, `dbo:birthPlace`, `owl:sameAs` – das sind W3C-standardisierte Prädikate, die in Wikidata, DBpedia, Schema.org und eigenen Daten gleich bedeuten. 
+**Standardisierte Vokabulare ermöglichen semantische Interoperabilität.** Knowledge Graphs leben davon, dass verschiedene Quellen dieselben Begriffe meinen. `schema:Person`, `dbo:birthPlace`, `owl:sameAs` – das sind W3C-standardisierte Prädikate, die in Wikidata, DBpedia, Schema.org und eigenen Daten gleich bedeuten. 
 
-Property Graphs werden zunehmend ebenfalls für Knowledge Graphs eingesetzt — Technologien wie Amazon Neptune oder Microsoft Azure Cosmos DB zeigen, dass die Grenze verschwimmt. Der entscheidende Unterschied: Triple Stores haben URI-basierte offene Identitäten (gut für externe Verlinkung), Property Graphs haben bessere Traversierungsperformance.
-
-
-*Ende Kapitel Comparison*
+Property Graphs werden zunehmend ebenfalls für Knowledge Graphs eingesetzt — Amazon Neptune (Multi-Model: RDF+SPARQL UND Property Graph+Gremlin) oder Microsoft Azure Cosmos DB zeigen, dass die Grenze verschwimmt. Der entscheidende Unterschied: Triple Stores haben URI-basierte offene Identitäten (gut für externe Verlinkung), Property Graphs haben bessere Traversierungsperformance.
 
 
-https://www.youtube.com/watch?v=m_9_23jXPoE&t=16s
+---
 
-
+*Quellen: [Oxigraph Architecture Wiki](https://github.com/oxigraph/oxigraph/wiki/Architecture) · [Jena TDB2 Docs](https://jena.apache.org/documentation/tdb2/) · [Neptune AWS Blog](https://aws.amazon.com/blogs/database/query-rdf-graphs-using-sparql-and-property-graphs-using-gremlin-with-the-amazon-athena-neptune-connector/)*
