@@ -128,6 +128,7 @@ Single-Node vs. verteilte Deployments. Konkrete Systeme im Überblick.
 
 **Deployment-Optionen:**
 - **Single Node / Embedded:** Triple Store läuft im selben Prozess wie die Anwendung (z. B. Jena TDB lokal). Einfach, kein Netzwerk-Overhead. Für kleine Datasets und Entwicklung.
+= **einem einzigen physischen Computer oder einer einzigen virtuellen Maschine**
 - **Client-Server:** Store läuft als eigenständiger Prozess/Container, Clients sprechen HTTP. Unser Demo-Setup: Oxigraph in Docker, Clients per curl/Browser. Typisch für Produktion.
 - **Verteilte/Cluster-Setups:** Mehrere Store-Knoten, Replikation/Sharding. Nötig bei Milliarden Triples oder hoher Query-Last. Komplexer, aber horizontal skalierbar.
 
