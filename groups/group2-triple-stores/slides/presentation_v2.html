@@ -122,6 +122,13 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
 .pills { display:flex; gap:12px; align-items:center; }
 .req-icon { width:40px; height:40px; border-radius:10px; flex-shrink:0; display:flex; align-items:center; justify-content:center; color:var(--navy); background:#E5EAF5; margin-right:14px; }
 .req-icon svg { width:22px; height:22px; stroke-width:1.75; }
+
+/* ── PDF / Print: 1 Folie == 1 Seite, kein Drift, keine Leerseite ── */
+@media print {
+  body   { background:#fff; padding:0; gap:0; margin:0; display:block; }
+  .slide { margin:0 !important; page-break-after:auto; break-after:auto; break-inside:avoid; }
+  .slide + .slide { page-break-before:always; break-before:page; }
+}
 </style>
 </head>
 <body>
@@ -173,50 +180,57 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Übersicht</div>
     <div class="title">Agenda</div>
   </div>
-  <div class="body-nofooter" style="padding:18px 32px;">
-   <div style="display:flex;flex-direction:column;gap:14px;height:100%;">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;flex:1;">
-      <div style="display:flex;flex-direction:column;gap:12px;">
-        <div style="display:flex;align-items:center;gap:16px;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--coral);">
+  <div class="body-nofooter" style="padding:22px 32px;">
+   <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;height:100%;">
+
+      <!-- Spalte 1 -->
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div style="flex:1;display:flex;align-items:center;gap:16px;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--coral);">
           <div style="width:40px;height:40px;background:var(--coral);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;font-weight:700;color:#fff;">1</div>
-          <div><div class="ct">Motivation</div><div class="cs">Warum Triple Stores? SQL-Grenzen · RDF-Grundidee · AI</div></div>
+          <div><div class="ct">Motivation</div><div class="cs">Warum Triple Stores? · SQL-Grenzen · RDF · AI</div></div>
         </div>
-        <div style="display:flex;align-items:center;gap:16px;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--teal);">
+        <div style="flex:1;display:flex;align-items:center;gap:16px;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--teal);">
           <div style="width:40px;height:40px;background:var(--teal);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;font-weight:700;color:#fff;">2</div>
-          <div><div class="ct">Conceptual Model</div><div class="cs">Triple · URIs · RDFS/OWL · Inferenz · Named Graphs</div></div>
+          <div><div class="ct">Conceptual Model</div><div class="cs">Triple · URIs · RDFS/OWL · Inferenz</div></div>
         </div>
-        <div style="display:flex;align-items:center;gap:16px;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--navy);">
+        <div style="flex:1;display:flex;align-items:center;gap:16px;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--navy);">
           <div style="width:40px;height:40px;background:var(--navy);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;font-weight:700;color:#fff;">3</div>
-          <div><div class="ct">Data Structure</div><div class="cs">Triple Table · Dictionary · Index-Permutationen · URIs</div></div>
+          <div><div class="ct">Data Structure</div><div class="cs">Triple Table · Dictionary · Indexe</div></div>
         </div>
       </div>
-      <div style="display:flex;flex-direction:column;gap:12px;">
-        <div style="display:flex;align-items:center;gap:16px;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid #7C3AED;">
+
+      <!-- Spalte 2 -->
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div style="flex:1;display:flex;align-items:center;gap:16px;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid #7C3AED;">
           <div style="width:40px;height:40px;background:#7C3AED;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;font-weight:700;color:#fff;">4</div>
-          <div><div class="ct">Query Model</div><div class="cs">SPARQL · Pattern Matching · Inferenz-Aha-Moment</div></div>
+          <div><div class="ct">Query Model</div><div class="cs">SPARQL · Pattern Matching · Inferenz</div></div>
         </div>
-        <div style="display:flex;align-items:center;gap:16px;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid #0891B2;">
+        <div style="flex:1;display:flex;align-items:center;gap:16px;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid #0891B2;">
           <div style="width:40px;height:40px;background:#0891B2;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;font-weight:700;color:#fff;">5</div>
           <div><div class="ct">Architecture</div><div class="cs">Storage · Deployment · Skalierung · Tools</div></div>
         </div>
-        <div style="display:flex;align-items:center;gap:16px;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--gold);">
+        <div style="flex:1;display:flex;align-items:center;gap:16px;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--gold);">
           <div style="width:40px;height:40px;background:var(--gold);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;font-weight:700;color:var(--navy);">6</div>
-          <div><div class="ct">Comparison</div><div class="cs">vs. SQL · vs. Property Graph · Use-Case-Matrix</div></div>
+          <div><div class="ct">Comparison</div><div class="cs">vs. SQL · vs. Property Graph · Matrix</div></div>
         </div>
       </div>
-    </div>
 
-    <!-- Abschluss-Sequenz: Demo → Interaktion → Quiz -->
-    <div style="display:flex;align-items:center;gap:12px;background:var(--navy);border-radius:12px;padding:12px 22px;">
-      <div style="font-size:12px;font-weight:700;color:var(--gold);letter-spacing:2.5px;text-transform:uppercase;white-space:nowrap;margin-right:6px;">Zum Abschluss</div>
-      <div style="display:flex;align-items:center;gap:9px;flex:1;color:#fff;">
-        <div style="display:flex;align-items:center;gap:9px;background:rgba(43,200,154,.18);border-radius:8px;padding:7px 14px;"><i data-lucide="terminal" style="width:19px;height:19px;color:var(--teal);"></i><span style="font-size:18px;font-weight:700;">Demo</span></div>
-        <i data-lucide="chevron-right" style="width:18px;height:18px;color:rgba(255,255,255,.45);"></i>
-        <div style="display:flex;align-items:center;gap:9px;background:rgba(249,97,103,.18);border-radius:8px;padding:7px 14px;"><i data-lucide="users" style="width:19px;height:19px;color:var(--coral);"></i><span style="font-size:18px;font-weight:700;">Interaktion</span></div>
-        <i data-lucide="chevron-right" style="width:18px;height:18px;color:rgba(255,255,255,.45);"></i>
-        <div style="display:flex;align-items:center;gap:9px;background:rgba(249,201,70,.2);border-radius:8px;padding:7px 14px;"><i data-lucide="help-circle" style="width:19px;height:19px;color:var(--gold);"></i><span style="font-size:18px;font-weight:700;">Quiz</span></div>
+      <!-- Spalte 3: Zum Abschluss -->
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div style="flex:1;display:flex;align-items:center;gap:16px;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--teal);">
+          <div style="width:40px;height:40px;background:var(--teal);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="terminal" style="width:22px;height:22px;color:#fff;stroke-width:2.2;"></i></div>
+          <div class="ct">Demo</div>
+        </div>
+        <div style="flex:1;display:flex;align-items:center;gap:16px;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--coral);">
+          <div style="width:40px;height:40px;background:var(--coral);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="users" style="width:22px;height:22px;color:#fff;stroke-width:2.2;"></i></div>
+          <div class="ct">Interaktion</div>
+        </div>
+        <div style="flex:1;display:flex;align-items:center;gap:16px;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--gold);">
+          <div style="width:40px;height:40px;background:var(--gold);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="help-circle" style="width:22px;height:22px;color:var(--navy);stroke-width:2.2;"></i></div>
+          <div class="ct">Quiz</div>
+        </div>
       </div>
-    </div>
+
    </div>
   </div>
 </div>
@@ -490,30 +504,83 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
   <div class="hdr">
     <div class="num" style="background:var(--coral);">01</div>
     <div class="tag">Motivation · Zusammenfassung</div>
-    <div class="title">Kurz innehalten – das Wichtigste</div>
+    <div class="title">Das Wichtigste</div>
   </div>
   <div class="body">
-    <div style="height:100%;display:flex;flex-direction:column;justify-content:center;gap:18px;padding:14px 32px;">
+    <div style="height:100%;display:flex;flex-direction:column;padding:15px 30px 13px;gap:11px;">
 
+      <!-- Top bar -->
       <div style="display:flex;align-items:center;gap:14px;">
-        <div class="lbl lbl-coral" style="flex:1;">Key Takeaways</div>
+        <div class="lbl lbl-coral">Das Kapitel in einem Bild</div>
+        <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(249,97,103,.4),rgba(249,97,103,0));"></div>
         <div style="display:flex;align-items:center;gap:8px;background:rgba(249,201,70,.15);border:1px solid var(--gold);border-radius:32px;padding:6px 16px;">
-          <i data-lucide="help-circle" style="width:18px;height:18px;color:#B8860B;"></i>
-          <span style="font-size:16px;font-weight:700;color:var(--navy);">Fragen? Kurz durchdenken</span>
+          <i data-lucide="alarm-clock" style="width:17px;height:17px;color:#B8860B;"></i>
+          <span style="font-size:15px;font-weight:700;color:var(--navy);">1 Minute &middot; Durchdenken</span>
         </div>
       </div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-        <div style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--coral);"><div class="ci ic" style="width:38px;height:38px;background:rgba(249,97,103,.1);color:var(--coral);flex-shrink:0;"><i data-lucide="globe"></i></div><div class="txt22"><strong>WWW verlinkt Dokumente</strong> – nicht ihre Bedeutung</div></div>
-        <div style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--navy);"><div class="ci ic" style="width:38px;height:38px;background:rgba(30,39,97,.08);color:var(--navy);flex-shrink:0;"><i data-lucide="database"></i></div><div class="txt22"><strong>SQL</strong> – starre Schemata, Datensilos</div></div>
-        <div style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--teal);"><div class="ci ic" style="width:38px;height:38px;background:rgba(43,200,154,.1);color:var(--teal);flex-shrink:0;"><i data-lucide="share-2"></i></div><div class="txt22"><strong>RDF</strong> – Wissen als Graph aus Fakten</div></div>
-        <div style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--gold);"><div class="ci ic" style="width:38px;height:38px;background:rgba(249,201,70,.18);color:#B8860B;flex-shrink:0;"><i data-lucide="sparkles"></i></div><div class="txt22"><strong>Semantic Web &amp; AI</strong> – Maschinen verstehen Bedeutung</div></div>
+      <!-- Der rote Faden -->
+      <div style="display:flex;flex-direction:column;flex:1;min-height:0;padding:0 6px;">
+
+        <!-- 1 -->
+        <div style="display:flex;gap:16px;flex:1;align-items:stretch;">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--coral);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="globe" style="width:21px;height:21px;"></i></div>
+            <div style="flex:1;width:2px;background:#E3E8F5;margin:4px 0;"></div>
+          </div>
+          <div style="flex:1;padding-top:5px;">
+            <div style="font-size:19px;font-weight:700;color:var(--navy);">Das Web verlinkt Dokumente</div>
+            <div style="font-size:15.5px;color:var(--text);line-height:1.4;margin-top:2px;">Webseiten verweisen zwar aufeinander, doch ihre eigentliche <strong>Bedeutung</strong> (was der Inhalt aussagt) bleibt für Maschinen unsichtbar.</div>
+          </div>
+          <div style="font-family:'Georgia',serif;font-size:40px;font-weight:700;color:#E7EBF6;line-height:1;flex-shrink:0;align-self:flex-start;padding-top:2px;">01</div>
+        </div>
+
+        <!-- 2 -->
+        <div style="display:flex;gap:16px;flex:1;align-items:stretch;">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="database" style="width:21px;height:21px;"></i></div>
+            <div style="flex:1;width:2px;background:#E3E8F5;margin:4px 0;"></div>
+          </div>
+          <div style="flex:1;padding-top:5px;">
+            <div style="font-size:19px;font-weight:700;color:var(--navy);">Relationale DBs = Silos</div>
+            <div style="font-size:15.5px;color:var(--text);line-height:1.4;margin-top:2px;">Feste Tabellen-Schemata erzwingen eine starre Struktur, wodurch das Zusammenführen von Daten aus verschiedenen Systemen aufwändig wird.</div>
+          </div>
+          <div style="font-family:'Georgia',serif;font-size:40px;font-weight:700;color:#E7EBF6;line-height:1;flex-shrink:0;align-self:flex-start;padding-top:2px;">02</div>
+        </div>
+
+        <!-- 3 -->
+        <div style="display:flex;gap:16px;flex:1;align-items:stretch;">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="share-2" style="width:21px;height:21px;"></i></div>
+            <div style="flex:1;width:2px;background:#E3E8F5;margin:4px 0;"></div>
+          </div>
+          <div style="flex:1;padding-top:5px;">
+            <div style="font-size:19px;font-weight:700;color:var(--navy);">RDF: Wissen als Graph</div>
+            <div style="font-size:15.5px;color:var(--text);line-height:1.4;margin-top:2px;">RDF speichert Wissen als einzelne Fakten (Tripel), die sich frei miteinander verknüpfen lassen, auch über die Grenzen einzelner Datenquellen hinweg.</div>
+          </div>
+          <div style="font-family:'Georgia',serif;font-size:40px;font-weight:700;color:#E7EBF6;line-height:1;flex-shrink:0;align-self:flex-start;padding-top:2px;">03</div>
+        </div>
+
+        <!-- 4 -->
+        <div style="display:flex;gap:16px;flex:1;align-items:stretch;">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="sparkles" style="width:21px;height:21px;"></i></div>
+          </div>
+          <div style="flex:1;padding-top:5px;">
+            <div style="font-size:19px;font-weight:700;color:var(--navy);">Semantic Web &amp; KI</div>
+            <div style="font-size:15.5px;color:var(--text);line-height:1.4;margin-top:2px;">Weil die Bedeutung explizit modelliert ist, können Maschinen Inhalte tatsächlich interpretieren, statt nur Zeichenketten zu vergleichen (Grundlage für Semantic Web und KI).</div>
+          </div>
+          <div style="font-family:'Georgia',serif;font-size:40px;font-weight:700;color:#E7EBF6;line-height:1;flex-shrink:0;align-self:flex-start;padding-top:2px;">04</div>
+        </div>
+
       </div>
 
-      <div style="background:var(--navy);border-radius:10px;padding:14px 20px;display:flex;align-items:center;gap:14px;">
-        <div style="color:var(--gold);"><i data-lucide="arrow-right-circle" style="width:30px;height:30px;"></i></div>
-        <div style="color:#fff;font-size:20px;"><strong>Warum</strong> Triple Stores? → als Nächstes: <strong>Conceptual Model</strong> – was genau <em>ist</em> ein Triple?</div>
+      <!-- Transition strip -->
+      <div style="background:var(--navy);border-radius:10px;padding:10px 18px;display:flex;align-items:center;gap:12px;">
+        <i data-lucide="arrow-right-circle" style="width:24px;height:24px;color:var(--gold);flex-shrink:0;"></i>
+        <div style="color:#fff;font-size:15px;">Das <strong>Warum</strong> steht (klassische DBs stoßen an Grenzen). Als Nächstes im <strong>Conceptual Model</strong>: was genau <em>ist</em> ein Triple?</div>
       </div>
+
     </div>
   </div>
 </div>
@@ -751,7 +818,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
           <div style="display:flex;align-items:center;gap:10px;"><div class="ci ic" style="width:32px;height:32px;background:rgba(43,200,154,.1);color:var(--teal);"><i data-lucide="languages"></i></div><div class="txt18">Sprach-Tags: <code>"Stuttgart"@de</code></div></div>
           <div style="display:flex;align-items:center;gap:10px;"><div class="ci ic" style="width:32px;height:32px;background:rgba(43,200,154,.1);color:var(--teal);"><i data-lucide="move-right"></i></div><div class="txt18">Steht <strong>immer nur als Objekt</strong> — nie als Subjekt</div></div>
         </div>
-      </div>
+      </div>    
     </div>
   </div>
 </div>
@@ -782,20 +849,34 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
       </div>
       <div class="sp-r" style="justify-content:center;gap:16px;">
         <div class="lbl lbl-coral">Lösung: Blank Node als Zwischenknoten</div>
-        <svg width="460" height="200" viewBox="0 0 460 200" style="display:block;align-self:center;">
-          <defs><marker id="cm4" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><polygon points="0 0,10 5,0 10" fill="var(--muted)"/></marker></defs>
-          <ellipse cx="80" cy="100" rx="62" ry="36" fill="var(--coral)"/>
-          <text x="80" y="106" text-anchor="middle" fill="white" font-size="16" font-family="Segoe UI" font-weight="700">UniS</text>
-          <circle cx="240" cy="100" r="40" fill="none" stroke="var(--muted)" stroke-width="2.5" stroke-dasharray="6,5"/>
-          <text x="240" y="106" text-anchor="middle" fill="var(--muted)" font-size="15" font-family="Consolas" font-weight="700">_:b1</text>
-          <line x1="142" y1="100" x2="196" y2="100" stroke="var(--muted)" stroke-width="2.5" marker-end="url(#cm4)"/>
-          <text x="169" y="90" text-anchor="middle" fill="var(--navy)" font-size="12" font-family="Segoe UI" font-weight="700">hasAddress</text>
-          <line x1="280" y1="82" x2="360" y2="40" stroke="var(--muted)" stroke-width="2" marker-end="url(#cm4)"/>
-          <line x1="282" y1="100" x2="362" y2="100" stroke="var(--muted)" stroke-width="2" marker-end="url(#cm4)"/>
-          <line x1="280" y1="118" x2="360" y2="160" stroke="var(--muted)" stroke-width="2" marker-end="url(#cm4)"/>
-          <text x="400" y="40"  text-anchor="middle" fill="var(--teal)" font-size="13" font-family="Consolas">"Hauptstr."</text>
-          <text x="400" y="105" text-anchor="middle" fill="var(--teal)" font-size="13" font-family="Consolas">"70174"</text>
-          <text x="400" y="165" text-anchor="middle" fill="var(--teal)" font-size="13" font-family="Consolas">"Stuttgart"</text>
+        <svg width="480" height="230" viewBox="0 0 480 230" style="display:block;align-self:center;">
+          <defs>
+            <marker id="cm4" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><polygon points="0 0,9 4.5,0 9" fill="var(--muted)"/></marker>
+            <marker id="cm4n" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><polygon points="0 0,9 4.5,0 9" fill="var(--navy)"/></marker>
+          </defs>
+          <!-- subject -->
+          <ellipse cx="70" cy="115" rx="56" ry="34" fill="var(--coral)"/>
+          <text x="70" y="121" text-anchor="middle" fill="white" font-size="17" font-family="Segoe UI" font-weight="700">UniS</text>
+          <!-- hasAddress edge -->
+          <line x1="126" y1="115" x2="186" y2="115" stroke="var(--navy)" stroke-width="2.5" marker-end="url(#cm4n)"/>
+          <text x="156" y="95" text-anchor="middle" fill="var(--navy)" font-size="12.5" font-family="Segoe UI" font-weight="700">hasAddress</text>
+          <!-- blank node -->
+          <circle cx="226" cy="115" r="38" fill="rgba(123,130,168,.08)" stroke="var(--muted)" stroke-width="2.5" stroke-dasharray="6,5"/>
+          <text x="226" y="120" text-anchor="middle" fill="var(--muted)" font-size="16" font-family="Consolas" font-weight="700">_:b1</text>
+          <!-- edges to literals -->
+          <line x1="258" y1="93"  x2="332" y2="48"  stroke="var(--muted)" stroke-width="2" marker-end="url(#cm4)"/>
+          <line x1="264" y1="115" x2="332" y2="115" stroke="var(--muted)" stroke-width="2" marker-end="url(#cm4)"/>
+          <line x1="258" y1="137" x2="332" y2="182" stroke="var(--muted)" stroke-width="2" marker-end="url(#cm4)"/>
+          <text x="286" y="64"  text-anchor="middle" fill="var(--muted)" font-size="10.5" font-family="Segoe UI" font-weight="700">street</text>
+          <text x="300" y="107" text-anchor="middle" fill="var(--muted)" font-size="10.5" font-family="Segoe UI" font-weight="700">zip</text>
+          <text x="286" y="176" text-anchor="middle" fill="var(--muted)" font-size="10.5" font-family="Segoe UI" font-weight="700">city</text>
+          <!-- literal boxes -->
+          <rect x="338" y="30"  width="128" height="36" rx="8" fill="rgba(43,200,154,.1)" stroke="var(--teal)" stroke-width="1.5"/>
+          <text x="402" y="53"  text-anchor="middle" fill="var(--teal)" font-size="14" font-family="Consolas">"Hauptstr."</text>
+          <rect x="338" y="97"  width="128" height="36" rx="8" fill="rgba(43,200,154,.1)" stroke="var(--teal)" stroke-width="1.5"/>
+          <text x="402" y="120" text-anchor="middle" fill="var(--teal)" font-size="14" font-family="Consolas">"70174"</text>
+          <rect x="338" y="164" width="128" height="36" rx="8" fill="rgba(43,200,154,.1)" stroke="var(--teal)" stroke-width="1.5"/>
+          <text x="402" y="187" text-anchor="middle" fill="var(--teal)" font-size="14" font-family="Consolas">"Stuttgart"</text>
         </svg>
         <div style="display:flex;flex-direction:column;gap:6px;">
           <div style="display:flex;align-items:center;gap:10px;"><div class="badge b-no" style="width:22px;height:22px;font-size:11px;flex-shrink:0;">⊘</div><div class="txt18">Keine globale URI · nur lokal gültig (<code>_:b1</code>)</div></div>
@@ -899,9 +980,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
           <span class="cm">Automatisch abgeleitet:</span><br>
           <span class="iri">:alice</span> <span class="kw">a</span> <span class="iri">uni:Person</span> <span class="cm">.</span> <span style="color:var(--teal);">← NEU</span>
         </div>
-        <div style="background:rgba(249,201,70,.12);border-radius:10px;padding:10px 16px;border-left:4px solid var(--gold);">
-          <div class="txt18">Anfrage nach <em>Person</em>: ohne Inferenz <strong style="color:var(--no);">0</strong> · mit Inferenz <strong style="color:var(--ok);">7</strong> Treffer (→ Query Model)</div>
-        </div>
+        
       </div>
     </div>
   </div>
@@ -1080,30 +1159,96 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
   <div class="hdr">
     <div class="num" style="background:var(--teal);">02</div>
     <div class="tag">Conceptual Model · Zusammenfassung</div>
-    <div class="title">Kurz innehalten – das Wichtigste</div>
+    <div class="title">Das Wichtigste</div>
   </div>
   <div class="body">
-    <div style="height:100%;display:flex;flex-direction:column;justify-content:center;gap:18px;padding:14px 32px;">
+    <div style="height:100%;display:flex;flex-direction:column;padding:15px 30px 13px;gap:11px;">
 
+      <!-- Top bar -->
       <div style="display:flex;align-items:center;gap:14px;">
-        <div class="lbl lbl-teal" style="flex:1;">Key Takeaways</div>
+        <div class="lbl lbl-teal">Das Kapitel in einem Bild</div>
+        <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(43,200,154,.4),rgba(43,200,154,0));"></div>
         <div style="display:flex;align-items:center;gap:8px;background:rgba(249,201,70,.15);border:1px solid var(--gold);border-radius:32px;padding:6px 16px;">
-          <i data-lucide="help-circle" style="width:18px;height:18px;color:#B8860B;"></i>
-          <span style="font-size:16px;font-weight:700;color:var(--navy);">Fragen? Kurz durchdenken</span>
+          <i data-lucide="alarm-clock" style="width:17px;height:17px;color:#B8860B;"></i>
+          <span style="font-size:15px;font-weight:700;color:var(--navy);">1 Minute &middot; Durchdenken</span>
         </div>
       </div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-        <div style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--coral);"><div class="ci ic" style="width:38px;height:38px;background:rgba(249,97,103,.1);color:var(--coral);flex-shrink:0;"><i data-lucide="box"></i></div><div class="txt22"><strong>Triple = S · P · O</strong></div></div>
-        <div style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--teal);"><div class="ci ic" style="width:38px;height:38px;background:rgba(43,200,154,.1);color:var(--teal);flex-shrink:0;"><i data-lucide="link"></i></div><div class="txt22"><strong>URI · Literal · Blank Node</strong></div></div>
-        <div style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--navy);"><div class="ci ic" style="width:38px;height:38px;background:rgba(30,39,97,.08);color:var(--navy);flex-shrink:0;"><i data-lucide="git-branch"></i></div><div class="txt22"><strong>RDFS / OWL → Inferenz</strong></div></div>
-        <div style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid #7C3AED;"><div class="ci ic" style="width:38px;height:38px;background:rgba(124,58,237,.1);color:#7C3AED;flex-shrink:0;"><i data-lucide="layers"></i></div><div class="txt22"><strong>Named Graphs = Kontext</strong></div></div>
+      <!-- Der rote Faden -->
+      <div style="display:flex;flex-direction:column;flex:1;min-height:0;padding:0 6px;">
+
+        <!-- 1 -->
+        <div style="display:flex;gap:16px;flex:1;align-items:stretch;">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--coral);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="box" style="width:21px;height:21px;"></i></div>
+            <div style="flex:1;width:2px;background:#E3E8F5;margin:4px 0;"></div>
+          </div>
+          <div style="flex:1;padding-top:5px;">
+            <div style="font-size:19px;font-weight:700;color:var(--navy);">Das Triple: S · P · O</div>
+            <div style="font-size:15.5px;color:var(--text);line-height:1.4;margin-top:2px;">Jede Aussage besteht aus Subjekt, Prädikat und Objekt und bildet damit die kleinste, in sich geschlossene Wissenseinheit.</div>
+          </div>
+          <div style="font-family:'Georgia',serif;font-size:40px;font-weight:700;color:#E7EBF6;line-height:1;flex-shrink:0;align-self:flex-start;padding-top:2px;">01</div>
+        </div>
+
+        <!-- 2 -->
+        <div style="display:flex;gap:16px;flex:1;align-items:stretch;">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="link" style="width:21px;height:21px;"></i></div>
+            <div style="flex:1;width:2px;background:#E3E8F5;margin:4px 0;"></div>
+          </div>
+          <div style="flex:1;padding-top:5px;">
+            <div style="font-size:19px;font-weight:700;color:var(--navy);">Drei Bausteine</div>
+            <div style="font-size:15.5px;color:var(--text);line-height:1.4;margin-top:2px;">Ressourcen werden über <strong>URIs</strong> eindeutig benannt, konkrete Werte stehen als <strong>Literale</strong> (Text, Zahl, Datum) und anonyme Hilfsknoten (<strong>Blank Nodes</strong>) bündeln Aussagen ohne eigene URI.</div>
+          </div>
+          <div style="font-family:'Georgia',serif;font-size:40px;font-weight:700;color:#E7EBF6;line-height:1;flex-shrink:0;align-self:flex-start;padding-top:2px;">02</div>
+        </div>
+
+        <!-- 3 -->
+        <div style="display:flex;gap:16px;flex:1;align-items:stretch;">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="share-2" style="width:21px;height:21px;"></i></div>
+            <div style="flex:1;width:2px;background:#E3E8F5;margin:4px 0;"></div>
+          </div>
+          <div style="flex:1;padding-top:5px;">
+            <div style="font-size:19px;font-weight:700;color:var(--navy);">Tripel bilden einen Graph</div>
+            <div style="font-size:15.5px;color:var(--text);line-height:1.4;margin-top:2px;">Sobald mehrere Tripel dieselbe URI verwenden, verbinden sie sich automatisch zu einem durchgehenden Wissensnetz (ganz ohne Fremdschlüssel).</div>
+          </div>
+          <div style="font-family:'Georgia',serif;font-size:40px;font-weight:700;color:#E7EBF6;line-height:1;flex-shrink:0;align-self:flex-start;padding-top:2px;">03</div>
+        </div>
+
+        <!-- 4 -->
+        <div style="display:flex;gap:16px;flex:1;align-items:stretch;">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:#7C3AED;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="git-branch" style="width:21px;height:21px;"></i></div>
+            <div style="flex:1;width:2px;background:#E3E8F5;margin:4px 0;"></div>
+          </div>
+          <div style="flex:1;padding-top:5px;">
+            <div style="font-size:19px;font-weight:700;color:var(--navy);">RDFS &amp; OWL</div>
+            <div style="font-size:15.5px;color:var(--text);line-height:1.4;margin-top:2px;">Mit Schema-Sprachen lassen sich Klassen, Hierarchien und ganze Ontologien beschreiben, was die Grundlage für maschinelle <strong>Inferenz</strong> bildet.</div>
+          </div>
+          <div style="font-family:'Georgia',serif;font-size:40px;font-weight:700;color:#E7EBF6;line-height:1;flex-shrink:0;align-self:flex-start;padding-top:2px;">04</div>
+        </div>
+
+        <!-- 5 -->
+        <div style="display:flex;gap:16px;flex:1;align-items:stretch;">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="layers" style="width:21px;height:21px;"></i></div>
+          </div>
+          <div style="flex:1;padding-top:5px;">
+            <div style="font-size:19px;font-weight:700;color:var(--navy);">Named Graphs</div>
+            <div style="font-size:15.5px;color:var(--text);line-height:1.4;margin-top:2px;">Tripel lassen sich einem benannten Graphen zuordnen, sodass sich Herkunft und Kontext mehrerer Quellen sauber auseinanderhalten lassen.</div>
+          </div>
+          <div style="font-family:'Georgia',serif;font-size:40px;font-weight:700;color:#E7EBF6;line-height:1;flex-shrink:0;align-self:flex-start;padding-top:2px;">05</div>
+        </div>
+
       </div>
 
-      <div style="background:var(--navy);border-radius:10px;padding:14px 20px;display:flex;align-items:center;gap:14px;">
-        <div style="color:var(--gold);"><i data-lucide="arrow-right-circle" style="width:30px;height:30px;"></i></div>
-        <div style="color:#fff;font-size:20px;"><strong>Was</strong> ist ein Triple? → als Nächstes: <strong>Data Structure</strong> – <em>wie</em> es gespeichert wird.</div>
+      <!-- Transition strip -->
+      <div style="background:var(--navy);border-radius:10px;padding:10px 18px;display:flex;align-items:center;gap:12px;">
+        <i data-lucide="arrow-right-circle" style="width:24px;height:24px;color:var(--gold);flex-shrink:0;"></i>
+        <div style="color:#fff;font-size:15px;">Das <strong>Was</strong> ist geklärt (Tripel, URIs, Ontologien). Als Nächstes die <strong>Data Structure</strong>: <em>wie</em> wird das alles gespeichert?</div>
       </div>
+
     </div>
   </div>
 </div>
@@ -1219,7 +1364,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
           <div class="badge b-ok" style="width:26px;height:26px;font-size:12px;flex-shrink:0;">✓</div>
           <div class="txt18">Kein Fakt vorhanden? Kein Triple — kein Platz verschwendet.</div>
         </div>
-        <div class="txt18">Neue Eigenschaft = einfach ein neues Triple anhängen. Kein Schema-Eingriff nötig.</div>
+        
       </div>
     </div>
   </div>
@@ -1351,10 +1496,10 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="title">Physische Speicherung II – Index-Permutationen</div>
   </div>
   <div class="body">
-    <div style="padding:16px 28px;height:100%;display:flex;flex-direction:column;gap:14px;">
-      <div style="display:flex;gap:14px;align-items:stretch;">
-        <div style="flex:1;background:#fff;border-radius:12px;padding:14px 18px;box-shadow:0 2px 8px rgba(30,39,97,.07);">
-          <div class="lbl lbl-navy" style="margin-bottom:10px;">6 Index-Permutationen</div>
+    <div style="padding:8px 28px;height:100%;display:flex;flex-direction:column;gap:8px;">
+      <div style="display:flex;gap:12px;align-items:stretch;">
+        <div style="flex:1;background:#fff;border-radius:12px;padding:10px 14px;box-shadow:0 2px 8px rgba(30,39,97,.07);">
+          <div class="lbl lbl-navy" style="margin-bottom:6px;">6 Index-Permutationen</div>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
             <div style="background:var(--navy);border-radius:8px;padding:8px 12px;text-align:center;color:#fff;font-family:Consolas;font-size:18px;font-weight:700;">SPO</div>
             <div style="background:var(--navy);border-radius:8px;padding:8px 12px;text-align:center;color:#fff;font-family:Consolas;font-size:18px;font-weight:700;">SOP</div>
@@ -1366,12 +1511,77 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
         </div>
         
       </div>
-      
+      <!-- Top row: dieselben 4 Tripel als IDs -->
+      <div style="background:#fff;border-radius:12px;padding:14px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);">
+        <div class="lbl lbl-navy" style="margin-bottom:10px;">Dieselben 4 Tripel — als Integer-IDs (nach Dictionary-Encoding)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 36px;font-family:Consolas;font-size:17px;">
+          <div><strong style="color:var(--navy);">(101, 502, 201)</strong> &nbsp;UniS · loc · Stuttgart</div>
+          <div><strong style="color:var(--navy);">(305, 502, 202)</strong> &nbsp;UniFR · loc · Freiburg</div>
+          <div><strong style="color:var(--navy);">(101, 503, 701)</strong> &nbsp;UniS · name · „Uni Stuttgart"</div>
+          <div><strong style="color:var(--navy);">(305, 503, 702)</strong> &nbsp;UniFR · name · „Uni Freiburg"</div>
+        </div>
+      </div>
+
+      <!-- Two B-trees side by side -->
+      <div style="display:flex;gap:14px;align-items:stretch;flex:1;">
+
+        <!-- SPO tree -->
+        <div style="flex:1;background:#fff;border-radius:12px;padding:14px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);display:flex;flex-direction:column;">
+          <div class="lbl lbl-navy" style="margin-bottom:8px;">SPO-Index — sortiert nach <span style="font-family:Consolas;">S → P → O</span></div>
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:0;">
+          <!-- Wegweiser-Knoten -->
+          <div style="display:flex;justify-content:center;">
+            <div style="background:var(--navy);color:#fff;border-radius:8px;padding:8px 20px;font-family:Consolas;font-size:17px;font-weight:700;">S ≥ 305 ?</div>
+          </div>
+          <!-- Connector -->
+          <svg viewBox="0 0 520 44" preserveAspectRatio="none" style="width:100%;height:42px;display:block;">
+            <line x1="260" y1="0" x2="125" y2="44" stroke="#C7CCE8" stroke-width="3"/>
+            <line x1="260" y1="0" x2="395" y2="44" stroke="#C7CCE8" stroke-width="3"/>
+          </svg>
+          <!-- Blätter -->
+          <div style="display:flex;gap:16px;">
+            <div style="flex:1;border:2px solid var(--navy);border-radius:8px;padding:10px 14px;font-family:Consolas;font-size:16px;line-height:1.7;background:rgba(30,39,97,.04);">
+              (101, 502, 201)<br>(101, 503, 701)
+            </div>
+            <div style="flex:1;border:2px solid var(--navy);border-radius:8px;padding:10px 14px;font-family:Consolas;font-size:16px;line-height:1.7;background:rgba(30,39,97,.04);">
+              (305, 502, 202)<br>(305, 503, 702)
+            </div>
+          </div>
+          </div>
+
+        </div>
+
+        <!-- POS tree -->
+        <div style="flex:1;background:#fff;border-radius:12px;padding:14px 20px;box-shadow:0 2px 8px rgba(30,39,97,.07);display:flex;flex-direction:column;">
+          <div class="lbl" style="margin-bottom:8px;color:var(--teal);">POS-Index — sortiert nach <span style="font-family:Consolas;">P → O → S</span></div>
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:0;">
+          <!-- Wegweiser-Knoten -->
+          <div style="display:flex;justify-content:center;">
+            <div style="background:var(--teal);color:#fff;border-radius:8px;padding:8px 20px;font-family:Consolas;font-size:17px;font-weight:700;">P ≥ 503 ?</div>
+          </div>
+          <!-- Connector -->
+          <svg viewBox="0 0 520 44" preserveAspectRatio="none" style="width:100%;height:42px;display:block;">
+            <line x1="260" y1="0" x2="125" y2="44" stroke="#A9E7D4" stroke-width="3"/>
+            <line x1="260" y1="0" x2="395" y2="44" stroke="#A9E7D4" stroke-width="3"/>
+          </svg>
+          <!-- Blätter -->
+          <div style="display:flex;gap:16px;">
+            <div style="flex:1;border:2px solid var(--teal);border-radius:8px;padding:10px 14px;font-family:Consolas;font-size:16px;line-height:1.7;background:rgba(43,200,154,.06);">
+              (502, 201, 101)<br>(502, 202, 305)
+            </div>
+            <div style="flex:1;border:2px solid var(--teal);border-radius:8px;padding:10px 14px;font-family:Consolas;font-size:16px;line-height:1.7;background:rgba(43,200,154,.06);">
+              (503, 701, 101)<br>(503, 702, 305)
+            </div>
+          </div>
+          </div>
+
+        </div>
+
+      </div>
     </div>
   </div>
-  <div class="insight"><span class="ia">→</span><span>Ohne passenden Index = Full Scan. <strong>Mit Permutationsindizes</strong> findet jede Query-Form in O(log n) ihren Einstiegspunkt.</span></div>
+  <div class="insight"><span class="ia">→</span><span>Beide Bäume, <strong>dieselben 4 Tripel</strong> — nur die Sortierung im Blatt unterscheidet sich. Warum braucht es davon gleich <strong>mehrere</strong>?</span></div>
 </div>
-
 
 <!-- ═══════════════════════════════════════════════════════
      DATA STRUCTURE 04 — Index-Permutationen - V2
@@ -1405,16 +1615,20 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
           <div style="padding:8px 16px;">SPARQL-Pattern</div><div style="padding:8px 16px;">Beispiel</div><div style="padding:8px 16px;">Nutzt Index</div>
         </div>
         <div style="display:grid;grid-template-columns:2fr 2fr 1fr;border-bottom:1px solid #EEF1FA;font-size:16px;">
-          <div style="padding:8px 16px;font-family:Consolas;">dbr:UniS ?p ?o</div><div style="padding:8px 16px;color:var(--muted);">Alle Fakten über UniStuttgart</div><div style="padding:8px 16px;font-family:Consolas;font-weight:700;color:var(--navy);">SPO</div>
+          <div style="padding:8px 16px;font-family:Consolas;">dbr:UniS ?p ?o</div><div style="padding:8px 16px;color:var(--muted);">Alle Fakten über UniStuttgart</div><div style="padding:8px 16px;font-family:Consolas;font-weight:700;color:var(--navy);"></div>
         </div>
         <div style="display:grid;grid-template-columns:2fr 2fr 1fr;background:#EEF1FA;border-bottom:1px solid #DDE3F0;font-size:16px;">
           <div style="padding:8px 16px;font-family:Consolas;">?s uni:loc dbr:Stuttgart</div><div style="padding:8px 16px;color:var(--muted);">Was liegt in Stuttgart?</div><div style="padding:8px 16px;font-family:Consolas;font-weight:700;color:var(--teal);"></div>
+        </div>
+         <div style="display:grid;grid-template-columns:2fr 2fr 1fr;font-size:16px;">
+          <div style="padding:8px 16px;font-family:Consolas;">?s ?p dbr:Stuttgart</div><div style="padding:8px 16px;color:var(--muted);">Wer referenziert Stuttgart?</div><div style="padding:8px 16px;font-family:Consolas;font-weight:700;color:#7C3AED;"></div>
         </div>
       </div>
     </div>
   </div>
   <div class="insight"><span class="ia">→</span><span>Ohne passenden Index = Full Scan. <strong>Mit Permutationsindizes</strong> findet jede Query-Form in O(log n) ihren Einstiegspunkt.</span></div>
 </div>
+
 
 
 <!-- ═══════════════════════════════════════════════════════
@@ -1548,42 +1762,100 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
 <div class="slide">
   <div class="lbar"></div>
   <div class="hdr">
-    <div class="num">06</div>
-    <div class="tag">Data Structure</div>
-    <div class="title">Von isolierten Fakten zur globalen Struktur</div>
+    <div class="num" style="background:var(--navy);">03</div>
+    <div class="tag">Data Structure · Zusammenfassung</div>
+    <div class="title">Das Wichtigste</div>
   </div>
   <div class="body">
-    <div style="padding:20px 36px;height:100%;display:flex;flex-direction:column;justify-content:center;gap:18px;">
-      <!-- 3-step flow -->
-      <div style="display:flex;align-items:center;gap:0;">
-        <div style="flex:1;background:var(--coral);border-radius:12px;padding:18px 20px;text-align:center;color:#fff;">
-          <div style="font-size:40px;margin-bottom:8px;">⚛</div>
-          <div style="font-size:20px;font-weight:700;margin-bottom:6px;">1. Atomisierung</div>
-          <div style="font-size:18px;opacity:.85;">Daten in Triples zerlegen — einfach &amp; stabil</div>
-        </div>
-        <svg width="48" height="40" viewBox="0 0 48 40" style="flex-shrink:0;"><polygon points="0,10 30,10 30,0 48,20 30,40 30,30 0,30" fill="var(--gold)" opacity=".7"/></svg>
-        <div style="flex:1;background:var(--navy);border-radius:12px;padding:18px 20px;text-align:center;color:#fff;">
-          <div style="font-size:40px;margin-bottom:8px;">🔗</div>
-          <div style="font-size:20px;font-weight:700;margin-bottom:6px;">2. Identifizierung</div>
-          <div style="font-size:18px;opacity:.85;">Globale URIs nutzen — eindeutig &amp; verknüpfbar</div>
-        </div>
-        <svg width="48" height="40" viewBox="0 0 48 40" style="flex-shrink:0;"><polygon points="0,10 30,10 30,0 48,20 30,40 30,30 0,30" fill="var(--gold)" opacity=".7"/></svg>
-        <div style="flex:1;background:var(--teal);border-radius:12px;padding:18px 20px;text-align:center;color:#fff;">
-          <div style="font-size:40px;margin-bottom:8px;">🌐</div>
-          <div style="font-size:20px;font-weight:700;margin-bottom:6px;">3. Flexibilität</div>
-          <div style="font-size:18px;opacity:.85;">Wissen organisch wachsen lassen — keine starren Grenzen</div>
+    <div style="height:100%;display:flex;flex-direction:column;padding:15px 30px 13px;gap:11px;">
+
+      <!-- Top bar -->
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div class="lbl" style="color:var(--navy);">Das Kapitel in einem Bild</div>
+        <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(30,39,97,.35),rgba(30,39,97,0));"></div>
+        <div style="display:flex;align-items:center;gap:8px;background:rgba(249,201,70,.15);border:1px solid var(--gold);border-radius:32px;padding:6px 16px;">
+          <i data-lucide="alarm-clock" style="width:17px;height:17px;color:#B8860B;"></i>
+          <span style="font-size:15px;font-weight:700;color:var(--navy);">1 Minute &middot; Durchdenken</span>
         </div>
       </div>
-      <div style="background:#fff;border-radius:12px;padding:16px 24px;box-shadow:0 2px 8px rgba(30,39,97,.07);display:flex;align-items:center;gap:16px;">
-        <div class="badge b-ok" style="width:44px;height:44px;font-size:22px;flex-shrink:0;">→</div>
-        <div style="font-size:22px;color:var(--text);line-height:1.35;">
-          Eine <strong>globale Wissensstruktur</strong>, die maschinenlesbar und über Datenbankgrenzen hinweg verlinkbar bleibt.
-          <span style="color:var(--muted);font-size:18px;"> → Wie fragen wir das ab? SPARQL!</span>
+
+      <!-- Der rote Faden -->
+      <div style="display:flex;flex-direction:column;flex:1;min-height:0;padding:0 6px;">
+
+        <!-- 1 -->
+        <div style="display:flex;gap:16px;flex:1;align-items:stretch;">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--coral);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="table-2" style="width:21px;height:21px;"></i></div>
+            <div style="flex:1;width:2px;background:#E3E8F5;margin:4px 0;"></div>
+          </div>
+          <div style="flex:1;padding-top:5px;">
+            <div style="font-size:19px;font-weight:700;color:var(--navy);">Alles ist ein Tripel</div>
+            <div style="font-size:15.5px;color:var(--text);line-height:1.4;margin-top:2px;">Statt Tabellen mit festen Spalten speichert ein Triple Store jede Information als eigene Zeile aus Subjekt, Prädikat und Objekt.</div>
+          </div>
+          <div style="font-family:'Georgia',serif;font-size:40px;font-weight:700;color:#E7EBF6;line-height:1;flex-shrink:0;align-self:flex-start;padding-top:2px;">01</div>
         </div>
+
+        <!-- 2 -->
+        <div style="display:flex;gap:16px;flex:1;align-items:stretch;">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="sprout" style="width:21px;height:21px;"></i></div>
+            <div style="flex:1;width:2px;background:#E3E8F5;margin:4px 0;"></div>
+          </div>
+          <div style="flex:1;padding-top:5px;">
+            <div style="font-size:19px;font-weight:700;color:var(--navy);">Schema-Flexibilität</div>
+            <div style="font-size:15.5px;color:var(--text);line-height:1.4;margin-top:2px;">Es gibt kein starres Schema im Voraus, sodass jederzeit neue Eigenschaften und Beziehungen dazukommen können (das Modell wächst organisch mit).</div>
+          </div>
+          <div style="font-family:'Georgia',serif;font-size:40px;font-weight:700;color:#E7EBF6;line-height:1;flex-shrink:0;align-self:flex-start;padding-top:2px;">02</div>
+        </div>
+
+        <!-- 3 -->
+        <div style="display:flex;gap:16px;flex:1;align-items:stretch;">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="binary" style="width:21px;height:21px;"></i></div>
+            <div style="flex:1;width:2px;background:#E3E8F5;margin:4px 0;"></div>
+          </div>
+          <div style="flex:1;padding-top:5px;">
+            <div style="font-size:19px;font-weight:700;color:var(--navy);">Dictionary-Encoding</div>
+            <div style="font-size:15.5px;color:var(--text);line-height:1.4;margin-top:2px;">Wiederkehrende URIs und Literale landen einmalig in einem Wörterbuch und werden intern nur noch als kurze Zahl-IDs gespeichert (spart Platz und beschleunigt Vergleiche).</div>
+          </div>
+          <div style="font-family:'Georgia',serif;font-size:40px;font-weight:700;color:#E7EBF6;line-height:1;flex-shrink:0;align-self:flex-start;padding-top:2px;">03</div>
+        </div>
+
+        <!-- 4 -->
+        <div style="display:flex;gap:16px;flex:1;align-items:stretch;">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:#7C3AED;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="layout-grid" style="width:21px;height:21px;"></i></div>
+            <div style="flex:1;width:2px;background:#E3E8F5;margin:4px 0;"></div>
+          </div>
+          <div style="flex:1;padding-top:5px;">
+            <div style="font-size:19px;font-weight:700;color:var(--navy);">Index-Permutationen</div>
+            <div style="font-size:15.5px;color:var(--text);line-height:1.4;margin-top:2px;">Dieselben Tripel werden in mehreren Sortierungen (SPO, POS, OSP und weitere) abgelegt, damit jedes Anfrage-Muster effizient bedient wird.</div>
+          </div>
+          <div style="font-family:'Georgia',serif;font-size:40px;font-weight:700;color:#E7EBF6;line-height:1;flex-shrink:0;align-self:flex-start;padding-top:2px;">04</div>
+        </div>
+
+        <!-- 5 -->
+        <div style="display:flex;gap:16px;flex:1;align-items:stretch;">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="globe" style="width:21px;height:21px;"></i></div>
+          </div>
+          <div style="flex:1;padding-top:5px;">
+            <div style="font-size:19px;font-weight:700;color:var(--navy);">Integration über URIs</div>
+            <div style="font-size:15.5px;color:var(--text);line-height:1.4;margin-top:2px;">Weil URIs global eindeutig sind, lassen sich Fakten aus völlig verschiedenen Quellen ohne zusätzliches Mapping miteinander verknüpfen.</div>
+          </div>
+          <div style="font-family:'Georgia',serif;font-size:40px;font-weight:700;color:#E7EBF6;line-height:1;flex-shrink:0;align-self:flex-start;padding-top:2px;">05</div>
+        </div>
+
       </div>
+
+      <!-- Transition strip -->
+      <div style="background:var(--navy);border-radius:10px;padding:10px 18px;display:flex;align-items:center;gap:12px;">
+        <i data-lucide="arrow-right-circle" style="width:24px;height:24px;color:var(--gold);flex-shrink:0;"></i>
+        <div style="color:#fff;font-size:15px;">Die Speicherung ist geklärt (Tripel, Indizes, URIs). Als Nächstes das <strong>Query Model</strong>: wie fragen wir das alles ab?</div>
+      </div>
+
     </div>
   </div>
-  <div class="insight"><span class="ia">→</span><span>Triples + URIs + Flexibilität = skalierbare Wissensstruktur. <strong>Nächster Schritt:</strong> SPARQL Query Model.</span></div>
 </div>
 
 
@@ -1645,7 +1917,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
         </div>
         <div style="display:flex;align-items:center;gap:14px;">
           <div class="ci ic" style="width:40px;height:40px;background:rgba(249,97,103,.1);color:var(--coral);flex-shrink:0;"><i data-lucide="git-branch"></i></div>
-          <div class="txt22"><strong>Inferenz-Aha-Moment</strong> – implizites Wissen abfragen <em>(0 → 7 Treffer)</em></div>
+          <div class="txt22"><strong>Inferenz</strong> – implizites Wissen abfragen</div>
         </div>
       </div>
 
@@ -1877,7 +2149,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
         <div class="code" style="font-size:13px;">
 <span class="kw">ASK</span> { <span class="iri">uni:AliceSchmidt</span> <span class="kw">a</span> <span class="iri">uni:Student</span> . }
         </div>
-        <div class="cb">Nur <strong>true</strong> oder <strong>false</strong> — kein Datensatz. Validierung, Assertions, Existenz-Checks.</div>
+        <div class="cb">Nur <strong>true</strong> oder <strong>false</strong> — kein Datensatz. Validierung, Existenz-Checks.</div>
       </div>
       <div class="card card-navy">
         <div class="ch"><div class="ci ic"><i data-lucide="share-2"></i></div><div class="ct">CONSTRUCT — neuer Graph</div></div>
@@ -2127,29 +2399,6 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
   </div>
   <div class="body">
     <div class="grid2">
-      <div class="card card-navy">
-        <div class="ch"><div class="ci ic"><i data-lucide="route"></i></div><div class="ct">Traversal vs. Inferenz</div></div>
-        <div style="display:flex;align-items:center;justify-content:center;flex:1;">
-          <svg width="440" height="150" viewBox="0 0 440 150">
-            <rect x="10" y="10" width="130" height="36" rx="6" fill="var(--teal)"/>
-            <text x="75" y="33" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="700">uni:Student</text>
-            <rect x="300" y="10" width="130" height="36" rx="6" fill="var(--navy)"/>
-            <text x="365" y="33" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="700">uni:Person</text>
-            <line x1="140" y1="28" x2="295" y2="28" stroke="var(--teal)" stroke-width="3"/>
-            <polygon points="290,21 305,28 290,35" fill="var(--teal)"/>
-            <text x="220" y="18" text-anchor="middle" fill="var(--teal)" font-size="12" font-weight="700" font-family="Consolas">subClassOf</text>
-            <text x="220" y="62" text-anchor="middle" fill="var(--muted)" font-size="13" font-family="Segoe UI">Traversal: existierende Kante wird gefolgt</text>
-            <rect x="10" y="100" width="130" height="36" rx="6" fill="var(--bg)" stroke="var(--gold)" stroke-width="2"/>
-            <text x="75" y="123" text-anchor="middle" fill="var(--navy)" font-size="13" font-family="Segoe UI" font-weight="700">alice</text>
-            <rect x="300" y="100" width="130" height="36" rx="6" fill="var(--bg)" stroke="var(--gold)" stroke-width="2" stroke-dasharray="5,4"/>
-            <text x="365" y="123" text-anchor="middle" fill="var(--navy)" font-size="13" font-family="Segoe UI" font-weight="700">a uni:Person</text>
-            <line x1="140" y1="118" x2="295" y2="118" stroke="var(--gold)" stroke-width="3" stroke-dasharray="6,4"/>
-            <polygon points="290,111 305,118 290,125" fill="var(--gold)"/>
-            <text x="220" y="148" text-anchor="middle" fill="var(--gold)" font-size="12" font-weight="700" font-family="Consolas">+ inferiert</text>
-          </svg>
-        </div>
-        <div class="cb">Hier: <strong>Traversal</strong> entlang gespeicherter <code>subClassOf</code>-Kanten. Bei <strong>Inferenz/Entailment</strong> (Architecture) leitet der Store das neue Triple ab und speichert es zusätzlich.</div>
-      </div>
       <div class="card card-teal">
         <div class="ch"><div class="ci ic"><i data-lucide="network"></i></div><div class="ct">Klassenhierarchie im Datensatz</div></div>
         <div style="display:flex;align-items:center;justify-content:center;flex:1;">
@@ -2190,6 +2439,29 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
         </div>
         <div class="cb">Gespeichert ist nur <code>alice a uni:Student</code>. Über die Kette <strong>Student → AcademicPerson → Person</strong> macht <code>subClassOf*</code> sie transitiv zur <strong>uni:Person</strong></div>
       </div>
+      <div class="card card-navy">
+        <div class="ch"><div class="ci ic"><i data-lucide="route"></i></div><div class="ct">Traversal vs. Inferenz</div></div>
+        <div style="display:flex;align-items:center;justify-content:center;flex:1;">
+          <svg width="440" height="150" viewBox="0 0 440 150">
+            <rect x="10" y="10" width="130" height="36" rx="6" fill="var(--teal)"/>
+            <text x="75" y="33" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="700">uni:Student</text>
+            <rect x="300" y="10" width="130" height="36" rx="6" fill="var(--navy)"/>
+            <text x="365" y="33" text-anchor="middle" fill="white" font-size="13" font-family="Segoe UI" font-weight="700">uni:Person</text>
+            <line x1="140" y1="28" x2="295" y2="28" stroke="var(--teal)" stroke-width="3"/>
+            <polygon points="290,21 305,28 290,35" fill="var(--teal)"/>
+            <text x="220" y="18" text-anchor="middle" fill="var(--teal)" font-size="12" font-weight="700" font-family="Consolas">subClassOf</text>
+            <text x="220" y="62" text-anchor="middle" fill="var(--muted)" font-size="13" font-family="Segoe UI">Traversal: existierende Kante wird gefolgt</text>
+            <rect x="10" y="100" width="130" height="36" rx="6" fill="var(--bg)" stroke="var(--gold)" stroke-width="2"/>
+            <text x="75" y="123" text-anchor="middle" fill="var(--navy)" font-size="13" font-family="Segoe UI" font-weight="700">alice</text>
+            <rect x="300" y="100" width="130" height="36" rx="6" fill="var(--bg)" stroke="var(--gold)" stroke-width="2" stroke-dasharray="5,4"/>
+            <text x="365" y="123" text-anchor="middle" fill="var(--navy)" font-size="13" font-family="Segoe UI" font-weight="700">a uni:Person</text>
+            <line x1="140" y1="118" x2="295" y2="118" stroke="var(--gold)" stroke-width="3" stroke-dasharray="6,4"/>
+            <polygon points="290,111 305,118 290,125" fill="var(--gold)"/>
+            <text x="220" y="148" text-anchor="middle" fill="var(--gold)" font-size="12" font-weight="700" font-family="Consolas">+ inferiert</text>
+          </svg>
+        </div>
+        <div class="cb">Hier: <strong>Traversal</strong> entlang gespeicherter <code>subClassOf</code>-Kanten. Bei <strong>Inferenz/Entailment</strong> (Architecture) leitet der Store das neue Triple ab und speichert es zusätzlich.</div>
+      </div>
     </div>
   </div>
   <div class="insight"><span class="ia">→</span><span>Dasselbe Modell, dasselbe Wissen — nur <strong>Modellwissen über Klassenhierarchien genutzt</strong>. Das ist der Unterschied zu SQL und Property Graph.</span></div>
@@ -2225,7 +2497,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
 &nbsp;&nbsp;}<br>
 }
         </div>
-        <div class="txt18" style="color:var(--muted);">Standort zeigt direkt auf eine globale <strong style="color:var(--navy);">Wikidata</strong>-URI — kein Datenkopie nötig. <span style="font-size:13px;">(<strong>VALUES</strong>: Oxigraph pusht keine Bindings in SERVICE.)</span></div>
+        <div class="txt18" style="color:var(--muted);">Standort zeigt direkt auf eine globale <strong style="color:var(--navy);">Wikidata</strong>-URI — kein Datenkopie nötig</div>
       </div>
       <div class="sp-r" style="gap:12px;justify-content:center;">
         <div class="lbl lbl-navy" style="margin-bottom:4px;">Warum geht das nur mit W3C-SPARQL?</div>
@@ -2256,8 +2528,19 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
           </div>
         </div>
         <div style="background:rgba(43,200,154,.06);border-radius:8px;padding:10px 14px;border-left:3px solid var(--teal);">
-          <div class="lbl lbl-teal" style="font-size:15px;margin-bottom:2px;">Ausgabeformate</div>
-          <div class="txt18">JSON (APIs, RAG) · CSV (Tabellenanalyse) · RDF/XML (CONSTRUCT-Export)</div>
+          <div style="font-size:11px;font-weight:700;color:var(--teal);letter-spacing:2px;text-transform:uppercase;margin-bottom:7px;">Ausgabeformate</div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:11px;font-weight:700;background:var(--navy);color:#fff;padding:2px 8px;border-radius:4px;letter-spacing:.5px;white-space:nowrap;flex-shrink:0;">SELECT</span>
+              <span style="font-size:17px;color:var(--text);">JSON &nbsp;·&nbsp; CSV &nbsp;·&nbsp; TSV</span>
+              <span style="font-size:12px;color:var(--muted);">APIs, RAG, Tabellen</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:11px;font-weight:700;background:var(--teal);color:#fff;padding:2px 8px;border-radius:4px;letter-spacing:.5px;white-space:nowrap;flex-shrink:0;">CONSTRUCT</span>
+              <span style="font-size:17px;color:var(--text);">Turtle &nbsp;·&nbsp; RDF/XML &nbsp;·&nbsp; JSON-LD</span>
+              <span style="font-size:12px;color:var(--muted);">Graph-Export</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -2274,30 +2557,96 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
   <div class="hdr">
     <div class="num" style="background:#7C3AED;">04</div>
     <div class="tag">Query Model · Zusammenfassung</div>
-    <div class="title">Kurz innehalten – das Wichtigste</div>
+    <div class="title">Das Wichtigste</div>
   </div>
   <div class="body">
-    <div style="height:100%;display:flex;flex-direction:column;justify-content:center;gap:18px;padding:14px 32px;">
+    <div style="height:100%;display:flex;flex-direction:column;padding:15px 30px 13px;gap:11px;">
 
+      <!-- Top bar: framing + reflection prompt -->
       <div style="display:flex;align-items:center;gap:14px;">
-        <div class="lbl" style="color:#7C3AED;flex:1;">Key Takeaways</div>
+        <div class="lbl" style="color:#7C3AED;">Das Kapitel in einem Bild</div>
+        <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(124,58,237,.35),rgba(124,58,237,0));"></div>
         <div style="display:flex;align-items:center;gap:8px;background:rgba(249,201,70,.15);border:1px solid var(--gold);border-radius:32px;padding:6px 16px;">
-          <i data-lucide="help-circle" style="width:18px;height:18px;color:#B8860B;"></i>
-          <span style="font-size:16px;font-weight:700;color:var(--navy);">Fragen? Kurz durchdenken</span>
+          <i data-lucide="alarm-clock" style="width:17px;height:17px;color:#B8860B;"></i>
+          <span style="font-size:15px;font-weight:700;color:var(--navy);">1 Minute &middot; Durchdenken</span>
         </div>
       </div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-        <div style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid #7C3AED;"><div class="ci ic" style="width:38px;height:38px;background:rgba(124,58,237,.1);color:#7C3AED;flex-shrink:0;"><i data-lucide="search"></i></div><div class="txt22"><strong>SPARQL</strong> – Pattern Matching statt Joins</div></div>
-        <div style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--navy);"><div class="ci ic" style="width:38px;height:38px;background:rgba(30,39,97,.08);color:var(--navy);flex-shrink:0;"><i data-lucide="code"></i></div><div class="txt22"><strong>SELECT · ASK · CONSTRUCT · DESCRIBE</strong></div></div>
-        <div style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--teal);"><div class="ci ic" style="width:38px;height:38px;background:rgba(43,200,154,.1);color:var(--teal);flex-shrink:0;"><i data-lucide="sigma"></i></div><div class="txt22"><strong>FILTER · OPTIONAL · Property Paths</strong></div></div>
-        <div style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--coral);"><div class="ci ic" style="width:38px;height:38px;background:rgba(249,97,103,.1);color:var(--coral);flex-shrink:0;"><i data-lucide="git-branch"></i></div><div class="txt22"><strong>Inferenz-Aha</strong> – 0 → 7 Treffer mit <code style="font-size:18px;">subClassOf*</code></div></div>
+      <!-- Der rote Faden — full-width timeline -->
+      <div style="display:flex;flex-direction:column;flex:1;min-height:0;padding:0 6px;">
+
+        <!-- 1 SPARQL -->
+        <div style="display:flex;gap:16px;flex:1;align-items:stretch;">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:#7C3AED;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="search" style="width:21px;height:21px;"></i></div>
+            <div style="flex:1;width:2px;background:#E3E8F5;margin:4px 0;"></div>
+          </div>
+          <div style="flex:1;padding-top:5px;">
+            <div style="font-size:19px;font-weight:700;color:var(--navy);">SPARQL = Pattern Matching</div>
+            <div style="font-size:15.5px;color:var(--text);line-height:1.4;margin-top:2px;">Man beschreibt ein gesuchtes <strong>Graph-Muster</strong>, woraufhin die Engine alle dazu passenden Belegungen findet (ganz ohne ausformulierte Joins).</div>
+          </div>
+          <div style="font-family:'Georgia',serif;font-size:40px;font-weight:700;color:#E7EBF6;line-height:1;flex-shrink:0;align-self:flex-start;padding-top:2px;">01</div>
+        </div>
+
+        <!-- 2 shared variables -->
+        <div style="display:flex;gap:16px;flex:1;align-items:stretch;">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="link-2" style="width:21px;height:21px;"></i></div>
+            <div style="flex:1;width:2px;background:#E3E8F5;margin:4px 0;"></div>
+          </div>
+          <div style="flex:1;padding-top:5px;">
+            <div style="font-size:19px;font-weight:700;color:var(--navy);">Geteilte Variablen verbinden</div>
+            <div style="font-size:15.5px;color:var(--text);line-height:1.4;margin-top:2px;">Taucht dieselbe Variable (etwa <code style="font-size:14px;">?u</code>) in mehreren Patterns auf, verknüpft sie diese automatisch und wirkt damit wie ein impliziter <strong>Join</strong>.</div>
+          </div>
+          <div style="font-family:'Georgia',serif;font-size:40px;font-weight:700;color:#E7EBF6;line-height:1;flex-shrink:0;align-self:flex-start;padding-top:2px;">02</div>
+        </div>
+
+        <!-- 3 query forms -->
+        <div style="display:flex;gap:16px;flex:1;align-items:stretch;">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="code" style="width:21px;height:21px;"></i></div>
+            <div style="flex:1;width:2px;background:#E3E8F5;margin:4px 0;"></div>
+          </div>
+          <div style="flex:1;padding-top:5px;">
+            <div style="font-size:19px;font-weight:700;color:var(--navy);">Vier Ergebnisformen</div>
+            <div style="font-size:15.5px;color:var(--text);line-height:1.4;margin-top:2px;">Je nach Ziel liefert SPARQL eine Tabelle (<strong>SELECT</strong>), ein Ja/Nein (<strong>ASK</strong>), einen neuen Graphen (<strong>CONSTRUCT</strong>) oder alle Fakten zu einer Ressource (<strong>DESCRIBE</strong>).</div>
+          </div>
+          <div style="font-family:'Georgia',serif;font-size:40px;font-weight:700;color:#E7EBF6;line-height:1;flex-shrink:0;align-self:flex-start;padding-top:2px;">03</div>
+        </div>
+
+        <!-- 4 refine & traverse -->
+        <div style="display:flex;gap:16px;flex:1;align-items:stretch;">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="sigma" style="width:21px;height:21px;"></i></div>
+            <div style="flex:1;width:2px;background:#E3E8F5;margin:4px 0;"></div>
+          </div>
+          <div style="flex:1;padding-top:5px;">
+            <div style="font-size:19px;font-weight:700;color:var(--navy);">Verfeinern &amp; Traversieren</div>
+            <div style="font-size:15.5px;color:var(--text);line-height:1.4;margin-top:2px;"><strong>FILTER</strong> schränkt Ergebnisse über Bedingungen ein, <strong>OPTIONAL</strong> lässt fehlendes Wissen zu (Open World) und <strong>Property Paths</strong> traversieren den Graphen, ohne dass man Schleifen programmiert.</div>
+          </div>
+          <div style="font-family:'Georgia',serif;font-size:40px;font-weight:700;color:#E7EBF6;line-height:1;flex-shrink:0;align-self:flex-start;padding-top:2px;">04</div>
+        </div>
+
+        <!-- 5 inference -->
+        <div style="display:flex;gap:16px;flex:1;align-items:stretch;">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--coral);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="git-branch" style="width:21px;height:21px;"></i></div>
+          </div>
+          <div style="flex:1;padding-top:5px;">
+            <div style="font-size:19px;font-weight:700;color:var(--coral);">Inferenz (implizites Wissen)</div>
+            <div style="font-size:15.5px;color:var(--text);line-height:1.4;margin-top:2px;">SPARQL liefert nicht nur wörtlich gespeicherte Fakten, sondern auch das, was im Graph logisch <strong>gilt</strong> (etwa Unterklassen, die über die Klassenhierarchie automatisch mitgefunden werden).</div>
+          </div>
+          <div style="font-family:'Georgia',serif;font-size:40px;font-weight:700;color:#FCE3E4;line-height:1;flex-shrink:0;align-self:flex-start;padding-top:2px;">05</div>
+        </div>
+
       </div>
 
-      <div style="background:var(--navy);border-radius:10px;padding:14px 20px;display:flex;align-items:center;gap:14px;">
-        <div style="color:var(--gold);"><i data-lucide="arrow-right-circle" style="width:30px;height:30px;"></i></div>
-        <div style="color:#fff;font-size:20px;"><strong>Wie</strong> fragt man ab? → als Nächstes: <strong>Architecture</strong> – wie läuft das produktiv?</div>
+      <!-- Transition strip -->
+      <div style="background:var(--navy);border-radius:10px;padding:10px 18px;display:flex;align-items:center;gap:12px;">
+        <i data-lucide="arrow-right-circle" style="width:24px;height:24px;color:var(--gold);flex-shrink:0;"></i>
+        <div style="color:#fff;font-size:15px;">Das Abfragen sitzt (SPARQL, Inferenz, Federation). Als Nächstes die <strong>Architecture</strong>: wie läuft das produktiv und skalierbar?</div>
       </div>
+
     </div>
   </div>
 </div>
@@ -2781,30 +3130,96 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
   <div class="hdr">
     <div class="num" style="background:#0891B2;">05</div>
     <div class="tag">Architecture · Zusammenfassung</div>
-    <div class="title">Kurz innehalten – das Wichtigste</div>
+    <div class="title">Das Wichtigste</div>
   </div>
   <div class="body">
-    <div style="height:100%;display:flex;flex-direction:column;justify-content:center;gap:18px;padding:14px 32px;">
+    <div style="height:100%;display:flex;flex-direction:column;padding:15px 30px 13px;gap:11px;">
 
+      <!-- Top bar -->
       <div style="display:flex;align-items:center;gap:14px;">
-        <div class="lbl" style="color:#0891B2;flex:1;">Key Takeaways</div>
+        <div class="lbl" style="color:#0891B2;">Das Kapitel in einem Bild</div>
+        <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(8,145,178,.4),rgba(8,145,178,0));"></div>
         <div style="display:flex;align-items:center;gap:8px;background:rgba(249,201,70,.15);border:1px solid var(--gold);border-radius:32px;padding:6px 16px;">
-          <i data-lucide="help-circle" style="width:18px;height:18px;color:#B8860B;"></i>
-          <span style="font-size:16px;font-weight:700;color:var(--navy);">Fragen? Kurz durchdenken</span>
+          <i data-lucide="alarm-clock" style="width:17px;height:17px;color:#B8860B;"></i>
+          <span style="font-size:15px;font-weight:700;color:var(--navy);">1 Minute &middot; Durchdenken</span>
         </div>
       </div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-        <div style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid #0891B2;"><div class="ci ic" style="width:38px;height:38px;background:rgba(8,145,178,.1);color:#0891B2;flex-shrink:0;"><i data-lucide="server"></i></div><div class="txt22"><strong>Storage-Engines &amp; Tools</strong> (Oxigraph …)</div></div>
-        <div style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--teal);"><div class="ci ic" style="width:38px;height:38px;background:rgba(43,200,154,.1);color:var(--teal);flex-shrink:0;"><i data-lucide="cloud"></i></div><div class="txt22"><strong>Deployment</strong> – selbst betreiben vs. Cloud</div></div>
-        <div style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--navy);"><div class="ci ic" style="width:38px;height:38px;background:rgba(30,39,97,.08);color:var(--navy);flex-shrink:0;"><i data-lucide="network"></i></div><div class="txt22"><strong>Skalierung</strong> – Replication &amp; Sharding</div></div>
-        <div style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(30,39,97,.07);border-left:4px solid var(--coral);"><div class="ci ic" style="width:38px;height:38px;background:rgba(249,97,103,.1);color:var(--coral);flex-shrink:0;"><i data-lucide="split"></i></div><div class="txt22"><strong>Herausforderung</strong> – verteilte Graph-Joins</div></div>
+      <!-- Der rote Faden -->
+      <div style="display:flex;flex-direction:column;flex:1;min-height:0;padding:0 6px;">
+
+        <!-- 1 -->
+        <div style="display:flex;gap:16px;flex:1;align-items:stretch;">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:#0891B2;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="server" style="width:21px;height:21px;"></i></div>
+            <div style="flex:1;width:2px;background:#E3E8F5;margin:4px 0;"></div>
+          </div>
+          <div style="flex:1;padding-top:5px;">
+            <div style="font-size:19px;font-weight:700;color:var(--navy);">Storage-Engines</div>
+            <div style="font-size:15.5px;color:var(--text);line-height:1.4;margin-top:2px;">Spezialisierte Engines (zum Beispiel <strong>Oxigraph</strong>) übernehmen das Speichern und Indexieren der Tripel.</div>
+          </div>
+          <div style="font-family:'Georgia',serif;font-size:40px;font-weight:700;color:#E7EBF6;line-height:1;flex-shrink:0;align-self:flex-start;padding-top:2px;">01</div>
+        </div>
+
+        <!-- 2 -->
+        <div style="display:flex;gap:16px;flex:1;align-items:stretch;">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="cloud" style="width:21px;height:21px;"></i></div>
+            <div style="flex:1;width:2px;background:#E3E8F5;margin:4px 0;"></div>
+          </div>
+          <div style="flex:1;padding-top:5px;">
+            <div style="font-size:19px;font-weight:700;color:var(--navy);">Deployment</div>
+            <div style="font-size:15.5px;color:var(--text);line-height:1.4;margin-top:2px;">Ein Triple Store lässt sich entweder selbst betreiben oder als fertiger <strong>Managed-Cloud-Dienst</strong> beziehen.</div>
+          </div>
+          <div style="font-family:'Georgia',serif;font-size:40px;font-weight:700;color:#E7EBF6;line-height:1;flex-shrink:0;align-self:flex-start;padding-top:2px;">02</div>
+        </div>
+
+        <!-- 3 -->
+        <div style="display:flex;gap:16px;flex:1;align-items:stretch;">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="network" style="width:21px;height:21px;"></i></div>
+            <div style="flex:1;width:2px;background:#E3E8F5;margin:4px 0;"></div>
+          </div>
+          <div style="flex:1;padding-top:5px;">
+            <div style="font-size:19px;font-weight:700;color:var(--navy);">Skalierung</div>
+            <div style="font-size:15.5px;color:var(--text);line-height:1.4;margin-top:2px;"><strong>Replication</strong> erhöht die Verfügbarkeit (mehrere Kopien), während <strong>Sharding</strong> die Daten auf mehrere Knoten verteilt.</div>
+          </div>
+          <div style="font-family:'Georgia',serif;font-size:40px;font-weight:700;color:#E7EBF6;line-height:1;flex-shrink:0;align-self:flex-start;padding-top:2px;">03</div>
+        </div>
+
+        <!-- 4 -->
+        <div style="display:flex;gap:16px;flex:1;align-items:stretch;">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="git-fork" style="width:21px;height:21px;"></i></div>
+            <div style="flex:1;width:2px;background:#E3E8F5;margin:4px 0;"></div>
+          </div>
+          <div style="flex:1;padding-top:5px;">
+            <div style="font-size:19px;font-weight:700;color:var(--navy);">Partitionierung</div>
+            <div style="font-size:15.5px;color:var(--text);line-height:1.4;margin-top:2px;">Die Verteilung kann nach Subjekt, Prädikat oder zusammenhängenden Teilgraphen erfolgen, je nach erwartetem Workload.</div>
+          </div>
+          <div style="font-family:'Georgia',serif;font-size:40px;font-weight:700;color:#E7EBF6;line-height:1;flex-shrink:0;align-self:flex-start;padding-top:2px;">04</div>
+        </div>
+
+        <!-- 5 -->
+        <div style="display:flex;gap:16px;flex:1;align-items:stretch;">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--coral);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="split" style="width:21px;height:21px;"></i></div>
+          </div>
+          <div style="flex:1;padding-top:5px;">
+            <div style="font-size:19px;font-weight:700;color:var(--coral);">Verteilte Graph-Joins</div>
+            <div style="font-size:15.5px;color:var(--text);line-height:1.4;margin-top:2px;">Die zentrale Herausforderung beim Sharding: Tripel sind über den ganzen Graph verflochten, sodass Joins über Knotengrenzen hinweg teuer werden.</div>
+          </div>
+          <div style="font-family:'Georgia',serif;font-size:40px;font-weight:700;color:#FCE3E4;line-height:1;flex-shrink:0;align-self:flex-start;padding-top:2px;">05</div>
+        </div>
+
       </div>
 
-      <div style="background:var(--navy);border-radius:10px;padding:14px 20px;display:flex;align-items:center;gap:14px;">
-        <div style="color:var(--gold);"><i data-lucide="arrow-right-circle" style="width:30px;height:30px;"></i></div>
-        <div style="color:#fff;font-size:20px;"><strong>Wie</strong> betreibt man es? → als Nächstes: <strong>Comparison</strong> – vs. SQL &amp; Property Graph</div>
+      <!-- Transition strip -->
+      <div style="background:var(--navy);border-radius:10px;padding:10px 18px;display:flex;align-items:center;gap:12px;">
+        <i data-lucide="arrow-right-circle" style="width:24px;height:24px;color:var(--gold);flex-shrink:0;"></i>
+        <div style="color:#fff;font-size:15px;">Der Betrieb ist klar (Engines, Skalierung, Sharding). Als Nächstes der <strong>Comparison</strong>: Triple Store gegen SQL und Property Graph.</div>
       </div>
+
     </div>
   </div>
 </div>
@@ -3057,6 +3472,106 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
 </div>
 
 
+<!-- ═══════════════════════════════════════════════════════
+     COMPARISON — Final Wrap-up (Theorie-Fazit)
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num" style="background:var(--gold);color:var(--navy);">06</div>
+    <div class="tag">Comparison · Fazit</div>
+    <div class="title">Jede Datenbank hat ihren Sweet Spot</div>
+  </div>
+  <div class="body">
+    <div style="height:100%;display:flex;flex-direction:column;padding:15px 30px 13px;gap:13px;">
+
+      <!-- Top bar -->
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div class="lbl" style="color:#B8860B;">Das große Bild</div>
+        <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(249,201,70,.5),rgba(249,201,70,0));"></div>
+        <div style="display:flex;align-items:center;gap:8px;background:rgba(249,201,70,.15);border:1px solid var(--gold);border-radius:32px;padding:6px 16px;">
+          <i data-lucide="scale" style="width:17px;height:17px;color:#B8860B;"></i>
+          <span style="font-size:15px;font-weight:700;color:var(--navy);">Jedes Modell hat seinen Zweck</span>
+        </div>
+      </div>
+
+      <!-- Three model cards -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;flex:1;min-height:0;">
+
+        <!-- Relational -->
+        <div style="display:flex;flex-direction:column;background:#fff;border-radius:14px;box-shadow:0 4px 16px rgba(30,39,97,.08);border-top:5px solid #334155;padding:17px 17px;gap:11px;">
+          <div style="display:flex;align-items:center;gap:11px;">
+            <div class="ci ic" style="width:44px;height:44px;background:rgba(51,65,85,.1);color:#334155;flex-shrink:0;"><i data-lucide="table-2"></i></div>
+            <div>
+              <div style="font-size:19px;font-weight:700;color:#334155;">Relational</div>
+              <div style="font-size:12.5px;color:var(--muted);">SQL &middot; Tabellen</div>
+            </div>
+          </div>
+          <div style="font-size:15.5px;color:var(--text);line-height:1.4;">Stabile, bekannte Strukturen mit festem Schema und starken Garantien.</div>
+          <div style="display:flex;align-items:center;gap:8px;background:var(--bg);border-radius:9px;padding:9px 12px;">
+            <i data-lucide="banknote" style="width:18px;height:18px;color:#334155;flex-shrink:0;"></i>
+            <div style="font-size:13.5px;color:var(--muted);"><strong style="color:var(--text);">z.&nbsp;B.</strong> Banking, ERP, Buchhaltung</div>
+          </div>
+          <div style="margin-top:auto;display:flex;flex-wrap:wrap;gap:6px;">
+            <span style="font-size:12.5px;font-weight:700;color:#334155;background:rgba(51,65,85,.09);border-radius:20px;padding:4px 11px;">Transaktionen</span>
+            <span style="font-size:12.5px;font-weight:700;color:#334155;background:rgba(51,65,85,.09);border-radius:20px;padding:4px 11px;">Reifes Tooling</span>
+          </div>
+        </div>
+
+        <!-- Property Graph -->
+        <div style="display:flex;flex-direction:column;background:#fff;border-radius:14px;box-shadow:0 4px 16px rgba(30,39,97,.08);border-top:5px solid var(--coral);padding:17px 17px;gap:11px;">
+          <div style="display:flex;align-items:center;gap:11px;">
+            <div class="ci ic" style="width:44px;height:44px;background:rgba(249,97,103,.1);color:var(--coral);flex-shrink:0;"><i data-lucide="git-fork"></i></div>
+            <div>
+              <div style="font-size:19px;font-weight:700;color:var(--coral);">Property Graph</div>
+              <div style="font-size:12.5px;color:var(--muted);">Knoten &middot; Kanten</div>
+            </div>
+          </div>
+          <div style="font-size:15.5px;color:var(--text);line-height:1.4;">Beziehungen als Kern — tiefe Pfad-Navigation und schnelle Traversierung.</div>
+          <div style="display:flex;align-items:center;gap:8px;background:var(--bg);border-radius:9px;padding:9px 12px;">
+            <i data-lucide="users" style="width:18px;height:18px;color:var(--coral);flex-shrink:0;"></i>
+            <div style="font-size:13.5px;color:var(--muted);"><strong style="color:var(--text);">z.&nbsp;B.</strong> Social Networks, Routing, Fraud</div>
+          </div>
+          <div style="margin-top:auto;display:flex;flex-wrap:wrap;gap:6px;">
+            <span style="font-size:12.5px;font-weight:700;color:var(--coral);background:rgba(249,97,103,.1);border-radius:20px;padding:4px 11px;">Pfad-Queries</span>
+            <span style="font-size:12.5px;font-weight:700;color:var(--coral);background:rgba(249,97,103,.1);border-radius:20px;padding:4px 11px;">Netzwerke</span>
+          </div>
+        </div>
+
+        <!-- Triple Store (emphasized) -->
+        <div style="display:flex;flex-direction:column;background:rgba(13,148,136,.05);border-radius:14px;box-shadow:0 6px 20px rgba(13,148,136,.18);border:2px solid #0d9488;border-top:5px solid #0d9488;padding:15px 17px;gap:11px;position:relative;">
+          <div style="position:absolute;top:13px;right:14px;font-size:10px;font-weight:700;letter-spacing:1px;color:#fff;background:#0d9488;border-radius:20px;padding:3px 10px;">UNSER FOKUS</div>
+          <div style="display:flex;align-items:center;gap:11px;">
+            <div class="ci ic" style="width:44px;height:44px;background:rgba(13,148,136,.13);color:#0d9488;flex-shrink:0;"><i data-lucide="brain"></i></div>
+            <div>
+              <div style="font-size:19px;font-weight:700;color:#0d9488;">Triple Store</div>
+              <div style="font-size:12.5px;color:var(--muted);">RDF &middot; SPARQL</div>
+            </div>
+          </div>
+          <div style="font-size:15.5px;color:var(--text);line-height:1.4;">Glänzt bei <strong>Semantik &amp; Inferenz</strong> und offener Datenintegration über W3C-Standards.</div>
+          <div style="display:flex;align-items:center;gap:8px;background:rgba(13,148,136,.07);border-radius:9px;padding:9px 12px;">
+            <i data-lucide="brain-circuit" style="width:18px;height:18px;color:#0d9488;flex-shrink:0;"></i>
+            <div style="font-size:13.5px;color:var(--muted);"><strong style="color:var(--text);">z.&nbsp;B.</strong> Linked Data, Open Data</div>
+          </div>
+          <div style="margin-top:auto;display:flex;flex-wrap:wrap;gap:6px;">
+            <span style="font-size:12.5px;font-weight:700;color:#0d9488;background:rgba(13,148,136,.12);border-radius:20px;padding:4px 11px;">Inferenz</span>
+            <span style="font-size:12.5px;font-weight:700;color:#0d9488;background:rgba(13,148,136,.12);border-radius:20px;padding:4px 11px;">Standards</span>
+            <span style="font-size:12.5px;font-weight:700;color:#0d9488;background:rgba(13,148,136,.12);border-radius:20px;padding:4px 11px;">Knowledge Graphs</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Closing strip -->
+      <div style="background:var(--navy);border-radius:10px;padding:10px 18px;display:flex;align-items:center;gap:12px;">
+        <i data-lucide="terminal" style="width:24px;height:24px;color:var(--teal);flex-shrink:0;"></i>
+        <div style="color:#fff;font-size:15px;">Soweit die Theorie &mdash; jetzt sehen wir den Triple Store <strong>live in der Demo</strong>.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 
 <!-- ═══════════════════════════════════════════════════════
      SECTION DIVIDER — Demo
@@ -3132,9 +3647,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 1 · Motivation</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:30px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Wer erfand 1989 am CERN das World Wide Web?</div>
 
@@ -3187,9 +3702,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 1 · Motivation</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:30px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Wer erfand 1989 am CERN das World Wide Web?</div>
 
@@ -3242,9 +3757,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 1 · Motivation</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:30px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Wer erfand 1989 am CERN das World Wide Web?</div>
 
@@ -3297,9 +3812,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 1 · Motivation</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:30px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Wer erfand 1989 am CERN das World Wide Web?</div>
 
@@ -3352,9 +3867,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 1 · Motivation</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:30px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Wer erfand 1989 am CERN das World Wide Web?</div>
 
@@ -3378,7 +3893,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
           <div style="font-size:22px;color:var(--text);">Vint Cerf</div>
         </div>
 
-        <div style="display:flex;align-items:center;gap:18px;background:linear-gradient(110deg, rgba(22,163,74,.16), rgba(43,200,154,.12));border-radius:14px;padding:0 26px;box-shadow:0 6px 18px rgba(22,163,74,.22);border:2px solid var(--ok);">
+        <div style="display:flex;align-items:center;gap:18px;background:rgba(22,163,74,.14);border-radius:14px;padding:0 26px;box-shadow:0 6px 18px rgba(22,163,74,.22);border:2px solid var(--ok);">
           <div style="width:48px;height:48px;border-radius:50%;background:var(--ok);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 3px 8px rgba(22,163,74,.4);">B</div>
           <div style="font-size:22px;color:var(--text);font-weight:700;">Tim Berners-Lee</div>
           <div style="margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0;color:var(--ok);">
@@ -3414,9 +3929,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 2 · Motivation</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:30px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Wonach suchen Pete & Lucy im Semantic-Web-Szenario (2001)?</div>
 
@@ -3462,9 +3977,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 2 · Motivation</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:30px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Wonach suchen Pete & Lucy im Semantic-Web-Szenario (2001)?</div>
 
@@ -3510,9 +4025,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 2 · Motivation</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:30px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Wonach suchen Pete & Lucy im Semantic-Web-Szenario (2001)?</div>
 
@@ -3558,9 +4073,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 2 · Motivation</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:30px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Wonach suchen Pete & Lucy im Semantic-Web-Szenario (2001)?</div>
 
@@ -3606,9 +4121,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 2 · Motivation</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:30px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Wonach suchen Pete & Lucy im Semantic-Web-Szenario (2001)?</div>
 
@@ -3630,7 +4145,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
           <div style="font-size:22px;color:var(--text);">Hotel</div>
         </div>
 
-        <div style="display:flex;align-items:center;gap:18px;background:linear-gradient(110deg, rgba(22,163,74,.16), rgba(43,200,154,.12));border-radius:14px;padding:0 26px;box-shadow:0 6px 18px rgba(22,163,74,.22);border:2px solid var(--ok);">
+        <div style="display:flex;align-items:center;gap:18px;background:rgba(22,163,74,.14);border-radius:14px;padding:0 26px;box-shadow:0 6px 18px rgba(22,163,74,.22);border:2px solid var(--ok);">
           <div style="width:48px;height:48px;border-radius:50%;background:var(--ok);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 3px 8px rgba(22,163,74,.4);">C</div>
           <div style="font-size:22px;color:var(--text);font-weight:700;">Physiotherapeut</div>
           <div style="margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0;color:var(--ok);">
@@ -3661,9 +4176,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 3 · Conceptual Model</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:30px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Was darf in RDF NIE als Subjekt stehen?</div>
 
@@ -3709,9 +4224,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 3 · Conceptual Model</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:30px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Was darf in RDF NIE als Subjekt stehen?</div>
 
@@ -3757,9 +4272,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 3 · Conceptual Model</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:30px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Was darf in RDF NIE als Subjekt stehen?</div>
 
@@ -3805,9 +4320,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 3 · Conceptual Model</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:30px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Was darf in RDF NIE als Subjekt stehen?</div>
 
@@ -3853,9 +4368,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 3 · Conceptual Model</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:30px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Was darf in RDF NIE als Subjekt stehen?</div>
 
@@ -3877,7 +4392,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
           <div style="font-size:22px;color:var(--text);">Ressource</div>
         </div>
 
-        <div style="display:flex;align-items:center;gap:18px;background:linear-gradient(110deg, rgba(22,163,74,.16), rgba(43,200,154,.12));border-radius:14px;padding:0 26px;box-shadow:0 6px 18px rgba(22,163,74,.22);border:2px solid var(--ok);">
+        <div style="display:flex;align-items:center;gap:18px;background:rgba(22,163,74,.14);border-radius:14px;padding:0 26px;box-shadow:0 6px 18px rgba(22,163,74,.22);border:2px solid var(--ok);">
           <div style="width:48px;height:48px;border-radius:50%;background:var(--ok);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 3px 8px rgba(22,163,74,.4);">C</div>
           <div style="font-size:22px;color:var(--text);font-weight:700;">Literal</div>
           <div style="margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0;color:var(--ok);">
@@ -3908,9 +4423,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 4 · Conceptual Model</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:26px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Welches OWL-Konstrukt macht aus teacherOf automatisch studentOf?</div>
 
@@ -3956,9 +4471,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 4 · Conceptual Model</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:26px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Welches OWL-Konstrukt macht aus teacherOf automatisch studentOf?</div>
 
@@ -4004,9 +4519,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 4 · Conceptual Model</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:26px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Welches OWL-Konstrukt macht aus teacherOf automatisch studentOf?</div>
 
@@ -4052,9 +4567,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 4 · Conceptual Model</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:26px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Welches OWL-Konstrukt macht aus teacherOf automatisch studentOf?</div>
 
@@ -4100,9 +4615,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 4 · Conceptual Model</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:26px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Welches OWL-Konstrukt macht aus teacherOf automatisch studentOf?</div>
 
@@ -4129,7 +4644,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
           <div style="font-size:22px;color:var(--text);">rdfs:subClassOf</div>
         </div>
 
-        <div style="display:flex;align-items:center;gap:18px;background:linear-gradient(110deg, rgba(22,163,74,.16), rgba(43,200,154,.12));border-radius:14px;padding:0 26px;box-shadow:0 6px 18px rgba(22,163,74,.22);border:2px solid var(--ok);">
+        <div style="display:flex;align-items:center;gap:18px;background:rgba(22,163,74,.14);border-radius:14px;padding:0 26px;box-shadow:0 6px 18px rgba(22,163,74,.22);border:2px solid var(--ok);">
           <div style="width:48px;height:48px;border-radius:50%;background:var(--ok);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 3px 8px rgba(22,163,74,.4);">D</div>
           <div style="font-size:22px;color:var(--text);font-weight:700;">owl:inverseOf</div>
           <div style="margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0;color:var(--ok);">
@@ -4155,9 +4670,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 5 · Conceptual Model</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:30px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Ein Named Graph macht aus einem Triple ein…?</div>
 
@@ -4203,9 +4718,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 5 · Conceptual Model</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:30px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Ein Named Graph macht aus einem Triple ein…?</div>
 
@@ -4251,9 +4766,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 5 · Conceptual Model</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:30px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Ein Named Graph macht aus einem Triple ein…?</div>
 
@@ -4299,9 +4814,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 5 · Conceptual Model</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:30px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Ein Named Graph macht aus einem Triple ein…?</div>
 
@@ -4347,9 +4862,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 5 · Conceptual Model</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:30px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Ein Named Graph macht aus einem Triple ein…?</div>
 
@@ -4361,7 +4876,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
       </div>
       <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:18px;">
 
-        <div style="display:flex;align-items:center;gap:18px;background:linear-gradient(110deg, rgba(22,163,74,.16), rgba(43,200,154,.12));border-radius:14px;padding:0 26px;box-shadow:0 6px 18px rgba(22,163,74,.22);border:2px solid var(--ok);">
+        <div style="display:flex;align-items:center;gap:18px;background:rgba(22,163,74,.14);border-radius:14px;padding:0 26px;box-shadow:0 6px 18px rgba(22,163,74,.22);border:2px solid var(--ok);">
           <div style="width:48px;height:48px;border-radius:50%;background:var(--ok);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 3px 8px rgba(22,163,74,.4);">A</div>
           <div style="font-size:22px;color:var(--text);font-weight:700;">Quad</div>
           <div style="margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0;color:var(--ok);">
@@ -4402,9 +4917,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 6 · Data Structure</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:26px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Pattern „?s uni:locatedIn dbr:Stuttgart" — welcher Index passt am besten?</div>
 
@@ -4450,9 +4965,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 6 · Data Structure</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:26px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Pattern „?s uni:locatedIn dbr:Stuttgart" — welcher Index passt am besten?</div>
 
@@ -4498,9 +5013,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 6 · Data Structure</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:26px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Pattern „?s uni:locatedIn dbr:Stuttgart" — welcher Index passt am besten?</div>
 
@@ -4546,9 +5061,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 6 · Data Structure</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:26px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Pattern „?s uni:locatedIn dbr:Stuttgart" — welcher Index passt am besten?</div>
 
@@ -4594,9 +5109,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 6 · Data Structure</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:26px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Pattern „?s uni:locatedIn dbr:Stuttgart" — welcher Index passt am besten?</div>
 
@@ -4618,7 +5133,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
           <div style="font-size:22px;color:var(--text);">SOP</div>
         </div>
 
-        <div style="display:flex;align-items:center;gap:18px;background:linear-gradient(110deg, rgba(22,163,74,.16), rgba(43,200,154,.12));border-radius:14px;padding:0 26px;box-shadow:0 6px 18px rgba(22,163,74,.22);border:2px solid var(--ok);">
+        <div style="display:flex;align-items:center;gap:18px;background:rgba(22,163,74,.14);border-radius:14px;padding:0 26px;box-shadow:0 6px 18px rgba(22,163,74,.22);border:2px solid var(--ok);">
           <div style="width:48px;height:48px;border-radius:50%;background:var(--ok);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 3px 8px rgba(22,163,74,.4);">C</div>
           <div style="font-size:22px;color:var(--text);font-weight:700;">POS</div>
           <div style="margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0;color:var(--ok);">
@@ -4649,9 +5164,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 7 · Data Structure</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:26px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Was speichert die Triple Table dank Dictionary-Encoding statt langer URIs?</div>
 
@@ -4697,9 +5212,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 7 · Data Structure</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:26px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Was speichert die Triple Table dank Dictionary-Encoding statt langer URIs?</div>
 
@@ -4745,9 +5260,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 7 · Data Structure</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:26px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Was speichert die Triple Table dank Dictionary-Encoding statt langer URIs?</div>
 
@@ -4793,9 +5308,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 7 · Data Structure</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:26px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Was speichert die Triple Table dank Dictionary-Encoding statt langer URIs?</div>
 
@@ -4841,9 +5356,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 7 · Data Structure</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:26px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Was speichert die Triple Table dank Dictionary-Encoding statt langer URIs?</div>
 
@@ -4860,7 +5375,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
           <div style="font-size:22px;color:var(--text);">Hashes</div>
         </div>
 
-        <div style="display:flex;align-items:center;gap:18px;background:linear-gradient(110deg, rgba(22,163,74,.16), rgba(43,200,154,.12));border-radius:14px;padding:0 26px;box-shadow:0 6px 18px rgba(22,163,74,.22);border:2px solid var(--ok);">
+        <div style="display:flex;align-items:center;gap:18px;background:rgba(22,163,74,.14);border-radius:14px;padding:0 26px;box-shadow:0 6px 18px rgba(22,163,74,.22);border:2px solid var(--ok);">
           <div style="width:48px;height:48px;border-radius:50%;background:var(--ok);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 3px 8px rgba(22,163,74,.4);">B</div>
           <div style="font-size:22px;color:var(--text);font-weight:700;">Integer-IDs</div>
           <div style="margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0;color:var(--ok);">
@@ -4896,9 +5411,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 8 · Comparison</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:26px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Was kann ein Property Graph nativ, ein RDF-Triple-Store nicht?</div>
 
@@ -4944,9 +5459,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 8 · Comparison</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:26px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Was kann ein Property Graph nativ, ein RDF-Triple-Store nicht?</div>
 
@@ -4992,9 +5507,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 8 · Comparison</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:26px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Was kann ein Property Graph nativ, ein RDF-Triple-Store nicht?</div>
 
@@ -5040,9 +5555,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 8 · Comparison</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:26px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Was kann ein Property Graph nativ, ein RDF-Triple-Store nicht?</div>
 
@@ -5088,9 +5603,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 8 · Comparison</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:26px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Was kann ein Property Graph nativ, ein RDF-Triple-Store nicht?</div>
 
@@ -5117,7 +5632,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
           <div style="font-size:22px;color:var(--text);">URIs</div>
         </div>
 
-        <div style="display:flex;align-items:center;gap:18px;background:linear-gradient(110deg, rgba(22,163,74,.16), rgba(43,200,154,.12));border-radius:14px;padding:0 26px;box-shadow:0 6px 18px rgba(22,163,74,.22);border:2px solid var(--ok);">
+        <div style="display:flex;align-items:center;gap:18px;background:rgba(22,163,74,.14);border-radius:14px;padding:0 26px;box-shadow:0 6px 18px rgba(22,163,74,.22);border:2px solid var(--ok);">
           <div style="width:48px;height:48px;border-radius:50%;background:var(--ok);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 3px 8px rgba(22,163,74,.4);">D</div>
           <div style="font-size:22px;color:var(--text);font-weight:700;">Kanten-Attribute</div>
           <div style="margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0;color:var(--ok);">
@@ -5143,9 +5658,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 9 · Query Model</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:30px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Was bedeutet das „*" in rdfs:subClassOf*?</div>
 
@@ -5191,9 +5706,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 9 · Query Model</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:30px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Was bedeutet das „*" in rdfs:subClassOf*?</div>
 
@@ -5239,9 +5754,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 9 · Query Model</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:30px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Was bedeutet das „*" in rdfs:subClassOf*?</div>
 
@@ -5287,9 +5802,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 9 · Query Model</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:30px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Was bedeutet das „*" in rdfs:subClassOf*?</div>
 
@@ -5335,9 +5850,9 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="tag">Quiz</div>
     <div class="title">Frage 9 · Query Model</div>
   </div>
-  <div class="body" style="background:radial-gradient(circle at 88% 14%, rgba(43,200,154,.10), transparent 42%), radial-gradient(circle at 10% 92%, rgba(249,97,103,.10), transparent 40%);">
+  <div class="body" style="background:#EEF1FA;">
     <div style="height:100%;display:flex;flex-direction:column;padding:24px 44px;gap:22px;">
-      <div style="display:flex;align-items:center;gap:20px;background:linear-gradient(110deg, var(--navy) 60%, #2c3580);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
+      <div style="display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:16px;padding:20px 28px;position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(30,39,97,.22);">
         <div style="width:52px;height:52px;border-radius:14px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--navy);box-shadow:0 3px 10px rgba(249,201,70,.4);"><i data-lucide="help-circle" style="width:32px;height:32px;"></i></div>
         <div style="font-size:30px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.2;z-index:1;max-width:780px;">Was bedeutet das „*" in rdfs:subClassOf*?</div>
 
@@ -5349,7 +5864,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
       </div>
       <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:18px;">
 
-        <div style="display:flex;align-items:center;gap:18px;background:linear-gradient(110deg, rgba(22,163,74,.16), rgba(43,200,154,.12));border-radius:14px;padding:0 26px;box-shadow:0 6px 18px rgba(22,163,74,.22);border:2px solid var(--ok);">
+        <div style="display:flex;align-items:center;gap:18px;background:rgba(22,163,74,.14);border-radius:14px;padding:0 26px;box-shadow:0 6px 18px rgba(22,163,74,.22);border:2px solid var(--ok);">
           <div style="width:48px;height:48px;border-radius:50%;background:var(--ok);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 3px 8px rgba(22,163,74,.4);">A</div>
           <div style="font-size:22px;color:var(--text);font-weight:700;">0 oder mehr Schritte</div>
           <div style="margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0;color:var(--ok);">
@@ -5379,6 +5894,135 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     </div>
   </div>
 </div>
+<!-- ═══════════════════════════════════════════════════════
+     REFERENZEN · Quellenverzeichnis
+═══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num" style="font-size:11px;">Ref</div>
+    <div class="tag">Anhang</div>
+    <div class="title">Quellenverzeichnis</div>
+  </div>
+  <div class="body-nofooter">
+    <div style="height:100%;display:grid;grid-template-columns:1fr 1fr;gap:0;padding:18px 28px 14px;">
+
+      <!-- Linke Spalte: W3C Standards -->
+      <div style="padding-right:20px;border-right:1px solid #DDE3F0;display:flex;flex-direction:column;gap:0;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);background:var(--navy);display:inline-block;padding:3px 10px;border-radius:4px;margin-bottom:10px;align-self:flex-start;">W3C Standards</div>
+
+        <div style="display:flex;flex-direction:column;gap:7px;">
+
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:4px;background:var(--navy);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">1</div>
+            <div style="font-size:13.5px;color:var(--text);line-height:1.4;">
+              <strong>RDF 1.1 Concepts and Abstract Syntax</strong> · W3C Recommendation, Feb. 2014<br>
+              <span style="color:var(--muted);font-size:12px;">w3.org/TR/rdf11-concepts/</span>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:4px;background:var(--navy);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">2</div>
+            <div style="font-size:13.5px;color:var(--text);line-height:1.4;">
+              <strong>RDF 1.1 Primer</strong> · W3C Working Group Note, June 2014<br>
+              <span style="color:var(--muted);font-size:12px;">w3.org/TR/rdf11-primer/</span>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:4px;background:var(--navy);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">3</div>
+            <div style="font-size:13.5px;color:var(--text);line-height:1.4;">
+              <strong>SPARQL 1.1 Overview</strong> · W3C Recommendation, March 2013<br>
+              <span style="color:var(--muted);font-size:12px;">w3.org/TR/sparql11-overview/</span>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:4px;background:var(--navy);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">4</div>
+            <div style="font-size:13.5px;color:var(--text);line-height:1.4;">
+              <strong>SPARQL 1.1 Query Language</strong> · W3C Recommendation, March 2013<br>
+              <span style="color:var(--muted);font-size:12px;">w3.org/TR/sparql11-query/</span>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:4px;background:var(--navy);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">5</div>
+            <div style="font-size:13.5px;color:var(--text);line-height:1.4;">
+              <strong>SPARQL 1.1 Federated Query</strong> · W3C Recommendation, March 2013<br>
+              <span style="color:var(--muted);font-size:12px;">w3.org/TR/sparql11-federated-query/</span>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:4px;background:var(--navy);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">6</div>
+            <div style="font-size:13.5px;color:var(--text);line-height:1.4;">
+              <strong>SPARQL 1.1 Entailment Regimes</strong> · W3C Recommendation, March 2013<br>
+              <span style="color:var(--muted);font-size:12px;">w3.org/TR/sparql11-entailment/</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Rechte Spalte: Literatur + Tools -->
+      <div style="padding-left:20px;display:flex;flex-direction:column;gap:0;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);background:var(--coral);display:inline-block;padding:3px 10px;border-radius:4px;margin-bottom:10px;align-self:flex-start;">Literatur &amp; Tools</div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;">
+
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:4px;background:var(--coral);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">7</div>
+            <div style="font-size:13.5px;color:var(--text);line-height:1.4;">
+              <strong>Meier, A.; Kaufmann, M.</strong> SQL- &amp; NoSQL-Datenbanken. Springer-Verlag, 8. Aufl. 2023.<br>
+              <span style="color:var(--muted);font-size:12px;">doi:10.1007/978-3-662-67092-7</span>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:4px;background:var(--coral);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">8</div>
+            <div style="font-size:13.5px;color:var(--text);line-height:1.4;">
+              <strong>Gilbert, E.</strong> Triplestores 101: Storing Data for Efficient Inferencing. Dataversity, 2016.<br>
+              <span style="color:var(--muted);font-size:12px;">dataversity.net/articles/triplestores-101-storing-data-efficient-inferencing/</span>
+            </div>
+          </div>
+
+          <div style="margin-top:6px;height:1px;background:#DDE3F0;"></div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--teal);margin-top:2px;">Tool</div>
+
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:4px;background:var(--teal);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">9</div>
+            <div style="font-size:13.5px;color:var(--text);line-height:1.4;">
+              <strong>Oxigraph</strong> – Rust-based SPARQL 1.1 triple store. Open source, kein JVM.<br>
+              <span style="color:var(--muted);font-size:12px;">github.com/oxigraph/oxigraph</span>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:4px;background:var(--teal);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">10</div>
+            <div style="font-size:13.5px;color:var(--text);line-height:1.4;">
+              <strong>Wikidata</strong> – Freier Wissensgraph der Wikimedia Foundation. SPARQL-Endpoint für Federated Queries (Demo Query 7).<br>
+              <span style="color:var(--muted);font-size:12px;">query.wikidata.org</span>
+            </div>
+          </div>
+
+          <div style="margin-top:6px;height:1px;background:#DDE3F0;"></div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--coral);margin-top:2px;">Video</div>
+
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:4px;background:var(--coral);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">11</div>
+            <div style="font-size:13.5px;color:var(--text);line-height:1.4;">
+              <strong>An Introduction to Wikidata</strong> · National Library of Wales<br>
+              <span style="color:var(--muted);font-size:12px;">youtube.com/watch?v=m_9_23jXPoE</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <script>
 lucide.createIcons();
 

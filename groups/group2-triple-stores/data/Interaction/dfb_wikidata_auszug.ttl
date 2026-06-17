@@ -1,0 +1,778 @@
+@prefix wd: <http://www.wikidata.org/entity/> .
+@prefix wdt: <http://www.wikidata.org/prop/direct/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# ============================================================
+# DFB Data Lab - Lokaler RDF-Auszug (Fallback fuer WDQS-Ausfall)
+# Echte Wikidata-Q/P-IDs. Kuratierter Auszug, Stand 2026-06-17.
+# Quelle: Wikidata REST-API (wbgetentities), deutsche Labels (@de).
+# ============================================================
+
+# --- Klasse / Mensch ---
+wd:Q5 rdfs:label "Mensch"@de .
+
+# --- Land ---
+wd:Q142 rdfs:label "Frankreich"@de .
+wd:Q145 rdfs:label "Vereinigtes Königreich"@de .
+wd:Q155 rdfs:label "Brasilien"@de .
+wd:Q16 rdfs:label "Kanada"@de .
+wd:Q183 rdfs:label "Deutschland"@de .
+wd:Q235 rdfs:label "Monaco"@de .
+wd:Q29 rdfs:label "Spanien"@de .
+wd:Q35 rdfs:label "Dänemark"@de .
+wd:Q38 rdfs:label "Italien"@de .
+wd:Q40 rdfs:label "Österreich"@de .
+wd:Q45 rdfs:label "Portugal"@de .
+wd:Q55 rdfs:label "Niederlande"@de .
+
+# --- Turniere ---
+wd:Q284163 rdfs:label "Fußball-Weltmeisterschaft 2022"@de .
+wd:Q170645 rdfs:label "Fußball-Weltmeisterschaft 2018"@de .
+wd:Q79859 rdfs:label "Fußball-Weltmeisterschaft 2014"@de .
+wd:Q5020214 rdfs:label "Fußball-Weltmeisterschaft 2026"@de .
+
+# --- Nationalmannschaften (Label; bewusst KEIN P17, damit A6 nur echte Vereine zeigt) ---
+wd:Q43310 rdfs:label "deutsche Fußballnationalmannschaft"@de .
+wd:Q47774 rdfs:label "französische Fußballnationalmannschaft"@de .
+wd:Q83459 rdfs:label "brasilianische Fußballnationalmannschaft"@de .
+
+# --- FC Bayern Muenchen (fuer Aufgabe 1) ---
+wd:Q15789 rdfs:label "FC Bayern München"@de ; wdt:P17 wd:Q183 .
+
+# --- Cheftrainer der deutschen Nationalmannschaft (Bonus) ---
+wd:Q21226404 rdfs:label "Julian Nagelsmann"@de .
+wd:Q43310 wdt:P286 wd:Q21226404 .
+
+# --- WM 2026: Nationalmannschaften nehmen teil (Bonus, duenne Datenlage) ---
+wd:Q43310 wdt:P1344 wd:Q5020214 .
+wd:Q47774 wdt:P1344 wd:Q5020214 .
+wd:Q83459 wdt:P1344 wd:Q5020214 .
+
+# --- Vereine (Label + Land) ---
+wd:Q101859 rdfs:label "VfL Wolfsburg"@de ; wdt:P17 wd:Q183 .
+wd:Q101959 rdfs:label "Borussia Mönchengladbach"@de ; wdt:P17 wd:Q183 .
+wd:Q102720 rdfs:label "Hertha BSC"@de ; wdt:P17 wd:Q183 .
+wd:Q10315 rdfs:label "Real Sociedad"@de ; wdt:P17 wd:Q29 .
+wd:Q10329 rdfs:label "FC Sevilla"@de ; wdt:P17 wd:Q29 .
+wd:Q104761 rdfs:label "Bayer 04 Leverkusen"@de ; wdt:P17 wd:Q183 .
+wd:Q104770 rdfs:label "1. FC Köln"@de ; wdt:P17 wd:Q183 .
+wd:Q105089962 rdfs:label "Q105089962"@de ; wdt:P17 wd:Q145 .
+wd:Q105861 rdfs:label "VfL Bochum"@de ; wdt:P17 wd:Q183 .
+wd:Q106394 rdfs:label "SC Freiburg"@de ; wdt:P17 wd:Q183 .
+wd:Q109500422 rdfs:label "Q109500422"@de ; wdt:P17 wd:Q142 .
+wd:Q1130849 rdfs:label "FC Liverpool"@de ; wdt:P17 wd:Q145 .
+wd:Q11938 rdfs:label "PSV Eindhoven"@de ; wdt:P17 wd:Q55 .
+wd:Q11945 rdfs:label "FC Girona"@de ; wdt:P17 wd:Q29 .
+wd:Q12217 rdfs:label "Real Madrid Castilla"@de ; wdt:P17 wd:Q29 .
+wd:Q128446 rdfs:label "FC Porto"@de ; wdt:P17 wd:Q45 .
+wd:Q1387293 rdfs:label "FC Liefering"@de ; wdt:P17 wd:Q40 .
+wd:Q141971 rdfs:label "1. FC Union Berlin"@de ; wdt:P17 wd:Q183 .
+wd:Q1422 rdfs:label "Juventus Turin"@de ; wdt:P17 wd:Q38 .
+wd:Q153539 rdfs:label "SpVgg Greuther Fürth"@de ; wdt:P17 wd:Q183 .
+wd:Q1543 rdfs:label "AC Milan"@de ; wdt:P17 wd:Q38 .
+wd:Q15786 rdfs:label "1. FC Nürnberg"@de ; wdt:P17 wd:Q183 .
+wd:Q15789 rdfs:label "FC Bayern München"@de ; wdt:P17 wd:Q183 .
+wd:Q170125 rdfs:label "Rot Weiss Ahlen"@de ; wdt:P17 wd:Q183 .
+wd:Q172476 rdfs:label "Girondins Bordeaux"@de ; wdt:P17 wd:Q142 .
+wd:Q17479 rdfs:label "Flamengo Rio de Janeiro"@de ; wdt:P17 wd:Q155 .
+wd:Q180305 rdfs:label "AS Monaco"@de ; wdt:P17 wd:Q235 .
+wd:Q185163 rdfs:label "OGC Nizza"@de ; wdt:P17 wd:Q142 .
+wd:Q18656 rdfs:label "Manchester United"@de ; wdt:P17 wd:Q145 .
+wd:Q18741 rdfs:label "Tottenham Hotspur"@de ; wdt:P17 wd:Q145 .
+wd:Q18744 rdfs:label "West Bromwich Albion"@de ; wdt:P17 wd:Q145 .
+wd:Q18747 rdfs:label "West Ham United"@de ; wdt:P17 wd:Q145 .
+wd:Q188430 rdfs:label "FC Kopenhagen"@de ; wdt:P17 wd:Q35 .
+wd:Q191843 rdfs:label "RC Lens"@de ; wdt:P17 wd:Q142 .
+wd:Q192071 rdfs:label "FC Nantes"@de ; wdt:P17 wd:Q142 .
+wd:Q19509 rdfs:label "Stade Rennes"@de ; wdt:P17 wd:Q142 .
+wd:Q19512 rdfs:label "FC Sochaux"@de ; wdt:P17 wd:Q142 .
+wd:Q19518 rdfs:label "FC Toulouse"@de ; wdt:P17 wd:Q142 .
+wd:Q196107 rdfs:label "Vancouver Whitecaps"@de ; wdt:P17 wd:Q16 .
+wd:Q2052 rdfs:label "AC Florenz"@de ; wdt:P17 wd:Q38 .
+wd:Q209509 rdfs:label "Grenoble Foot"@de ; wdt:P17 wd:Q142 .
+wd:Q223450 rdfs:label "Vitória Guimarães"@de ; wdt:P17 wd:Q45 .
+wd:Q223620 rdfs:label "Deportivo Alavés"@de ; wdt:P17 wd:Q29 .
+wd:Q22707 rdfs:label "TSG 1899 Hoffenheim"@de ; wdt:P17 wd:Q183 .
+wd:Q2374021 rdfs:label "SV Auersmacher"@de ; wdt:P17 wd:Q183 .
+wd:Q2714 rdfs:label "FC Watford"@de ; wdt:P17 wd:Q145 .
+wd:Q2739 rdfs:label "AS Rom"@de ; wdt:P17 wd:Q38 .
+wd:Q309400 rdfs:label "US Boulogne"@de ; wdt:P17 wd:Q142 .
+wd:Q32494 rdfs:label "FC Schalke 04"@de ; wdt:P17 wd:Q183 .
+wd:Q338285 rdfs:label "América Mineiro"@de ; wdt:P17 wd:Q155 .
+wd:Q35933 rdfs:label "Corinthians São Paulo"@de ; wdt:P17 wd:Q155 .
+wd:Q38245 rdfs:label "Eintracht Frankfurt"@de ; wdt:P17 wd:Q183 .
+wd:Q38568 rdfs:label "FC São Paulo"@de ; wdt:P17 wd:Q155 .
+wd:Q41420 rdfs:label "Borussia Dortmund"@de ; wdt:P17 wd:Q183 .
+wd:Q43899915 rdfs:label "Grêmio Osasco Audax (Frauenfußball)"@de ; wdt:P17 wd:Q155 .
+wd:Q4512 rdfs:label "VfB Stuttgart"@de ; wdt:P17 wd:Q183 .
+wd:Q459148 rdfs:label "EA Guingamp"@de ; wdt:P17 wd:Q142 .
+wd:Q483020 rdfs:label "Paris Saint-Germain"@de ; wdt:P17 wd:Q142 .
+wd:Q50602 rdfs:label "Manchester City"@de ; wdt:P17 wd:Q145 .
+wd:Q506832 rdfs:label "Athletico Paranaense"@de ; wdt:P17 wd:Q155 .
+wd:Q51974 rdfs:label "Hamburger SV"@de ; wdt:P17 wd:Q183 .
+wd:Q51976 rdfs:label "Werder Bremen"@de ; wdt:P17 wd:Q183 .
+wd:Q702455 rdfs:label "RB Leipzig"@de ; wdt:P17 wd:Q183 .
+wd:Q704 rdfs:label "Olympique Lyon"@de ; wdt:P17 wd:Q142 .
+wd:Q7156 rdfs:label "FC Barcelona"@de ; wdt:P17 wd:Q29 .
+wd:Q7159367 rdfs:label "Q7159367"@de ; wdt:P17 wd:Q155 .
+wd:Q75729 rdfs:label "Sporting Lissabon"@de ; wdt:P17 wd:Q45 .
+wd:Q797530 rdfs:label "FC Istres"@de ; wdt:P17 wd:Q142 .
+wd:Q80845 rdfs:label "Sport Club Internacional"@de ; wdt:P17 wd:Q155 .
+wd:Q80955 rdfs:label "FC Santos"@de ; wdt:P17 wd:Q155 .
+wd:Q80964 rdfs:label "Palmeiras São Paulo"@de ; wdt:P17 wd:Q155 .
+wd:Q80987 rdfs:label "Fluminense FC"@de ; wdt:P17 wd:Q155 .
+wd:Q822021 rdfs:label "FC Tours"@de ; wdt:P17 wd:Q142 .
+wd:Q8466 rdfs:label "1. FC Kaiserslautern"@de ; wdt:P17 wd:Q183 .
+wd:Q8682 rdfs:label "Real Madrid"@de ; wdt:P17 wd:Q29 .
+wd:Q8701 rdfs:label "Atlético Madrid"@de ; wdt:P17 wd:Q29 .
+wd:Q9616 rdfs:label "FC Chelsea"@de ; wdt:P17 wd:Q145 .
+wd:Q9617 rdfs:label "FC Arsenal"@de ; wdt:P17 wd:Q145 .
+wd:Q994811 rdfs:label "FC Red Bull Salzburg"@de ; wdt:P17 wd:Q40 .
+
+# --- Spieler ---
+# Mario Götze
+wd:Q104454 wdt:P31 wd:Q5 ;
+    wdt:P569 "1992-06-03"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q15789 ;
+    wdt:P54 wd:Q41420 ;
+    wdt:P54 wd:Q11938 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Mario Götze"@de .
+
+# Manuel Neuer
+wd:Q107365 wdt:P31 wd:Q5 ;
+    wdt:P569 "1986-03-27"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q32494 ;
+    wdt:P54 wd:Q15789 ;
+    wdt:P1344 wd:Q170645 ;
+    wdt:P1344 wd:Q284163 ;
+    wdt:P1344 wd:Q79859 ;
+    rdfs:label "Manuel Neuer"@de .
+
+# Mats Hummels
+wd:Q110053 wdt:P31 wd:Q5 ;
+    wdt:P569 "1988-12-16"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q41420 ;
+    wdt:P54 wd:Q15789 ;
+    wdt:P54 wd:Q2739 ;
+    wdt:P1344 wd:Q170645 ;
+    rdfs:label "Mats Hummels"@de .
+
+# Kevin Trapp
+wd:Q118207 wdt:P31 wd:Q5 ;
+    wdt:P569 "1990-07-08"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q38245 ;
+    wdt:P54 wd:Q483020 ;
+    wdt:P54 wd:Q8466 ;
+    wdt:P1344 wd:Q170645 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Kevin Trapp"@de .
+
+# Matthias Ginter
+wd:Q129109 wdt:P31 wd:Q5 ;
+    wdt:P569 "1994-01-19"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q41420 ;
+    wdt:P54 wd:Q106394 ;
+    wdt:P54 wd:Q101959 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Matthias Ginter"@de .
+
+# Toni Kroos
+wd:Q131234 wdt:P31 wd:Q5 ;
+    wdt:P569 "1990-01-04"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q8682 ;
+    wdt:P54 wd:Q15789 ;
+    wdt:P54 wd:Q104761 ;
+    wdt:P1344 wd:Q170645 ;
+    rdfs:label "Toni Kroos"@de .
+
+# Niklas Süle
+wd:Q13365847 wdt:P31 wd:Q5 ;
+    wdt:P569 "1995-09-03"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q22707 ;
+    wdt:P54 wd:Q15789 ;
+    wdt:P54 wd:Q41420 ;
+    wdt:P1344 wd:Q170645 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Niklas Süle"@de .
+
+# Joshua Kimmich
+wd:Q13865408 wdt:P31 wd:Q5 ;
+    wdt:P569 "1995-02-08"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q702455 ;
+    wdt:P54 wd:Q15789 ;
+    wdt:P1344 wd:Q170645 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Joshua Kimmich"@de .
+
+# Neymar
+wd:Q142794 wdt:P31 wd:Q5 ;
+    wdt:P569 "1992-02-05"^^xsd:date ;
+    wdt:P54 wd:Q83459 ;
+    wdt:P54 wd:Q7156 ;
+    wdt:P54 wd:Q80955 ;
+    wdt:P54 wd:Q483020 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Neymar"@de .
+
+# Jérôme Boateng
+wd:Q151260 wdt:P31 wd:Q5 ;
+    wdt:P569 "1988-09-03"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q51974 ;
+    wdt:P54 wd:Q102720 ;
+    wdt:P54 wd:Q15789 ;
+    wdt:P1344 wd:Q170645 ;
+    rdfs:label "Jérôme Boateng"@de .
+
+# Marco Reus
+wd:Q152377 wdt:P31 wd:Q5 ;
+    wdt:P569 "1989-05-31"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q101959 ;
+    wdt:P54 wd:Q41420 ;
+    wdt:P54 wd:Q170125 ;
+    wdt:P1344 wd:Q170645 ;
+    rdfs:label "Marco Reus"@de .
+
+# Marc-André ter Stegen
+wd:Q160472 wdt:P31 wd:Q5 ;
+    wdt:P569 "1992-04-30"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q7156 ;
+    wdt:P54 wd:Q101959 ;
+    wdt:P54 wd:Q11945 ;
+    wdt:P1344 wd:Q170645 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Marc-André ter Stegen"@de .
+
+# İlkay Gündoğan
+wd:Q161089 wdt:P31 wd:Q5 ;
+    wdt:P569 "1990-10-24"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q15786 ;
+    wdt:P54 wd:Q41420 ;
+    wdt:P54 wd:Q50602 ;
+    wdt:P1344 wd:Q170645 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "İlkay Gündoğan"@de .
+
+# Lukas Klostermann
+wd:Q16239602 wdt:P31 wd:Q5 ;
+    wdt:P569 "1996-06-03"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q105861 ;
+    wdt:P54 wd:Q702455 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Lukas Klostermann"@de .
+
+# Leroy Sané
+wd:Q16499882 wdt:P31 wd:Q5 ;
+    wdt:P569 "1996-01-11"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q32494 ;
+    wdt:P54 wd:Q50602 ;
+    wdt:P54 wd:Q15789 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Leroy Sané"@de .
+
+# Antony
+wd:Q18064323 wdt:P31 wd:Q5 ;
+    wdt:P54 wd:Q83459 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Antony"@de .
+
+# Alisson
+wd:Q18237361 wdt:P31 wd:Q5 ;
+    wdt:P569 "1992-10-02"^^xsd:date ;
+    wdt:P54 wd:Q83459 ;
+    wdt:P54 wd:Q1130849 ;
+    wdt:P54 wd:Q80845 ;
+    wdt:P54 wd:Q2739 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Alisson"@de .
+
+# Adrien Rabiot
+wd:Q18962 wdt:P31 wd:Q5 ;
+    wdt:P569 "1995-04-03"^^xsd:date ;
+    wdt:P54 wd:Q47774 ;
+    wdt:P54 wd:Q483020 ;
+    wdt:P54 wd:Q19518 ;
+    wdt:P54 wd:Q1422 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Adrien Rabiot"@de .
+
+# Hugo Lloris
+wd:Q1907 wdt:P31 wd:Q5 ;
+    wdt:P569 "1986-12-26"^^xsd:date ;
+    wdt:P54 wd:Q47774 ;
+    wdt:P54 wd:Q185163 ;
+    wdt:P54 wd:Q704 ;
+    wdt:P54 wd:Q18741 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Hugo Lloris"@de .
+
+# Olivier Giroud
+wd:Q1911 wdt:P31 wd:Q5 ;
+    wdt:P569 "1986-09-30"^^xsd:date ;
+    wdt:P54 wd:Q47774 ;
+    wdt:P54 wd:Q797530 ;
+    wdt:P54 wd:Q822021 ;
+    wdt:P54 wd:Q209509 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Olivier Giroud"@de .
+
+# Gabriel Jesus
+wd:Q19708656 wdt:P31 wd:Q5 ;
+    wdt:P569 "1997-04-03"^^xsd:date ;
+    wdt:P54 wd:Q83459 ;
+    wdt:P54 wd:Q50602 ;
+    wdt:P54 wd:Q80964 ;
+    wdt:P54 wd:Q9617 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Gabriel Jesus"@de .
+
+# Marcus Thuram
+wd:Q19903718 wdt:P31 wd:Q5 ;
+    wdt:P569 "1997-08-06"^^xsd:date ;
+    wdt:P54 wd:Q47774 ;
+    wdt:P54 wd:Q19512 ;
+    wdt:P54 wd:Q459148 ;
+    wdt:P54 wd:Q101959 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Marcus Thuram"@de .
+
+# Dayot Upamecano
+wd:Q20723878 wdt:P31 wd:Q5 ;
+    wdt:P569 "1998-10-27"^^xsd:date ;
+    wdt:P54 wd:Q47774 ;
+    wdt:P54 wd:Q1387293 ;
+    wdt:P54 wd:Q994811 ;
+    wdt:P54 wd:Q702455 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Dayot Upamecano"@de .
+
+# Richarlison
+wd:Q20806743 wdt:P31 wd:Q5 ;
+    wdt:P569 "1997-05-10"^^xsd:date ;
+    wdt:P54 wd:Q83459 ;
+    wdt:P54 wd:Q338285 ;
+    wdt:P54 wd:Q80987 ;
+    wdt:P54 wd:Q2714 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Richarlison"@de .
+
+# Thilo Kehrer
+wd:Q20823439 wdt:P31 wd:Q5 ;
+    wdt:P569 "1996-09-21"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q32494 ;
+    wdt:P54 wd:Q483020 ;
+    wdt:P54 wd:Q18747 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Thilo Kehrer"@de .
+
+# Ousmane Dembélé
+wd:Q20851003 wdt:P31 wd:Q5 ;
+    wdt:P569 "1997-05-15"^^xsd:date ;
+    wdt:P54 wd:Q47774 ;
+    wdt:P54 wd:Q19509 ;
+    wdt:P54 wd:Q7156 ;
+    wdt:P54 wd:Q41420 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Ousmane Dembélé"@de .
+
+# Thiago Silva
+wd:Q210453 wdt:P31 wd:Q5 ;
+    wdt:P569 "1984-09-22"^^xsd:date ;
+    wdt:P54 wd:Q83459 ;
+    wdt:P54 wd:Q483020 ;
+    wdt:P54 wd:Q7159367 ;
+    wdt:P54 wd:Q128446 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Thiago Silva"@de .
+
+# Kylian Mbappé
+wd:Q21621995 wdt:P31 wd:Q5 ;
+    wdt:P569 "1998-12-20"^^xsd:date ;
+    wdt:P54 wd:Q47774 ;
+    wdt:P54 wd:Q109500422 ;
+    wdt:P54 wd:Q180305 ;
+    wdt:P54 wd:Q483020 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Kylian Mbappé"@de .
+
+# Theo Hernández
+wd:Q23703372 wdt:P31 wd:Q5 ;
+    wdt:P569 "1997-10-06"^^xsd:date ;
+    wdt:P54 wd:Q47774 ;
+    wdt:P54 wd:Q223620 ;
+    wdt:P54 wd:Q8682 ;
+    wdt:P54 wd:Q10315 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Theo Hernández"@de .
+
+# Christian Günter
+wd:Q2668870 wdt:P31 wd:Q5 ;
+    wdt:P569 "1993-02-28"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q106394 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Christian Günter"@de .
+
+# Kai Havertz
+wd:Q27310755 wdt:P31 wd:Q5 ;
+    wdt:P569 "1999-06-11"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q104761 ;
+    wdt:P54 wd:Q9616 ;
+    wdt:P54 wd:Q9617 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Kai Havertz"@de .
+
+# David Raum
+wd:Q28540571 wdt:P31 wd:Q5 ;
+    wdt:P569 "1998-04-22"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q153539 ;
+    wdt:P54 wd:Q22707 ;
+    wdt:P54 wd:Q702455 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "David Raum"@de .
+
+# Raphinha
+wd:Q28861547 wdt:P31 wd:Q5 ;
+    wdt:P569 "1996-12-14"^^xsd:date ;
+    wdt:P54 wd:Q83459 ;
+    wdt:P54 wd:Q7156 ;
+    wdt:P54 wd:Q223450 ;
+    wdt:P54 wd:Q75729 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Raphinha"@de .
+
+# Vinícius Júnior
+wd:Q28973866 wdt:P31 wd:Q5 ;
+    wdt:P569 "2000-07-12"^^xsd:date ;
+    wdt:P54 wd:Q83459 ;
+    wdt:P54 wd:Q8682 ;
+    wdt:P54 wd:Q17479 ;
+    wdt:P54 wd:Q12217 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Vinícius Júnior"@de .
+
+# Éder Gabriel Militão
+wd:Q29950055 wdt:P31 wd:Q5 ;
+    wdt:P569 "1998-01-18"^^xsd:date ;
+    wdt:P54 wd:Q83459 ;
+    wdt:P54 wd:Q8682 ;
+    wdt:P54 wd:Q128446 ;
+    wdt:P54 wd:Q38568 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Éder Gabriel Militão"@de .
+
+# Lucas Paquetá
+wd:Q30089624 wdt:P31 wd:Q5 ;
+    wdt:P569 "1997-08-27"^^xsd:date ;
+    wdt:P54 wd:Q83459 ;
+    wdt:P54 wd:Q1543 ;
+    wdt:P54 wd:Q17479 ;
+    wdt:P54 wd:Q704 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Lucas Paquetá"@de .
+
+# Julian Draxler
+wd:Q315697 wdt:P31 wd:Q5 ;
+    wdt:P569 "1993-09-20"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q32494 ;
+    wdt:P54 wd:Q101859 ;
+    wdt:P54 wd:Q483020 ;
+    wdt:P1344 wd:Q170645 ;
+    rdfs:label "Julian Draxler"@de .
+
+# Julian Brandt
+wd:Q3189078 wdt:P31 wd:Q5 ;
+    wdt:P569 "1996-05-02"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q104761 ;
+    wdt:P54 wd:Q41420 ;
+    wdt:P1344 wd:Q170645 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Julian Brandt"@de .
+
+# Niclas Füllkrug
+wd:Q326159 wdt:P31 wd:Q5 ;
+    wdt:P569 "1993-02-09"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q15786 ;
+    wdt:P54 wd:Q51976 ;
+    wdt:P54 wd:Q153539 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Niclas Füllkrug"@de .
+
+# Timo Werner
+wd:Q3529022 wdt:P31 wd:Q5 ;
+    wdt:P569 "1996-03-06"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q4512 ;
+    wdt:P54 wd:Q702455 ;
+    wdt:P54 wd:Q9616 ;
+    wdt:P1344 wd:Q170645 ;
+    rdfs:label "Timo Werner"@de .
+
+# Marcos Aoas Correa
+wd:Q39230 wdt:P31 wd:Q5 ;
+    wdt:P569 "1994-05-14"^^xsd:date ;
+    wdt:P54 wd:Q83459 ;
+    wdt:P54 wd:Q2739 ;
+    wdt:P54 wd:Q35933 ;
+    wdt:P54 wd:Q483020 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Marcos Aoas Correa"@de .
+
+# Youssoufa Moukoko
+wd:Q41896054 wdt:P31 wd:Q5 ;
+    wdt:P569 "2004-11-20"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q41420 ;
+    wdt:P54 wd:Q185163 ;
+    wdt:P54 wd:Q188430 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Youssoufa Moukoko"@de .
+
+# Rodrygo
+wd:Q42728914 wdt:P31 wd:Q5 ;
+    wdt:P569 "2001-01-09"^^xsd:date ;
+    wdt:P54 wd:Q83459 ;
+    wdt:P54 wd:Q8682 ;
+    wdt:P54 wd:Q80955 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Rodrygo"@de .
+
+# Thomas Müller
+wd:Q43666 wdt:P31 wd:Q5 ;
+    wdt:P569 "1989-09-13"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q15789 ;
+    wdt:P54 wd:Q196107 ;
+    wdt:P1344 wd:Q170645 ;
+    wdt:P1344 wd:Q284163 ;
+    wdt:P1344 wd:Q79859 ;
+    rdfs:label "Thomas Müller"@de .
+
+# Antoine Griezmann
+wd:Q455462 wdt:P31 wd:Q5 ;
+    wdt:P569 "1991-03-21"^^xsd:date ;
+    wdt:P54 wd:Q47774 ;
+    wdt:P54 wd:Q10315 ;
+    wdt:P54 wd:Q8701 ;
+    wdt:P54 wd:Q7156 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Antoine Griezmann"@de .
+
+# Mario Gómez
+wd:Q45766 wdt:P31 wd:Q5 ;
+    wdt:P569 "1985-07-10"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q4512 ;
+    wdt:P54 wd:Q2052 ;
+    wdt:P54 wd:Q15789 ;
+    wdt:P1344 wd:Q170645 ;
+    rdfs:label "Mario Gómez"@de .
+
+# Aurélien Tchouaméni
+wd:Q46951844 wdt:P31 wd:Q5 ;
+    wdt:P569 "2000-01-27"^^xsd:date ;
+    wdt:P54 wd:Q47774 ;
+    wdt:P54 wd:Q172476 ;
+    wdt:P54 wd:Q180305 ;
+    wdt:P54 wd:Q8682 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Aurélien Tchouaméni"@de .
+
+# Jules Koundé
+wd:Q47170176 wdt:P31 wd:Q5 ;
+    wdt:P569 "1998-11-12"^^xsd:date ;
+    wdt:P54 wd:Q47774 ;
+    wdt:P54 wd:Q172476 ;
+    wdt:P54 wd:Q10329 ;
+    wdt:P54 wd:Q7156 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Jules Koundé"@de .
+
+# Raphaël Varane
+wd:Q489039 wdt:P31 wd:Q5 ;
+    wdt:P569 "1993-04-25"^^xsd:date ;
+    wdt:P54 wd:Q47774 ;
+    wdt:P54 wd:Q191843 ;
+    wdt:P54 wd:Q18656 ;
+    wdt:P54 wd:Q8682 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Raphaël Varane"@de .
+
+# Leon Goretzka
+wd:Q520721 wdt:P31 wd:Q5 ;
+    wdt:P569 "1995-02-06"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q32494 ;
+    wdt:P54 wd:Q105861 ;
+    wdt:P54 wd:Q15789 ;
+    wdt:P1344 wd:Q170645 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Leon Goretzka"@de .
+
+# Sami Khedira
+wd:Q54094 wdt:P31 wd:Q5 ;
+    wdt:P569 "1987-04-04"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q4512 ;
+    wdt:P54 wd:Q8682 ;
+    wdt:P54 wd:Q1422 ;
+    wdt:P1344 wd:Q170645 ;
+    rdfs:label "Sami Khedira"@de .
+
+# Karim Adeyemi
+wd:Q56424307 wdt:P31 wd:Q5 ;
+    wdt:P569 "2002-01-18"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q1387293 ;
+    wdt:P54 wd:Q994811 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Karim Adeyemi"@de .
+
+# Bruno Guimarães
+wd:Q58323172 wdt:P31 wd:Q5 ;
+    wdt:P569 "1997-11-16"^^xsd:date ;
+    wdt:P54 wd:Q83459 ;
+    wdt:P54 wd:Q506832 ;
+    wdt:P54 wd:Q704 ;
+    wdt:P54 wd:Q43899915 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Bruno Guimarães"@de .
+
+# Serge Gnabry
+wd:Q59490 wdt:P31 wd:Q5 ;
+    wdt:P569 "1995-07-14"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q9617 ;
+    wdt:P54 wd:Q18744 ;
+    wdt:P54 wd:Q51976 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Serge Gnabry"@de .
+
+# Randal Kolo
+wd:Q59655998 wdt:P31 wd:Q5 ;
+    wdt:P569 "1998-12-05"^^xsd:date ;
+    wdt:P54 wd:Q47774 ;
+    wdt:P54 wd:Q192071 ;
+    wdt:P54 wd:Q309400 ;
+    wdt:P54 wd:Q38245 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Randal Kolo"@de .
+
+# Sebastian Rudy
+wd:Q60315 wdt:P31 wd:Q5 ;
+    wdt:P569 "1990-02-28"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q22707 ;
+    wdt:P54 wd:Q4512 ;
+    wdt:P54 wd:Q15789 ;
+    wdt:P1344 wd:Q170645 ;
+    rdfs:label "Sebastian Rudy"@de .
+
+# Casemiro
+wd:Q616664 wdt:P31 wd:Q5 ;
+    wdt:P569 "1992-02-23"^^xsd:date ;
+    wdt:P54 wd:Q83459 ;
+    wdt:P54 wd:Q8682 ;
+    wdt:P54 wd:Q128446 ;
+    wdt:P54 wd:Q38568 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Casemiro"@de .
+
+# Nico Schlotterbeck
+wd:Q62015814 wdt:P31 wd:Q5 ;
+    wdt:P569 "1999-12-01"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q106394 ;
+    wdt:P54 wd:Q141971 ;
+    wdt:P54 wd:Q41420 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Nico Schlotterbeck"@de .
+
+# Kingsley Coman
+wd:Q6413296 wdt:P31 wd:Q5 ;
+    wdt:P569 "1996-06-13"^^xsd:date ;
+    wdt:P54 wd:Q47774 ;
+    wdt:P54 wd:Q483020 ;
+    wdt:P54 wd:Q1422 ;
+    wdt:P54 wd:Q15789 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Kingsley Coman"@de .
+
+# Marvin Plattenhardt
+wd:Q72214 wdt:P31 wd:Q5 ;
+    wdt:P569 "1992-01-26"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q102720 ;
+    wdt:P54 wd:Q15786 ;
+    wdt:P1344 wd:Q170645 ;
+    rdfs:label "Marvin Plattenhardt"@de .
+
+# Jonas Hofmann
+wd:Q822781 wdt:P31 wd:Q5 ;
+    wdt:P569 "1992-07-14"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q101959 ;
+    wdt:P54 wd:Q22707 ;
+    wdt:P54 wd:Q41420 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Jonas Hofmann"@de .
+
+# Mesut Özil
+wd:Q83488 wdt:P31 wd:Q5 ;
+    wdt:P569 "1988-10-15"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q32494 ;
+    wdt:P54 wd:Q51976 ;
+    wdt:P54 wd:Q9617 ;
+    wdt:P1344 wd:Q170645 ;
+    rdfs:label "Mesut Özil"@de .
+
+# Jamal Musiala
+wd:Q96072055 wdt:P31 wd:Q5 ;
+    wdt:P569 "2003-02-26"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q105089962 ;
+    wdt:P54 wd:Q15789 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Jamal Musiala"@de .
+
+# Antonio Rüdiger
+wd:Q96755 wdt:P31 wd:Q5 ;
+    wdt:P569 "1993-03-03"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q4512 ;
+    wdt:P54 wd:Q2739 ;
+    wdt:P54 wd:Q9616 ;
+    wdt:P1344 wd:Q170645 ;
+    wdt:P1344 wd:Q284163 ;
+    rdfs:label "Antonio Rüdiger"@de .
+
+# Jonas Hector
+wd:Q994561 wdt:P31 wd:Q5 ;
+    wdt:P569 "1990-05-27"^^xsd:date ;
+    wdt:P54 wd:Q43310 ;
+    wdt:P54 wd:Q2374021 ;
+    wdt:P54 wd:Q104770 ;
+    wdt:P1344 wd:Q170645 ;
+    rdfs:label "Jonas Hector"@de .
