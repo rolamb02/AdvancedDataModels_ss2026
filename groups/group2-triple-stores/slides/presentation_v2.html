@@ -2349,7 +2349,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
       <div style="display:flex;gap:20px;flex:1;align-items:stretch;">
         <div style="flex:1;display:flex;flex-direction:column;gap:12px;">
           <div style="background:rgba(220,38,38,.06);border-radius:10px;padding:14px 18px;border:2px solid var(--no);">
-            <div class="lbl lbl-coral" style="margin-bottom:8px;">Query 4 — ohne Inferenz</div>
+            <div class="lbl lbl-coral" style="margin-bottom:8px;">ohne Inferenz</div>
             <div class="code" style="font-size:15px;">
 <span class="kw">SELECT</span> <span class="var">?p</span> <span class="kw">WHERE</span> { <span class="var">?p</span> <span class="kw">a</span> <span class="iri">uni:Person</span> . }
             </div>
@@ -2367,7 +2367,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
         </div>
         <div style="flex:1;display:flex;flex-direction:column;gap:12px;">
           <div style="background:rgba(22,163,74,.06);border-radius:10px;padding:14px 18px;border:2px solid var(--ok);">
-            <div class="lbl lbl-teal" style="margin-bottom:8px;">Query 5 — mit rdfs:subClassOf*</div>
+            <div class="lbl lbl-teal" style="margin-bottom:8px;">mit rdfs:subClassOf*</div>
             <div class="code" style="font-size:15px;">
 <span class="kw">SELECT</span> <span class="var">?p</span> <span class="kw">WHERE</span> {<br>
 &nbsp;&nbsp;<span class="var">?p</span> <span class="kw">a</span> <span class="var">?typ</span> .<br>
@@ -3317,7 +3317,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
         <div class="c3r"><div class="badge b-ok">✓</div>flexibel, schema-light</div>
       </div>
       <div class="c3row rdf-w">
-        <div class="c3l"><div class="rv-m">Joins (teuer, komplex)</div><div class="badge b-no">✗</div></div>
+        <div class="c3l"><div class="rv-m">Joins (komplex)</div><div class="badge b-no">✗</div></div>
         <div class="c3m"><div class="ic ic-sm"><i data-lucide="share-2"></i></div>Beziehungen</div>
         <div class="c3r"><div class="badge b-ok">✓</div>Geteilte Variablen</div>
       </div>
