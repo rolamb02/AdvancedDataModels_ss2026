@@ -2,15 +2,15 @@
 
 ## Group Members
 
-- (Add your names here.)
+- Achim Baumgärtner
 
 ## Overview
 
-(Briefly describe your topic and approach.)
+MemPalace is a system that allows for a more efficient use of LLMs. It gives the opportunity to save questions and their answers and make them permanently retrieveable for the furture. The MemPalace will first be consulted to search through its entries, before the LLMs API is called, to save Tokens.
 
 ## Setup Instructions
 
-(Explain how to install dependencies and run the demo.)
+Simply run Jupyter Notebook through VS Code or Google Colab
 
 ## Directory Contents
 
