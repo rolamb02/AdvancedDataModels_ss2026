@@ -29,6 +29,8 @@
   - Separate Struktur mappt `ID → URI oder Literal`
   - Beispiel: `101 → dbr:Stuttgart`
 
+IDs nicht einheitlich! 
+
 ---
 
 ## Folie 4: Physische Speicherung II – Index-Permutationen
@@ -69,8 +71,7 @@ Query model (15 min) – Introduce the query language (Cypher, SPARQL, ANN API, 
 
 ### Kernpunkte
 
-**PREFIX — Namespace-Abkürzung:**
-
+**PREFIX — Namespace-Abkürzung:** Teilweise Link, grunsätzlich globaler Identifier! 
 ---
 
 ## Folie 3: Query-Typen — SELECT · ASK · CONSTRUCT · DESCRIBE
@@ -171,6 +172,8 @@ Praktische Konsequenz: Das ist der Grund warum SPARQL OPTIONAL und FILTER NOT EX
 
 ## Folie 1: Triple Store vs. SQL – Consistency / ACID
 
+### Consistency
+
 **ACID** = **A**tomicity · **C**onsistency · **I**solation · **D**urability
 
 | | SQL | Triple Store |
@@ -185,9 +188,25 @@ Praktische Konsequenz: Das ist der Grund warum SPARQL OPTIONAL und FILTER NOT EX
 - **GraphDB / Stardog:** vollständiges ACID, aber Performance-Overhead
 - **Distributed (Virtuoso Cluster):** oft nur Eventually Consistent (CAP-Theorem)
 
+
+**Was bedeutet Konsistenz konkret?**
+Konsistenz (oder Integrität) bedeutet die **Widerspruchsfreiheit** von Datenbeständen. Das System stellt sicher, dass die Daten immer korrekt und fehlerfrei den gewünschten Zustand der Realität abbilden.
+
+*   **Illustratives Beispiel (Banküberweisung):** Wenn du 100 € von Konto A auf Konto B überweist, müssen zwei Dinge passieren: 100 € Abzug bei A und 100 € Gutschrift bei B. 
+    *   **Konsistent:** Nach der Transaktion ist die Gesamtsumme beider Konten gleich geblieben. 
+    *   **Inkonsistent:** Wenn das System mitten drin abstürzt und die 100 € bei A abgezogen, aber bei B nie gutgeschrieben wurden, ist das Geld „verschwunden“ – der Datenbestand ist widersprüchlich.
+
+**BASE** Gegenstück zu **ACID**-Prinzip (Atomarität, Konsistenz, Isolation, Dauerhaftigkeit) und v.a. in massiv verteilten NoSQL-Systemen 
+
+*   **Basically Available (Grundsätzliche Verfügbarkeit):** Das System stellt sicher, dass es trotz Fehlern einzelner Knoten oder Netzwerkverbindungen funktionsfähig bleibt und akzeptable Antwortzeiten liefert. Die Verfügbarkeit hat hier Vorrang vor sofortiger Fehlerfreiheit.
+*   **Soft State (Weicher Zustand):** Der Zustand des Systems kann sich ohne Benutzereingriff ändern, da Datenreplikate im Hintergrund synchronisiert werden. Da Knoten für eine gewisse Zeit unterschiedliche Datenstände aufweisen können, ist der Gesamtzustand der Datenbank „fließend“ oder „weich“.
+*   **Eventually Consistent (Eventuelle Konsistenz):** Dies bedeutet, dass das System zwar zwischenzeitlich inkonsistent sein kann (z. B. sieht Nutzer A in New York schon den neuen Wert, Nutzer B in Stuttgart aber noch den alten), aber nach einer gewissen Zeit ohne weitere Änderungen alle Kopien denselben aktuellen Stand erreichen werden.
+
 **Kernproblem:** 1 Update ("Alice wechselt Uni") = 2 Ops (delete + insert); SQL = 1 UPDATE → bei Millionen verteilter Triples aufwendiger atomar zu halten
 
-**Interaktion:** ETL = Extract, Transform, Load
+
+### Interaktion
+ETL = Extract, Transform, Load
 
 ---
 
@@ -235,9 +254,9 @@ Diese Matrix ist als schnelle Orientierungshilfe gedacht. Kein Modell gewinnt im
 - ICIJ: Neo4j zur Analyse der Panama Papers
 
 **Semantik & Inferenz → Triple Store ✅:** 
-- UniProt: SPARQL-Endpoint mit 190 Mrd. Triples für Proteinforschung
-- NHS/Medizin: SNOMED CT & ICD-10 als OWL-Ontologien mit automatischer Inferenz
-- Open PHACTS (EU): RDF-Integration von DrugBank, ChEMBL, UniProt für Wirkstoffforschung
+- UniProt: SPARQL-Endpoint mit 190 Mrd. Triples für Proteinforschung → `rdfs:subClassOf`-Inferenz: Query „alle Enzyme" → Reasoner schließt Kinasen, Phosphatasen automatisch ein (`Kinase subClassOf Enzyme`) → kein manuelles UNION über alle Unterklassen
+- NHS/Medizin: SNOMED CT & ICD-10 als OWL-Ontologien mit automatischer Inferenz → `rdfs:subClassOf`-Inferenz: Query „alle Diabetes-Patienten" → Reasoner schließt Typ-2-Diabetes, Gestationsdiabetes, sekundären Diabetes ein → klinisch vollständig, ohne jede Unterklasse hardcoden zu müssen
+- Open PHACTS (EU): RDF-Integration von DrugBank, ChEMBL, UniProt für Wirkstoffforschung → `owl:sameAs`-Inferenz: Aspirin = CHEMBL25 = DB00945 = CHEBI:15365 → Reasoner erkennt: gleiche Entität, verschiedene Quellen → eine Query findet alle Vorkommen ohne manuelle ID-Mappingtabelle
 
 **Offene Datenintegration → Triple Store ✅:** 
 - BBC: RDF-Verlinkung von Nachrichtenartikeln mit Archivmaterial via DBpedia
@@ -251,6 +270,16 @@ Diese Matrix ist als schnelle Orientierungshilfe gedacht. Kein Modell gewinnt im
 - MySQL/PostgreSQL: Standard in nahezu jeder Web-App (Django, Rails, etc.)
 - Neo4j Browser/Bloom: Visuelles Tooling für Graphexploration
 - SQLite: Embedded in Python, iOS, Android — kein Setup nötig
+
+**Initialisierungsaufwand:** Triplestore vs. Property Graph / Relational
+*   **Relational (SQL):** Hier ist der Initialaufwand **hoch**, da du zuerst ein starres Tabellenschema (`CREATE TABLE`) definieren musst, bevor Daten gespeichert werden können. Jede spätere Änderung ist aufwendig (`ALTER TABLE`).
+*   **Property Graph:** Diese sind auf **Flexibilität** ausgelegt. Der Aufwand ist geringer, da das Modell oft dem „Whiteboard-Entwurf“ entspricht („What you draw is what you store“).
+*   **Triple Store (RDF):** Technisch ist der Aufwand gering, da sie **schemafrei** sind und du einfach Fakten als Tripel hinzufügen kannst. Aber: Wenn du die volle Power (Inferenz/Logik) nutzen willst, ist der **Modellierungsaufwand für Ontologien** (Regelwerke wie OWL) oft sehr hoch und erfordert spezialisiertes Expertenwissen.
+*   **Fazit:** Der rein technische Start ist beim Triple Store am flexibelsten, aber der semantische Entwurf (Wissensmodellierung) kann deutlich aufwendiger sein als bei den anderen Modellen.
+
+
+
+
 
 **Knowledge Graphs → Triple Store ✅:**
 - Google Knowledge Graph: 500 Mrd. Fakten, 5 Mrd. Entitäten
@@ -381,13 +410,6 @@ Zusammenfassend lässt sich sagen, dass **Forward Chaining auf Geschwindigkeit b
 # Property Graph Vergleich
 Basierend auf den Quellen lassen sich die von dir genannten Punkte wie folgt ausführen:
 
-### 1. Vergleich Property Graph (PG) vs. Triple Store (TS/RDF)
-
-Der Hauptunterschied liegt in der Struktur und dem Einsatzzweck:
-
-*   **Datenmodell:** Ein **Property Graph** besteht aus Knoten und Kanten, wobei beide beliebige Attribute (Properties) als Schlüssel-Wert-Paare speichern können. In einem **Triple Store** werden Daten als Subjekt-Prädikat-Objekt-Tripel gespeichert. Kanten sind hier keine eigenständigen Objekte mit Attributen.
-*   **Abfragemodell:** Property Graphen nutzen Sprachen wie **Cypher**, die auf **Pattern Matching** und effiziente Traversierung (das "Wandern" durch den Graphen) fokussiert sind. Triple Stores nutzen **SPARQL**, das für die Integration verteilter Datenquellen und **Inferencing** (logisches Schließen) optimiert ist.
-*   **Philosophie:** Property Graphen sind wie ein "Whiteboard-Modell" – man speichert die Daten so, wie man sie zeichnet. Triple Stores folgen strikten Web-Standards (W3C) und nutzen URIs zur weltweit eindeutigen Identifikation von Konzepten.
 
 ### 2. Schwachstellen unseres Systems (Triple Store)
 

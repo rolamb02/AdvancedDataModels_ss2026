@@ -1307,7 +1307,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
         </div>
         <div style="display:flex;align-items:center;gap:14px;">
           <div class="ci ic" style="width:40px;height:40px;background:rgba(124,58,237,.1);color:#7C3AED;flex-shrink:0;"><i data-lucide="layout-grid"></i></div>
-          <div class="txt22"><strong>Index-Permutationen</strong> – SPO · POS · OSP … für schnelle Lookups</div>
+          <div class="txt22"><strong>Index-Permutationen</strong> – SPO · POS · OSP </div>
         </div>
         <div style="display:flex;align-items:center;gap:14px;">
           <div class="ci ic" style="width:40px;height:40px;background:rgba(8,145,178,.1);color:#0891B2;flex-shrink:0;"><i data-lucide="link"></i></div>
@@ -1321,7 +1321,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
 
 
 <!-- ═══════════════════════════════════════════════════════
-     DATA STRUCTURE 01 — Triple-basierte Speicherung
+DATA STRUCTURE 01 — Triple-basierte Speicherung
 ═══════════════════════════════════════════════════════ -->
 <div class="slide">
   <div class="lbar"></div>
@@ -2347,7 +2347,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
       <div style="display:flex;gap:20px;flex:1;align-items:stretch;">
         <div style="flex:1;display:flex;flex-direction:column;gap:12px;">
           <div style="background:rgba(220,38,38,.06);border-radius:10px;padding:14px 18px;border:2px solid var(--no);">
-            <div class="lbl lbl-coral" style="margin-bottom:8px;">Query 4 — ohne Inferenz</div>
+            <div class="lbl lbl-coral" style="margin-bottom:8px;">ohne Inferenz</div>
             <div class="code" style="font-size:15px;">
 <span class="kw">SELECT</span> <span class="var">?p</span> <span class="kw">WHERE</span> { <span class="var">?p</span> <span class="kw">a</span> <span class="iri">uni:Person</span> . }
             </div>
@@ -2365,7 +2365,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
         </div>
         <div style="flex:1;display:flex;flex-direction:column;gap:12px;">
           <div style="background:rgba(22,163,74,.06);border-radius:10px;padding:14px 18px;border:2px solid var(--ok);">
-            <div class="lbl lbl-teal" style="margin-bottom:8px;">Query 5 — mit rdfs:subClassOf*</div>
+            <div class="lbl lbl-teal" style="margin-bottom:8px;">mit rdfs:subClassOf*</div>
             <div class="code" style="font-size:15px;">
 <span class="kw">SELECT</span> <span class="var">?p</span> <span class="kw">WHERE</span> {<br>
 &nbsp;&nbsp;<span class="var">?p</span> <span class="kw">a</span> <span class="var">?typ</span> .<br>
@@ -2800,11 +2800,11 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
       <div style="display:flex;gap:14px;">
         <div style="flex:1;background:rgba(43,200,154,.06);border-radius:10px;padding:10px 16px;border:1.5px solid var(--teal);display:flex;align-items:center;gap:14px;">
           <div class="lbl lbl-teal" style="width:130px;flex-shrink:0;">Selbst betreiben</div>
-          <div class="txt18" style="color:var(--text);"><span style="color:var(--ok);font-weight:700;">+</span> Kontrolle, geringe Kosten &nbsp; <span style="color:var(--no);font-weight:700;">–</span> eigener Betriebsaufwand</div>
+          <div class="txt18" style="color:var(--text);line-height:1.5;"><span style="color:var(--ok);font-weight:700;">+</span> Kontrolle, geringe Kosten<br><span style="color:var(--no);font-weight:700;">–</span> eigener Betriebsaufwand</div>
         </div>
         <div style="flex:1;background:rgba(124,58,237,.06);border-radius:10px;padding:10px 16px;border:1.5px solid #7C3AED;display:flex;align-items:center;gap:14px;">
           <div class="lbl" style="color:#7C3AED;width:120px;flex-shrink:0;">Cloud-Dienst</div>
-          <div class="txt18" style="color:var(--text);"><span style="color:var(--ok);font-weight:700;">+</span> kein Aufwand, skaliert &nbsp; <span style="color:var(--no);font-weight:700;">–</span> Kosten, Anbieterbindung</div>
+          <div class="txt18" style="color:var(--text);line-height:1.5;"><span style="color:var(--ok);font-weight:700;">+</span> kein Aufwand, skaliert<br><span style="color:var(--no);font-weight:700;">–</span> Kosten, Anbieterbindung</div>
         </div>
       </div>
       <!-- 2x2 Anbieter -->
@@ -3315,7 +3315,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
         <div class="c3r"><div class="badge b-ok">✓</div>flexibel, schema-light</div>
       </div>
       <div class="c3row rdf-w">
-        <div class="c3l"><div class="rv-m">Joins (teuer, komplex)</div><div class="badge b-no">✗</div></div>
+        <div class="c3l"><div class="rv-m">Joins (komplex)</div><div class="badge b-no">✗</div></div>
         <div class="c3m"><div class="ic ic-sm"><i data-lucide="share-2"></i></div>Beziehungen</div>
         <div class="c3r"><div class="badge b-ok">✓</div>Geteilte Variablen</div>
       </div>
@@ -3432,6 +3432,163 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
 <!-- ═══════════════════════════════════════════════════════
      COMPARISON 03 — Wann nimmt man was?
 ═══════════════════════════════════════════════════════ -->
+<!-- Build 0: nur Use-Cases sichtbar, keine Pills -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">03</div>
+    <div class="tag">Comparison</div>
+    <div class="title">Wann nimmt man was?</div>
+    <div class="col-labels-c3">
+      <div class="lp lp-rel">Relational</div>
+      <div class="lp lp-pg">Property Graph</div>
+      <div class="lp lp-ts">Triple Store</div>
+    </div>
+  </div>
+  <div class="body">
+    <div class="rows">
+      <div class="row"><div class="req-icon"><i data-lucide="layers"></i></div><div class="req">Stabile Struktur</div><div class="arr">→</div><div class="pills" style="visibility:hidden"><div class="pill p-rel">Relational</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="network"></i></div><div class="req">Tiefe Graphnavigation</div><div class="arr">→</div><div class="pills" style="visibility:hidden"><div class="pill p-pg">Property Graph</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="brain"></i></div><div class="req">Semantik &amp; Inferenz</div><div class="arr">→</div><div class="pills" style="visibility:hidden"><div class="pill p-ts">Triple Store</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="globe"></i></div><div class="req">Offene Datenintegration</div><div class="arr">→</div><div class="pills" style="visibility:hidden"><div class="pill p-ts">Triple Store</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="wrench"></i></div><div class="req">Einstieg &amp; Tooling</div><div class="arr">→</div><div class="pills" style="visibility:hidden"><div class="pill p-rel">Relational</div><div class="pill-s ps-pg">Property Graph</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="brain"></i></div><div class="req">Knowledge Graphs</div><div class="arr">→</div><div class="pills" style="visibility:hidden"><div class="pill p-ts">Triple Store</div></div></div>
+    </div>
+  </div>
+  <div class="insight" style="visibility:hidden"><span class="ia">→</span><span><strong>Kein Modell gewinnt immer</strong> — Triple Store ist die Wahl, wenn Semantik, Standards und verteilte Datenintegration zählen.</span></div>
+</div>
+
+<!-- Build 1: Stabile Struktur → Relational -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">03</div>
+    <div class="tag">Comparison</div>
+    <div class="title">Wann nimmt man was?</div>
+    <div class="col-labels-c3">
+      <div class="lp lp-rel">Relational</div>
+      <div class="lp lp-pg">Property Graph</div>
+      <div class="lp lp-ts">Triple Store</div>
+    </div>
+  </div>
+  <div class="body">
+    <div class="rows">
+      <div class="row"><div class="req-icon"><i data-lucide="layers"></i></div><div class="req">Stabile Struktur</div><div class="arr">→</div><div class="pills"><div class="pill p-rel">Relational</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="network"></i></div><div class="req">Tiefe Graphnavigation</div><div class="arr">→</div><div class="pills" style="visibility:hidden"><div class="pill p-pg">Property Graph</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="brain"></i></div><div class="req">Semantik &amp; Inferenz</div><div class="arr">→</div><div class="pills" style="visibility:hidden"><div class="pill p-ts">Triple Store</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="globe"></i></div><div class="req">Offene Datenintegration</div><div class="arr">→</div><div class="pills" style="visibility:hidden"><div class="pill p-ts">Triple Store</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="wrench"></i></div><div class="req">Einstieg &amp; Tooling</div><div class="arr">→</div><div class="pills" style="visibility:hidden"><div class="pill p-rel">Relational</div><div class="pill-s ps-pg">Property Graph</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="brain"></i></div><div class="req">Knowledge Graphs</div><div class="arr">→</div><div class="pills" style="visibility:hidden"><div class="pill p-ts">Triple Store</div></div></div>
+    </div>
+  </div>
+  <div class="insight" style="visibility:hidden"><span class="ia">→</span><span><strong>Kein Modell gewinnt immer</strong> — Triple Store ist die Wahl, wenn Semantik, Standards und verteilte Datenintegration zählen.</span></div>
+</div>
+
+<!-- Build 2: + Tiefe Graphnavigation → Property Graph -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">03</div>
+    <div class="tag">Comparison</div>
+    <div class="title">Wann nimmt man was?</div>
+    <div class="col-labels-c3">
+      <div class="lp lp-rel">Relational</div>
+      <div class="lp lp-pg">Property Graph</div>
+      <div class="lp lp-ts">Triple Store</div>
+    </div>
+  </div>
+  <div class="body">
+    <div class="rows">
+      <div class="row"><div class="req-icon"><i data-lucide="layers"></i></div><div class="req">Stabile Struktur</div><div class="arr">→</div><div class="pills"><div class="pill p-rel">Relational</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="network"></i></div><div class="req">Tiefe Graphnavigation</div><div class="arr">→</div><div class="pills"><div class="pill p-pg">Property Graph</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="brain"></i></div><div class="req">Semantik &amp; Inferenz</div><div class="arr">→</div><div class="pills" style="visibility:hidden"><div class="pill p-ts">Triple Store</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="globe"></i></div><div class="req">Offene Datenintegration</div><div class="arr">→</div><div class="pills" style="visibility:hidden"><div class="pill p-ts">Triple Store</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="wrench"></i></div><div class="req">Einstieg &amp; Tooling</div><div class="arr">→</div><div class="pills" style="visibility:hidden"><div class="pill p-rel">Relational</div><div class="pill-s ps-pg">Property Graph</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="brain"></i></div><div class="req">Knowledge Graphs</div><div class="arr">→</div><div class="pills" style="visibility:hidden"><div class="pill p-ts">Triple Store</div></div></div>
+    </div>
+  </div>
+  <div class="insight" style="visibility:hidden"><span class="ia">→</span><span><strong>Kein Modell gewinnt immer</strong> — Triple Store ist die Wahl, wenn Semantik, Standards und verteilte Datenintegration zählen.</span></div>
+</div>
+
+<!-- Build 3: + Semantik & Inferenz → Triple Store -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">03</div>
+    <div class="tag">Comparison</div>
+    <div class="title">Wann nimmt man was?</div>
+    <div class="col-labels-c3">
+      <div class="lp lp-rel">Relational</div>
+      <div class="lp lp-pg">Property Graph</div>
+      <div class="lp lp-ts">Triple Store</div>
+    </div>
+  </div>
+  <div class="body">
+    <div class="rows">
+      <div class="row"><div class="req-icon"><i data-lucide="layers"></i></div><div class="req">Stabile Struktur</div><div class="arr">→</div><div class="pills"><div class="pill p-rel">Relational</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="network"></i></div><div class="req">Tiefe Graphnavigation</div><div class="arr">→</div><div class="pills"><div class="pill p-pg">Property Graph</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="brain"></i></div><div class="req">Semantik &amp; Inferenz</div><div class="arr">→</div><div class="pills"><div class="pill p-ts">Triple Store</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="globe"></i></div><div class="req">Offene Datenintegration</div><div class="arr">→</div><div class="pills" style="visibility:hidden"><div class="pill p-ts">Triple Store</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="wrench"></i></div><div class="req">Einstieg &amp; Tooling</div><div class="arr">→</div><div class="pills" style="visibility:hidden"><div class="pill p-rel">Relational</div><div class="pill-s ps-pg">Property Graph</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="brain"></i></div><div class="req">Knowledge Graphs</div><div class="arr">→</div><div class="pills" style="visibility:hidden"><div class="pill p-ts">Triple Store</div></div></div>
+    </div>
+  </div>
+  <div class="insight" style="visibility:hidden"><span class="ia">→</span><span><strong>Kein Modell gewinnt immer</strong> — Triple Store ist die Wahl, wenn Semantik, Standards und verteilte Datenintegration zählen.</span></div>
+</div>
+
+<!-- Build 4: + Offene Datenintegration → Triple Store -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">03</div>
+    <div class="tag">Comparison</div>
+    <div class="title">Wann nimmt man was?</div>
+    <div class="col-labels-c3">
+      <div class="lp lp-rel">Relational</div>
+      <div class="lp lp-pg">Property Graph</div>
+      <div class="lp lp-ts">Triple Store</div>
+    </div>
+  </div>
+  <div class="body">
+    <div class="rows">
+      <div class="row"><div class="req-icon"><i data-lucide="layers"></i></div><div class="req">Stabile Struktur</div><div class="arr">→</div><div class="pills"><div class="pill p-rel">Relational</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="network"></i></div><div class="req">Tiefe Graphnavigation</div><div class="arr">→</div><div class="pills"><div class="pill p-pg">Property Graph</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="brain"></i></div><div class="req">Semantik &amp; Inferenz</div><div class="arr">→</div><div class="pills"><div class="pill p-ts">Triple Store</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="globe"></i></div><div class="req">Offene Datenintegration</div><div class="arr">→</div><div class="pills"><div class="pill p-ts">Triple Store</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="wrench"></i></div><div class="req">Einstieg &amp; Tooling</div><div class="arr">→</div><div class="pills" style="visibility:hidden"><div class="pill p-rel">Relational</div><div class="pill-s ps-pg">Property Graph</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="brain"></i></div><div class="req">Knowledge Graphs</div><div class="arr">→</div><div class="pills" style="visibility:hidden"><div class="pill p-ts">Triple Store</div></div></div>
+    </div>
+  </div>
+  <div class="insight" style="visibility:hidden"><span class="ia">→</span><span><strong>Kein Modell gewinnt immer</strong> — Triple Store ist die Wahl, wenn Semantik, Standards und verteilte Datenintegration zählen.</span></div>
+</div>
+
+<!-- Build 5: + Einstieg & Tooling → Relational / Property Graph -->
+<div class="slide">
+  <div class="lbar"></div>
+  <div class="hdr">
+    <div class="num">03</div>
+    <div class="tag">Comparison</div>
+    <div class="title">Wann nimmt man was?</div>
+    <div class="col-labels-c3">
+      <div class="lp lp-rel">Relational</div>
+      <div class="lp lp-pg">Property Graph</div>
+      <div class="lp lp-ts">Triple Store</div>
+    </div>
+  </div>
+  <div class="body">
+    <div class="rows">
+      <div class="row"><div class="req-icon"><i data-lucide="layers"></i></div><div class="req">Stabile Struktur</div><div class="arr">→</div><div class="pills"><div class="pill p-rel">Relational</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="network"></i></div><div class="req">Tiefe Graphnavigation</div><div class="arr">→</div><div class="pills"><div class="pill p-pg">Property Graph</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="brain"></i></div><div class="req">Semantik &amp; Inferenz</div><div class="arr">→</div><div class="pills"><div class="pill p-ts">Triple Store</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="globe"></i></div><div class="req">Offene Datenintegration</div><div class="arr">→</div><div class="pills"><div class="pill p-ts">Triple Store</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="wrench"></i></div><div class="req">Einstieg &amp; Tooling</div><div class="arr">→</div><div class="pills"><div class="pill p-rel">Relational</div><div class="pill-s ps-pg">Property Graph</div></div></div>
+      <div class="row"><div class="req-icon"><i data-lucide="brain"></i></div><div class="req">Knowledge Graphs</div><div class="arr">→</div><div class="pills" style="visibility:hidden"><div class="pill p-ts">Triple Store</div></div></div>
+    </div>
+  </div>
+  <div class="insight" style="visibility:hidden"><span class="ia">→</span><span><strong>Kein Modell gewinnt immer</strong> — Triple Store ist die Wahl, wenn Semantik, Standards und verteilte Datenintegration zählen.</span></div>
+</div>
+
+<!-- Build 6 (vollständig): + Knowledge Graphs + Insight -->
 <div class="slide">
   <div class="lbar"></div>
   <div class="hdr">
@@ -5891,7 +6048,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
     <div class="title">Quellenverzeichnis</div>
   </div>
   <div class="body-nofooter">
-    <div style="height:100%;display:grid;grid-template-columns:1fr 1fr;gap:0;padding:18px 28px 14px;">
+    <div style="height:100%;display:grid;grid-template-columns:1fr 1fr;gap:0;padding:18px 28px 30px;">
 
       <!-- Linke Spalte: W3C Standards -->
       <div style="padding-right:20px;border-right:1px solid #DDE3F0;display:flex;flex-direction:column;gap:0;">
@@ -5947,6 +6104,33 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
             </div>
           </div>
 
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:4px;background:var(--navy);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">7</div>
+            <div style="font-size:13.5px;color:var(--text);line-height:1.4;">
+              <strong>Information Management: A Proposal</strong> · Tim Berners-Lee, CERN, March 1989<br>
+              <span style="color:var(--muted);font-size:12px;">w3.org/History/1989/proposal-msw.html</span>
+            </div>
+          </div>
+
+          <div style="margin-top:4px;height:1px;background:#DDE3F0;"></div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--navy);margin-top:4px;">Bilder</div>
+
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:4px;background:var(--navy);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">8</div>
+            <div style="font-size:13.5px;color:var(--text);line-height:1.4;">
+              <strong>Tim Berners-Lee</strong> · Encyclopædia Britannica<br>
+              <span style="color:var(--muted);font-size:12px;">britannica.com/biography/Tim-Berners-Lee</span>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:4px;background:var(--navy);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">9</div>
+            <div style="font-size:13.5px;color:var(--text);line-height:1.4;">
+              <strong>First Web Browser Screenshot</strong> · CERN<br>
+              <span style="color:var(--muted);font-size:12px;">info.cern.ch/images/screensnap2_24c.gif</span>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -5954,10 +6138,18 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
       <div style="padding-left:20px;display:flex;flex-direction:column;gap:0;">
         <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);background:var(--coral);display:inline-block;padding:3px 10px;border-radius:4px;margin-bottom:10px;align-self:flex-start;">Literatur &amp; Tools</div>
 
-        <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;flex-direction:column;gap:7px;">
 
           <div style="display:flex;gap:10px;align-items:flex-start;">
-            <div style="width:22px;height:22px;border-radius:4px;background:var(--coral);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">7</div>
+            <div style="width:22px;height:22px;border-radius:4px;background:var(--coral);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">10</div>
+            <div style="font-size:13.5px;color:var(--text);line-height:1.4;">
+              <strong>Wie entstand das Internet?</strong> · SWB Magazin<br>
+              <span style="color:var(--muted);font-size:12px;">swb.de/ueber-swb/swb-magazin/swb-insider/wie-entstand-das-internet</span>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:4px;background:var(--coral);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">11</div>
             <div style="font-size:13.5px;color:var(--text);line-height:1.4;">
               <strong>Meier, A.; Kaufmann, M.</strong> SQL- &amp; NoSQL-Datenbanken. Springer-Verlag, 8. Aufl. 2023.<br>
               <span style="color:var(--muted);font-size:12px;">doi:10.1007/978-3-662-67092-7</span>
@@ -5965,18 +6157,18 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
           </div>
 
           <div style="display:flex;gap:10px;align-items:flex-start;">
-            <div style="width:22px;height:22px;border-radius:4px;background:var(--coral);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">8</div>
+            <div style="width:22px;height:22px;border-radius:4px;background:var(--coral);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">12</div>
             <div style="font-size:13.5px;color:var(--text);line-height:1.4;">
               <strong>Gilbert, E.</strong> Triplestores 101: Storing Data for Efficient Inferencing. Dataversity, 2016.<br>
               <span style="color:var(--muted);font-size:12px;">dataversity.net/articles/triplestores-101-storing-data-efficient-inferencing/</span>
             </div>
           </div>
 
-          <div style="margin-top:6px;height:1px;background:#DDE3F0;"></div>
+          <div style="margin-top:4px;height:1px;background:#DDE3F0;"></div>
           <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--teal);margin-top:2px;">Tool</div>
 
           <div style="display:flex;gap:10px;align-items:flex-start;">
-            <div style="width:22px;height:22px;border-radius:4px;background:var(--teal);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">9</div>
+            <div style="width:22px;height:22px;border-radius:4px;background:var(--teal);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">13</div>
             <div style="font-size:13.5px;color:var(--text);line-height:1.4;">
               <strong>Oxigraph</strong> – Rust-based SPARQL 1.1 triple store. Open source, kein JVM.<br>
               <span style="color:var(--muted);font-size:12px;">github.com/oxigraph/oxigraph</span>
@@ -5984,21 +6176,29 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
           </div>
 
           <div style="display:flex;gap:10px;align-items:flex-start;">
-            <div style="width:22px;height:22px;border-radius:4px;background:var(--teal);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">10</div>
+            <div style="width:22px;height:22px;border-radius:4px;background:var(--teal);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">14</div>
             <div style="font-size:13.5px;color:var(--text);line-height:1.4;">
               <strong>Wikidata</strong> – Freier Wissensgraph der Wikimedia Foundation. SPARQL-Endpoint für Federated Queries (Demo Query 7).<br>
               <span style="color:var(--muted);font-size:12px;">query.wikidata.org</span>
             </div>
           </div>
 
-          <div style="margin-top:6px;height:1px;background:#DDE3F0;"></div>
-          <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--coral);margin-top:2px;">Video</div>
+          <div style="margin-top:4px;height:1px;background:#DDE3F0;"></div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--coral);margin-top:2px;">Videos</div>
 
           <div style="display:flex;gap:10px;align-items:flex-start;">
-            <div style="width:22px;height:22px;border-radius:4px;background:var(--coral);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">11</div>
+            <div style="width:22px;height:22px;border-radius:4px;background:var(--coral);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">15</div>
             <div style="font-size:13.5px;color:var(--text);line-height:1.4;">
               <strong>An Introduction to Wikidata</strong> · National Library of Wales<br>
               <span style="color:var(--muted);font-size:12px;">youtube.com/watch?v=m_9_23jXPoE</span>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:4px;background:var(--coral);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">16</div>
+            <div style="font-size:13.5px;color:var(--text);line-height:1.4;">
+              <strong>Knowledge Graphs &amp; Semantic Web</strong><br>
+              <span style="color:var(--muted);font-size:12px;">youtube.com/watch?v=OGg8A2zfWKg</span>
             </div>
           </div>
 
@@ -6006,6 +6206,7 @@ body { background:#3a3a3a; display:flex; flex-direction:column; align-items:cent
       </div>
 
     </div>
+    <div style="position:absolute;bottom:10px;left:0;right:0;text-align:center;font-size:10px;color:var(--muted);opacity:0.7;">Folien wurden mit KI-Unterstützung erstellt</div>
   </div>
 </div>
 
