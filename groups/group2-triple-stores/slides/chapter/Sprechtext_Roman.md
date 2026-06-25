@@ -410,13 +410,6 @@ Zusammenfassend lässt sich sagen, dass **Forward Chaining auf Geschwindigkeit b
 # Property Graph Vergleich
 Basierend auf den Quellen lassen sich die von dir genannten Punkte wie folgt ausführen:
 
-### 1. Vergleich Property Graph (PG) vs. Triple Store (TS/RDF)
-
-Der Hauptunterschied liegt in der Struktur und dem Einsatzzweck:
-
-*   **Datenmodell:** Ein **Property Graph** besteht aus Knoten und Kanten, wobei beide beliebige Attribute (Properties) als Schlüssel-Wert-Paare speichern können. In einem **Triple Store** werden Daten als Subjekt-Prädikat-Objekt-Tripel gespeichert. Kanten sind hier keine eigenständigen Objekte mit Attributen.
-*   **Abfragemodell:** Property Graphen nutzen Sprachen wie **Cypher**, die auf **Pattern Matching** und effiziente Traversierung (das "Wandern" durch den Graphen) fokussiert sind. Triple Stores nutzen **SPARQL**, das für die Integration verteilter Datenquellen und **Inferencing** (logisches Schließen) optimiert ist.
-*   **Philosophie:** Property Graphen sind wie ein "Whiteboard-Modell" – man speichert die Daten so, wie man sie zeichnet. Triple Stores folgen strikten Web-Standards (W3C) und nutzen URIs zur weltweit eindeutigen Identifikation von Konzepten.
 
 ### 2. Schwachstellen unseres Systems (Triple Store)
 
